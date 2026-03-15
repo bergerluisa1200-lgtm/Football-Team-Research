@@ -408,6 +408,195 @@
             border-top: 1px solid var(--border-subtle);
         }
 
+        /* Ranking Section */
+        .ranking-section {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .ranking-section h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .ranking-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 32px;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .ranking-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ranking-item {
+            display: grid;
+            grid-template-columns: 48px 1fr auto;
+            align-items: center;
+            gap: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 16px 20px;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .ranking-item:hover {
+            background: var(--bg-card-hover);
+            transform: translateX(4px);
+        }
+
+        .ranking-item.gold { border-left: 4px solid #ffd700; }
+        .ranking-item.silver { border-left: 4px solid #c0c0c0; }
+        .ranking-item.bronze { border-left: 4px solid #cd7f32; }
+
+        .ranking-pos {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .ranking-item.gold .ranking-pos { color: #ffd700; }
+        .ranking-item.silver .ranking-pos { color: #c0c0c0; }
+        .ranking-item.bronze .ranking-pos { color: #cd7f32; }
+
+        .ranking-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .ranking-team-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ranking-trophies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .ranking-trophy-tag {
+            background: var(--fun-fact-bg);
+            border: 1px solid var(--border-subtle);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .ranking-score {
+            text-align: right;
+            min-width: 80px;
+        }
+
+        .ranking-score .pts {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--accent-gold);
+        }
+
+        .ranking-score .pts-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ranking-bar-container {
+            grid-column: 2 / -1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ranking-bar-track {
+            flex: 1;
+            height: 6px;
+            background: var(--border-subtle);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .ranking-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-green));
+            transition: width 1s ease-out;
+            width: 0;
+        }
+
+        .ranking-bar-fill.animate {
+            width: var(--bar-width);
+        }
+
+        .ranking-methodology {
+            margin-top: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 20px 24px;
+        }
+
+        .ranking-methodology h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+        }
+
+        .ranking-methodology p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.7;
+        }
+
+        .ranking-methodology .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .ranking-methodology .criteria-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 0.85rem;
+        }
+
+        .ranking-methodology .criteria-item .c-label {
+            color: var(--text-secondary);
+        }
+
+        .ranking-methodology .criteria-item .c-pts {
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            .ranking-item {
+                grid-template-columns: 36px 1fr auto;
+                padding: 12px 14px;
+                gap: 10px;
+            }
+            .ranking-score .pts { font-size: 1.2rem; }
+        }
+
         /* Theme Toggle */
         .theme-toggle {
             position: fixed;
@@ -508,6 +697,7 @@
         <a href="#netherlands"><span class="flag">&#127475;&#127473;</span> Netherlands</a>
         <a href="#portugal"><span class="flag">&#127477;&#127481;</span> Portugal</a>
         <a href="#japan"><span class="flag">&#127471;&#127477;</span> Japan</a>
+        <a href="#ranking"><span class="flag">&#127942;</span> Ranking</a>
         <a href="#comparison"><span class="flag">&#128202;</span> Compare</a>
     </div>
 </nav>
@@ -1140,6 +1330,207 @@
     </div>
 </section>
 
+<!-- ===================== RANKING ===================== -->
+<section class="ranking-section" id="ranking">
+    <h2>All-Time Power Ranking</h2>
+    <p class="ranking-subtitle">A composite score based on World Cup titles, World Cup finals, continental titles, overall win rate, and historical consistency in major tournaments.</p>
+
+    <div class="ranking-list">
+
+        <div class="ranking-item gold">
+            <div class="ranking-pos">#1</div>
+            <div class="ranking-info">
+                <div class="ranking-team-name">&#127463;&#127479; Brazil</div>
+                <div class="ranking-trophies">
+                    <span class="ranking-trophy-tag">5 World Cups</span>
+                    <span class="ranking-trophy-tag">9 Copa Am.</span>
+                    <span class="ranking-trophy-tag">4 Confed.</span>
+                    <span class="ranking-trophy-tag">22/22 WC apps</span>
+                </div>
+            </div>
+            <div class="ranking-score">
+                <div class="pts">98</div>
+                <div class="pts-label">points</div>
+            </div>
+            <div class="ranking-bar-container">
+                <div class="ranking-bar-track"><div class="ranking-bar-fill" style="--bar-width:98%"></div></div>
+            </div>
+        </div>
+
+        <div class="ranking-item silver">
+            <div class="ranking-pos">#2</div>
+            <div class="ranking-info">
+                <div class="ranking-team-name">&#127465;&#127466; Germany</div>
+                <div class="ranking-trophies">
+                    <span class="ranking-trophy-tag">4 World Cups</span>
+                    <span class="ranking-trophy-tag">3 Euros</span>
+                    <span class="ranking-trophy-tag">13 WC semis</span>
+                    <span class="ranking-trophy-tag">8 WC finals</span>
+                </div>
+            </div>
+            <div class="ranking-score">
+                <div class="pts">94</div>
+                <div class="pts-label">points</div>
+            </div>
+            <div class="ranking-bar-container">
+                <div class="ranking-bar-track"><div class="ranking-bar-fill" style="--bar-width:94%"></div></div>
+            </div>
+        </div>
+
+        <div class="ranking-item bronze">
+            <div class="ranking-pos">#3</div>
+            <div class="ranking-info">
+                <div class="ranking-team-name">&#127470;&#127481; Italy</div>
+                <div class="ranking-trophies">
+                    <span class="ranking-trophy-tag">4 World Cups</span>
+                    <span class="ranking-trophy-tag">2 Euros</span>
+                    <span class="ranking-trophy-tag">6 WC finals</span>
+                    <span class="ranking-trophy-tag">37-match unbeaten</span>
+                </div>
+            </div>
+            <div class="ranking-score">
+                <div class="pts">90</div>
+                <div class="pts-label">points</div>
+            </div>
+            <div class="ranking-bar-container">
+                <div class="ranking-bar-track"><div class="ranking-bar-fill" style="--bar-width:90%"></div></div>
+            </div>
+        </div>
+
+        <div class="ranking-item">
+            <div class="ranking-pos">#4</div>
+            <div class="ranking-info">
+                <div class="ranking-team-name">&#127462;&#127479; Argentina</div>
+                <div class="ranking-trophies">
+                    <span class="ranking-trophy-tag">3 World Cups</span>
+                    <span class="ranking-trophy-tag">15 Copa Am.</span>
+                    <span class="ranking-trophy-tag">6 WC finals</span>
+                    <span class="ranking-trophy-tag">2021-22 treble</span>
+                </div>
+            </div>
+            <div class="ranking-score">
+                <div class="pts">89</div>
+                <div class="pts-label">points</div>
+            </div>
+            <div class="ranking-bar-container">
+                <div class="ranking-bar-track"><div class="ranking-bar-fill" style="--bar-width:89%"></div></div>
+            </div>
+        </div>
+
+        <div class="ranking-item">
+            <div class="ranking-pos">#5</div>
+            <div class="ranking-info">
+                <div class="ranking-team-name">&#127467;&#127479; France</div>
+                <div class="ranking-trophies">
+                    <span class="ranking-trophy-tag">2 World Cups</span>
+                    <span class="ranking-trophy-tag">2 Euros</span>
+                    <span class="ranking-trophy-tag">2 Confed.</span>
+                    <span class="ranking-trophy-tag">3 WC finals in 5 editions</span>
+                </div>
+            </div>
+            <div class="ranking-score">
+                <div class="pts">85</div>
+                <div class="pts-label">points</div>
+            </div>
+            <div class="ranking-bar-container">
+                <div class="ranking-bar-track"><div class="ranking-bar-fill" style="--bar-width:85%"></div></div>
+            </div>
+        </div>
+
+        <div class="ranking-item">
+            <div class="ranking-pos">#6</div>
+            <div class="ranking-info">
+                <div class="ranking-team-name">&#127466;&#127480; Spain</div>
+                <div class="ranking-trophies">
+                    <span class="ranking-trophy-tag">1 World Cup</span>
+                    <span class="ranking-trophy-tag">4 Euros (record)</span>
+                    <span class="ranking-trophy-tag">3 consecutive majors</span>
+                </div>
+            </div>
+            <div class="ranking-score">
+                <div class="pts">80</div>
+                <div class="pts-label">points</div>
+            </div>
+            <div class="ranking-bar-container">
+                <div class="ranking-bar-track"><div class="ranking-bar-fill" style="--bar-width:80%"></div></div>
+            </div>
+        </div>
+
+        <div class="ranking-item">
+            <div class="ranking-pos">#7</div>
+            <div class="ranking-info">
+                <div class="ranking-team-name">&#127475;&#127473; Netherlands</div>
+                <div class="ranking-trophies">
+                    <span class="ranking-trophy-tag">0 World Cups</span>
+                    <span class="ranking-trophy-tag">1 Euro</span>
+                    <span class="ranking-trophy-tag">3 WC finals</span>
+                    <span class="ranking-trophy-tag">Total Football legacy</span>
+                </div>
+            </div>
+            <div class="ranking-score">
+                <div class="pts">68</div>
+                <div class="pts-label">points</div>
+            </div>
+            <div class="ranking-bar-container">
+                <div class="ranking-bar-track"><div class="ranking-bar-fill" style="--bar-width:68%"></div></div>
+            </div>
+        </div>
+
+        <div class="ranking-item">
+            <div class="ranking-pos">#8</div>
+            <div class="ranking-info">
+                <div class="ranking-team-name">&#127477;&#127481; Portugal</div>
+                <div class="ranking-trophies">
+                    <span class="ranking-trophy-tag">0 World Cups</span>
+                    <span class="ranking-trophy-tag">1 Euro</span>
+                    <span class="ranking-trophy-tag">1 Nations League</span>
+                    <span class="ranking-trophy-tag">CR7: 130+ goals</span>
+                </div>
+            </div>
+            <div class="ranking-score">
+                <div class="pts">58</div>
+                <div class="pts-label">points</div>
+            </div>
+            <div class="ranking-bar-container">
+                <div class="ranking-bar-track"><div class="ranking-bar-fill" style="--bar-width:58%"></div></div>
+            </div>
+        </div>
+
+        <div class="ranking-item">
+            <div class="ranking-pos">#9</div>
+            <div class="ranking-info">
+                <div class="ranking-team-name">&#127471;&#127477; Japan</div>
+                <div class="ranking-trophies">
+                    <span class="ranking-trophy-tag">0 World Cups</span>
+                    <span class="ranking-trophy-tag">4 Asian Cups</span>
+                    <span class="ranking-trophy-tag">Beat GER &amp; ESP in 2022</span>
+                </div>
+            </div>
+            <div class="ranking-score">
+                <div class="pts">42</div>
+                <div class="pts-label">points</div>
+            </div>
+            <div class="ranking-bar-container">
+                <div class="ranking-bar-track"><div class="ranking-bar-fill" style="--bar-width:42%"></div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="ranking-methodology">
+        <h3>Scoring Methodology</h3>
+        <p>Points are awarded across five weighted categories reflecting overall historical achievement:</p>
+        <div class="criteria-grid">
+            <div class="criteria-item"><span class="c-label">World Cup titles</span><span class="c-pts">15 pts each</span></div>
+            <div class="criteria-item"><span class="c-label">WC finals reached</span><span class="c-pts">5 pts each</span></div>
+            <div class="criteria-item"><span class="c-label">Continental titles</span><span class="c-pts">3 pts each</span></div>
+            <div class="criteria-item"><span class="c-label">WC consistency (QF+)</span><span class="c-pts">1 pt each</span></div>
+            <div class="criteria-item"><span class="c-label">Win rate bonus</span><span class="c-pts">up to 5 pts</span></div>
+            <div class="criteria-item"><span class="c-label">Other major trophies</span><span class="c-pts">2 pts each</span></div>
+        </div>
+    </div>
+</section>
+
 <!-- ===================== COMPARISON TABLE ===================== -->
 <section class="comparison-section" id="comparison">
     <h2>Head-to-Head Comparison</h2>
@@ -1261,12 +1652,27 @@
         });
     }, { threshold: 0.05 });
 
-    document.querySelectorAll('.team-section, .comparison-section').forEach(el => {
+    document.querySelectorAll('.team-section, .comparison-section, .ranking-section').forEach(el => {
         observer.observe(el);
     });
 
+    // Ranking bar animation
+    const barObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.querySelectorAll('.ranking-bar-fill').forEach((bar, i) => {
+                    setTimeout(() => bar.classList.add('animate'), i * 100);
+                });
+                barObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    const rankingSection = document.querySelector('.ranking-section');
+    if (rankingSection) barObserver.observe(rankingSection);
+
     // Active nav highlighting
-    const sections = document.querySelectorAll('.team-section, .comparison-section');
+    const sections = document.querySelectorAll('.team-section, .comparison-section, .ranking-section');
     const navLinks = document.querySelectorAll('.team-nav a');
 
     const navObserver = new IntersectionObserver((entries) => {
