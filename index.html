@@ -14,9 +14,46 @@
             --accent-gold: #d4a843;
             --accent-green: #2ecc71;
             --border-subtle: #1e2a45;
+            --hero-gradient-start: #0f1629;
+            --hero-h1-start: #fff;
+            --nav-bg: rgba(10, 14, 23, 0.92);
+            --trophy-bg: linear-gradient(135deg, #2a1f0a, #1a1505);
+            --trophy-border: #3d2e0a;
+            --fun-fact-bg: rgba(212, 168, 67, 0.05);
+            --player-tag-bg: rgba(212, 168, 67, 0.1);
+            --player-tag-border: rgba(212, 168, 67, 0.2);
+            --style-badge-bg: rgba(46, 204, 113, 0.08);
+            --style-badge-border: rgba(46, 204, 113, 0.15);
+            --formation-bg: rgba(46, 204, 113, 0.1);
+            --formation-border: rgba(46, 204, 113, 0.2);
+            --stat-border: rgba(255,255,255,0.04);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root.light {
+            --bg-dark: #f5f6fa;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f0f1f5;
+            --text-primary: #1a1d2e;
+            --text-secondary: #5a6178;
+            --accent-gold: #b8860b;
+            --accent-green: #1a9a54;
+            --border-subtle: #dde0e8;
+            --hero-gradient-start: #e8ebf2;
+            --hero-h1-start: #1a1d2e;
+            --nav-bg: rgba(245, 246, 250, 0.92);
+            --trophy-bg: linear-gradient(135deg, #fdf6e3, #faf0d1);
+            --trophy-border: #e8d9a0;
+            --fun-fact-bg: rgba(184, 134, 11, 0.06);
+            --player-tag-bg: rgba(184, 134, 11, 0.08);
+            --player-tag-border: rgba(184, 134, 11, 0.2);
+            --style-badge-bg: rgba(26, 154, 84, 0.08);
+            --style-badge-border: rgba(26, 154, 84, 0.2);
+            --formation-bg: rgba(26, 154, 84, 0.08);
+            --formation-border: rgba(26, 154, 84, 0.2);
+            --stat-border: rgba(0,0,0,0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -29,7 +66,7 @@
         .hero {
             text-align: center;
             padding: 80px 20px 60px;
-            background: linear-gradient(180deg, #0f1629 0%, var(--bg-dark) 100%);
+            background: linear-gradient(180deg, var(--hero-gradient-start) 0%, var(--bg-dark) 100%);
             border-bottom: 1px solid var(--border-subtle);
         }
 
@@ -38,7 +75,7 @@
             font-weight: 800;
             letter-spacing: -1px;
             margin-bottom: 12px;
-            background: linear-gradient(135deg, #fff 0%, var(--accent-gold) 100%);
+            background: linear-gradient(135deg, var(--hero-h1-start) 0%, var(--accent-gold) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -80,7 +117,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(10, 14, 23, 0.92);
+            background: var(--nav-bg);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-subtle);
             padding: 0 20px;
@@ -166,8 +203,8 @@
         }
 
         .trophy {
-            background: linear-gradient(135deg, #2a1f0a, #1a1505);
-            border: 1px solid #3d2e0a;
+            background: var(--trophy-bg);
+            border: 1px solid var(--trophy-border);
             padding: 10px 16px;
             border-radius: 8px;
             text-align: center;
@@ -264,8 +301,8 @@
         }
 
         .player-tag {
-            background: rgba(212, 168, 67, 0.1);
-            border: 1px solid rgba(212, 168, 67, 0.2);
+            background: var(--player-tag-bg);
+            border: 1px solid var(--player-tag-border);
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.82rem;
@@ -275,8 +312,8 @@
         /* Formation Display */
         .formation {
             display: inline-block;
-            background: rgba(46, 204, 113, 0.1);
-            border: 1px solid rgba(46, 204, 113, 0.2);
+            background: var(--formation-bg);
+            border: 1px solid var(--formation-border);
             padding: 3px 10px;
             border-radius: 4px;
             font-family: monospace;
@@ -290,7 +327,7 @@
             display: flex;
             justify-content: space-between;
             padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
+            border-bottom: 1px solid var(--stat-border);
         }
 
         .stat-row:last-child { border-bottom: none; }
@@ -307,7 +344,7 @@
 
         /* Fun Fact */
         .fun-fact {
-            background: rgba(212, 168, 67, 0.05);
+            background: var(--fun-fact-bg);
             border-left: 3px solid var(--accent-gold);
             padding: 12px 16px;
             margin: 8px 0;
@@ -340,7 +377,7 @@
         }
 
         .comparison-table thead th {
-            background: var(--bg-card);
+            background: var(--bg-card) !important;
             padding: 12px 10px;
             text-align: left;
             font-size: 0.75rem;
@@ -371,6 +408,37 @@
             border-top: 1px solid var(--border-subtle);
         }
 
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 16px;
+            right: 20px;
+            z-index: 200;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 30px;
+            padding: 8px 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .theme-toggle .icon {
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
         /* Scroll animations */
         .team-section {
             opacity: 0;
@@ -386,8 +454,8 @@
         /* Style tab */
         .style-badge {
             display: inline-block;
-            background: rgba(46, 204, 113, 0.08);
-            border: 1px solid rgba(46, 204, 113, 0.15);
+            background: var(--style-badge-bg);
+            border: 1px solid var(--style-badge-border);
             color: var(--accent-green);
             padding: 2px 10px;
             border-radius: 4px;
@@ -398,6 +466,11 @@
     </style>
 </head>
 <body>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle light mode">
+    <span class="icon" id="themeIcon">&#9788;</span>
+    <span id="themeLabel">Light</span>
+</button>
 
 <!-- Hero -->
 <section class="hero">
@@ -1207,6 +1280,27 @@
     }, { threshold: 0.3 });
 
     sections.forEach(section => navObserver.observe(section));
+
+    // Theme toggle
+    const toggle = document.getElementById('themeToggle');
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+    const root = document.documentElement;
+
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light') {
+        root.classList.add('light');
+        icon.innerHTML = '&#9790;';
+        label.textContent = 'Dark';
+    }
+
+    toggle.addEventListener('click', () => {
+        root.classList.toggle('light');
+        const isLight = root.classList.contains('light');
+        icon.innerHTML = isLight ? '&#9790;' : '&#9788;';
+        label.textContent = isLight ? 'Dark' : 'Light';
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
 
     // Smooth scroll
     navLinks.forEach(link => {
