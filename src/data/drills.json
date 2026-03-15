@@ -1,0 +1,449 @@
+[
+  {
+    "id": "1",
+    "slug": "rondo-4v1",
+    "title": "Rondo 4v1",
+    "category": "passing",
+    "difficulty": "beginner",
+    "duration": 10,
+    "playerCountMin": 5,
+    "playerCountMax": 5,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up a 10x10 yard square with cones.",
+      "Four players stand on the outside, one defender in the middle.",
+      "Outside players must pass the ball around, keeping possession.",
+      "The defender tries to intercept or win the ball.",
+      "If the defender wins the ball, the player who made the bad pass becomes the defender.",
+      "Two-touch maximum for outside players."
+    ],
+    "coachingPoints": [
+      "Open body shape to see all passing options.",
+      "Play the way you face when under pressure.",
+      "Quick ball movement — don't hold onto the ball.",
+      "Communicate with teammates."
+    ],
+    "variations": [
+      "One-touch only for advanced players.",
+      "Increase to 5v2 for more challenge.",
+      "Expand or shrink the grid to adjust difficulty."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 35, "y": 35 },
+      { "type": "cone", "x": 65, "y": 35 },
+      { "type": "cone", "x": 65, "y": 65 },
+      { "type": "cone", "x": 35, "y": 65 },
+      { "type": "player", "x": 50, "y": 33, "label": "A", "color": "#2563eb" },
+      { "type": "player", "x": 67, "y": 50, "label": "B", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 67, "label": "C", "color": "#2563eb" },
+      { "type": "player", "x": 33, "y": 50, "label": "D", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 50, "label": "X", "color": "#dc2626" },
+      { "type": "ball", "x": 50, "y": 33 },
+      { "type": "arrow", "x": 50, "y": 33, "toX": 67, "toY": 50, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 67, "y": 50, "toX": 50, "toY": 67, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["possession", "warm-up", "passing", "quick-play"]
+  },
+  {
+    "id": "2",
+    "slug": "wall-pass-and-shoot",
+    "title": "Wall Pass & Shoot",
+    "category": "shooting",
+    "difficulty": "intermediate",
+    "duration": 15,
+    "playerCountMin": 3,
+    "playerCountMax": 10,
+    "equipment": ["balls", "cones", "goals"],
+    "instructions": [
+      "Player A starts with the ball 30 yards from goal.",
+      "Player B stands 10 yards ahead as the wall passer.",
+      "Player A passes to Player B and makes a run into the box.",
+      "Player B lays the ball off first-time into Player A's path.",
+      "Player A shoots first-time or with one touch.",
+      "Rotate roles after each attempt."
+    ],
+    "coachingPoints": [
+      "Weight of the pass must be firm enough to play one-touch.",
+      "Timing of the run — don't go too early.",
+      "Shoot across the goalkeeper to the far post.",
+      "Follow up for rebounds."
+    ],
+    "variations": [
+      "Add a passive defender to create pressure.",
+      "Alternate sides (left and right).",
+      "Require weak-foot finish."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 50, "y": 75, "label": "A", "color": "#2563eb" },
+      { "type": "player", "x": 40, "y": 55, "label": "B", "color": "#2563eb" },
+      { "type": "ball", "x": 50, "y": 75 },
+      { "type": "arrow", "x": 50, "y": 75, "toX": 40, "toY": 55, "color": "#2563eb" },
+      { "type": "arrow", "x": 40, "y": 55, "toX": 55, "toY": 40, "color": "#f59e0b" },
+      { "type": "run-path", "x": 50, "y": 75, "toX": 55, "toY": 40, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 55, "y": 40, "toX": 50, "toY": 15, "color": "#dc2626" },
+      { "type": "cone", "x": 35, "y": 10 },
+      { "type": "cone", "x": 65, "y": 10 }
+    ],
+    "tags": ["finishing", "combination-play", "shooting", "wall-pass"]
+  },
+  {
+    "id": "3",
+    "slug": "1v1-dribble-gates",
+    "title": "1v1 Dribble Gates",
+    "category": "dribbling",
+    "difficulty": "intermediate",
+    "duration": 12,
+    "playerCountMin": 2,
+    "playerCountMax": 12,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up 4 small gates (2 yards wide) in a 20x20 yard area.",
+      "Players pair up — one attacker, one defender.",
+      "Attacker scores a point by dribbling through any gate.",
+      "Defender tries to win the ball or force the attacker away from gates.",
+      "Play for 1 minute, then switch roles.",
+      "Keep score — most points wins."
+    ],
+    "coachingPoints": [
+      "Keep the ball close and use changes of direction.",
+      "Use body feints to unbalance the defender.",
+      "Scan for open gates before committing.",
+      "Accelerate through the gate once you've beaten the defender."
+    ],
+    "variations": [
+      "Add more gates for beginners.",
+      "Reduce the area for more intensity.",
+      "Allow defender to score by dribbling through gates if they win the ball."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 30, "y": 35 },
+      { "type": "cone", "x": 36, "y": 35 },
+      { "type": "cone", "x": 64, "y": 35 },
+      { "type": "cone", "x": 70, "y": 35 },
+      { "type": "cone", "x": 30, "y": 65 },
+      { "type": "cone", "x": 36, "y": 65 },
+      { "type": "cone", "x": 64, "y": 65 },
+      { "type": "cone", "x": 70, "y": 65 },
+      { "type": "player", "x": 50, "y": 55, "label": "ATT", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 45, "label": "DEF", "color": "#dc2626" },
+      { "type": "ball", "x": 50, "y": 55 },
+      { "type": "run-path", "x": 50, "y": 55, "toX": 33, "toY": 35, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["1v1", "dribbling", "skill", "agility"]
+  },
+  {
+    "id": "4",
+    "slug": "pressing-triggers",
+    "title": "Pressing Triggers 6v4",
+    "category": "defending",
+    "difficulty": "advanced",
+    "duration": 20,
+    "playerCountMin": 10,
+    "playerCountMax": 14,
+    "equipment": ["balls", "bibs", "cones"],
+    "instructions": [
+      "Mark out a 40x30 yard zone split into two halves.",
+      "6 attacking players (blue) try to keep possession across both halves.",
+      "4 defenders (red) press and try to win the ball.",
+      "Pressing trigger: when a back-pass is made, defenders sprint to close down.",
+      "If defenders win the ball, they try to score through mini goals.",
+      "Play for 3 minutes, then rotate defenders."
+    ],
+    "coachingPoints": [
+      "Identify the pressing trigger — backward or sideways pass.",
+      "Press as a unit, not individually.",
+      "Cover shadow: cut off the next passing lane while pressing the ball.",
+      "Recover quickly if the press is broken."
+    ],
+    "variations": [
+      "Change to 6v3 for easier pressing.",
+      "Add a neutral player who plays for the team in possession.",
+      "Require 8 passes for a point to increase pressing urgency."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 20, "y": 30, "label": "1", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 25, "label": "2", "color": "#2563eb" },
+      { "type": "player", "x": 80, "y": 30, "label": "3", "color": "#2563eb" },
+      { "type": "player", "x": 20, "y": 70, "label": "4", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 75, "label": "5", "color": "#2563eb" },
+      { "type": "player", "x": 80, "y": 70, "label": "6", "color": "#2563eb" },
+      { "type": "player", "x": 35, "y": 45, "label": "D1", "color": "#dc2626" },
+      { "type": "player", "x": 55, "y": 45, "label": "D2", "color": "#dc2626" },
+      { "type": "player", "x": 40, "y": 55, "label": "D3", "color": "#dc2626" },
+      { "type": "player", "x": 60, "y": 55, "label": "D4", "color": "#dc2626" },
+      { "type": "ball", "x": 50, "y": 25 },
+      { "type": "arrow", "x": 50, "y": 25, "toX": 20, "toY": 30, "color": "#2563eb" },
+      { "type": "run-path", "x": 35, "y": 45, "toX": 20, "toY": 30, "color": "#dc2626", "dashed": true },
+      { "type": "run-path", "x": 55, "y": 45, "toX": 50, "toY": 25, "color": "#dc2626", "dashed": true }
+    ],
+    "tags": ["pressing", "tactical", "team-defending", "high-press"]
+  },
+  {
+    "id": "5",
+    "slug": "shuttle-runs",
+    "title": "Shuttle Runs with Ball",
+    "category": "fitness",
+    "difficulty": "beginner",
+    "duration": 8,
+    "playerCountMin": 1,
+    "playerCountMax": 20,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up cones at 5, 10, 15, and 20 yards from the start line.",
+      "Players dribble to the 5-yard cone, turn, and dribble back.",
+      "Then dribble to 10-yard cone and back, 15 and back, 20 and back.",
+      "Rest for 30 seconds.",
+      "Repeat for 4 sets."
+    ],
+    "coachingPoints": [
+      "Keep the ball under close control during turns.",
+      "Use the sole of the foot to stop and turn quickly.",
+      "Maintain a high tempo throughout each set.",
+      "Focus on clean turns, not just speed."
+    ],
+    "variations": [
+      "Without the ball for pure fitness.",
+      "Add a pass to a partner at each cone.",
+      "Time each set and try to beat your personal best."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 50, "y": 85, "label": "P", "color": "#2563eb" },
+      { "type": "ball", "x": 50, "y": 85 },
+      { "type": "cone", "x": 50, "y": 70 },
+      { "type": "cone", "x": 50, "y": 55 },
+      { "type": "cone", "x": 50, "y": 40 },
+      { "type": "cone", "x": 50, "y": 25 },
+      { "type": "run-path", "x": 50, "y": 85, "toX": 50, "toY": 70, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 50, "y": 70, "toX": 50, "toY": 85, "color": "#f59e0b", "dashed": true }
+    ],
+    "tags": ["fitness", "conditioning", "dribbling", "agility"]
+  },
+  {
+    "id": "6",
+    "slug": "triangular-passing",
+    "title": "Triangular Passing Pattern",
+    "category": "passing",
+    "difficulty": "intermediate",
+    "duration": 15,
+    "playerCountMin": 6,
+    "playerCountMax": 12,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up three cones in a triangle, 15 yards apart.",
+      "Two players at each cone.",
+      "Player A passes to Player B, then follows the pass to B's cone.",
+      "Player B receives, opens up, and passes to Player C, then follows.",
+      "Pattern continues — always follow your pass.",
+      "Increase speed gradually."
+    ],
+    "coachingPoints": [
+      "Receive on the back foot to open your body.",
+      "Pass with pace — firm, driven passes along the ground.",
+      "Check your shoulder before receiving.",
+      "Sprint to the next cone after passing."
+    ],
+    "variations": [
+      "Add a one-two before passing to the next station.",
+      "Play one-touch only.",
+      "Add a fourth cone to create a diamond pattern."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 50, "y": 30 },
+      { "type": "cone", "x": 30, "y": 70 },
+      { "type": "cone", "x": 70, "y": 70 },
+      { "type": "player", "x": 50, "y": 28, "label": "A", "color": "#2563eb" },
+      { "type": "player", "x": 52, "y": 32, "label": "A2", "color": "#2563eb" },
+      { "type": "player", "x": 28, "y": 70, "label": "B", "color": "#2563eb" },
+      { "type": "player", "x": 32, "y": 72, "label": "B2", "color": "#2563eb" },
+      { "type": "player", "x": 68, "y": 70, "label": "C", "color": "#2563eb" },
+      { "type": "player", "x": 72, "y": 72, "label": "C2", "color": "#2563eb" },
+      { "type": "ball", "x": 50, "y": 28 },
+      { "type": "arrow", "x": 50, "y": 28, "toX": 28, "toY": 70, "color": "#2563eb" },
+      { "type": "arrow", "x": 28, "y": 70, "toX": 68, "toY": 70, "color": "#f59e0b" },
+      { "type": "arrow", "x": 68, "y": 70, "toX": 50, "toY": 28, "color": "#10b981" },
+      { "type": "run-path", "x": 50, "y": 28, "toX": 30, "toY": 70, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["passing", "movement", "pattern-play", "warm-up"]
+  },
+  {
+    "id": "7",
+    "slug": "finishing-from-crosses",
+    "title": "Finishing from Crosses",
+    "category": "shooting",
+    "difficulty": "advanced",
+    "duration": 20,
+    "playerCountMin": 5,
+    "playerCountMax": 14,
+    "equipment": ["balls", "cones", "goals"],
+    "instructions": [
+      "Set up with a full-size goal and a goalkeeper.",
+      "Wide player starts on the right wing with a supply of balls.",
+      "Two attackers start at the edge of the box.",
+      "Wide player dribbles to the byline and crosses.",
+      "Attackers make near-post and far-post runs to finish.",
+      "Add a defender after 5 minutes to create realistic pressure."
+    ],
+    "coachingPoints": [
+      "Stagger runs — near post first, far post second.",
+      "Attack the ball aggressively — don't wait for it.",
+      "Aim for the target on first contact.",
+      "Far-post runner should arrive slightly later."
+    ],
+    "variations": [
+      "Cross from the left side.",
+      "Add cutback crosses from the byline.",
+      "Include a midfielder arriving late for knock-downs."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 85, "y": 55, "label": "W", "color": "#2563eb" },
+      { "type": "player", "x": 55, "y": 40, "label": "ST1", "color": "#2563eb" },
+      { "type": "player", "x": 45, "y": 45, "label": "ST2", "color": "#2563eb" },
+      { "type": "ball", "x": 85, "y": 55 },
+      { "type": "run-path", "x": 85, "y": 55, "toX": 85, "toY": 15, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 85, "y": 15, "toX": 55, "toY": 15, "color": "#f59e0b" },
+      { "type": "run-path", "x": 55, "y": 40, "toX": 55, "toY": 15, "color": "#dc2626", "dashed": true },
+      { "type": "run-path", "x": 45, "y": 45, "toX": 40, "toY": 18, "color": "#dc2626", "dashed": true },
+      { "type": "cone", "x": 35, "y": 5 },
+      { "type": "cone", "x": 65, "y": 5 }
+    ],
+    "tags": ["crossing", "finishing", "heading", "wing-play"]
+  },
+  {
+    "id": "8",
+    "slug": "skill-dribble-course",
+    "title": "Skill Dribble Course",
+    "category": "dribbling",
+    "difficulty": "beginner",
+    "duration": 10,
+    "playerCountMin": 1,
+    "playerCountMax": 10,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up 8 cones in a zigzag pattern, 3 yards apart.",
+      "Dribble through all cones using the inside and outside of the foot.",
+      "At the last cone, turn and dribble back.",
+      "Focus on technique first, then increase speed.",
+      "Complete 5 full runs."
+    ],
+    "coachingPoints": [
+      "Keep the ball close — small touches.",
+      "Use both feet throughout the course.",
+      "Keep your head up as much as possible.",
+      "Bend the knees and stay low for balance."
+    ],
+    "variations": [
+      "Use only the weak foot.",
+      "Add a step-over at each cone.",
+      "Race against a partner for competition."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 40, "y": 80 },
+      { "type": "cone", "x": 60, "y": 72 },
+      { "type": "cone", "x": 40, "y": 64 },
+      { "type": "cone", "x": 60, "y": 56 },
+      { "type": "cone", "x": 40, "y": 48 },
+      { "type": "cone", "x": 60, "y": 40 },
+      { "type": "cone", "x": 40, "y": 32 },
+      { "type": "cone", "x": 60, "y": 24 },
+      { "type": "player", "x": 40, "y": 88, "label": "P", "color": "#2563eb" },
+      { "type": "ball", "x": 40, "y": 88 },
+      { "type": "run-path", "x": 40, "y": 88, "toX": 40, "toY": 80, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["dribbling", "skill", "technique", "individual"]
+  },
+  {
+    "id": "9",
+    "slug": "back-line-shifting",
+    "title": "Back Line Shifting",
+    "category": "defending",
+    "difficulty": "intermediate",
+    "duration": 15,
+    "playerCountMin": 8,
+    "playerCountMax": 12,
+    "equipment": ["balls", "bibs", "cones"],
+    "instructions": [
+      "Four defenders form a back line across the pitch.",
+      "Four attackers pass the ball across the front.",
+      "Defenders must shift as a unit following the ball.",
+      "When the ball goes wide, the nearest defender presses.",
+      "Remaining defenders tuck in and cover.",
+      "Coach calls 'play' — attackers try to penetrate with a through ball."
+    ],
+    "coachingPoints": [
+      "Move as a unit — stay connected.",
+      "Ball-side defender applies pressure, others provide cover.",
+      "Don't ball-watch — scan for runners.",
+      "Communicate constantly: 'shift left', 'hold', 'step up'."
+    ],
+    "variations": [
+      "Add a midfielder to help the back line.",
+      "Allow attackers to overlap for realistic scenarios.",
+      "Progress to full 8v8 with build-up from the back."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 20, "y": 65, "label": "LB", "color": "#2563eb" },
+      { "type": "player", "x": 40, "y": 65, "label": "CB", "color": "#2563eb" },
+      { "type": "player", "x": 60, "y": 65, "label": "CB", "color": "#2563eb" },
+      { "type": "player", "x": 80, "y": 65, "label": "RB", "color": "#2563eb" },
+      { "type": "player", "x": 15, "y": 40, "label": "A1", "color": "#dc2626" },
+      { "type": "player", "x": 40, "y": 35, "label": "A2", "color": "#dc2626" },
+      { "type": "player", "x": 60, "y": 35, "label": "A3", "color": "#dc2626" },
+      { "type": "player", "x": 85, "y": 40, "label": "A4", "color": "#dc2626" },
+      { "type": "ball", "x": 15, "y": 40 },
+      { "type": "arrow", "x": 15, "y": 40, "toX": 40, "toY": 35, "color": "#dc2626" },
+      { "type": "run-path", "x": 20, "y": 65, "toX": 15, "toY": 45, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 40, "y": 65, "toX": 30, "toY": 65, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 60, "y": 65, "toX": 50, "toY": 65, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["defending", "shape", "tactical", "back-line"]
+  },
+  {
+    "id": "10",
+    "slug": "hiit-ball-mastery",
+    "title": "HIIT Ball Mastery",
+    "category": "fitness",
+    "difficulty": "advanced",
+    "duration": 20,
+    "playerCountMin": 1,
+    "playerCountMax": 20,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up 6 stations in a circle, 5 yards apart.",
+      "Station 1: Toe taps on the ball (20 seconds on, 10 seconds rest).",
+      "Station 2: Ball rolls side-to-side (20 seconds on, 10 seconds rest).",
+      "Station 3: Around-the-world dribble (20 seconds on, 10 seconds rest).",
+      "Station 4: Quick feet shuffle with ball (20 seconds on, 10 seconds rest).",
+      "Station 5: Sprint to cone and back with ball (20 seconds on, 10 seconds rest).",
+      "Station 6: Juggling (20 seconds on, 10 seconds rest).",
+      "Complete 4 full circuits."
+    ],
+    "coachingPoints": [
+      "Maximum effort during work periods.",
+      "Use rest periods to recover — don't waste them.",
+      "Focus on ball control even when tired.",
+      "Stay on the balls of your feet."
+    ],
+    "variations": [
+      "Extend work periods to 30 seconds.",
+      "Reduce rest periods to 5 seconds.",
+      "Add partner challenges at each station."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 50, "y": 25, "label": "1" },
+      { "type": "cone", "x": 72, "y": 37, "label": "2" },
+      { "type": "cone", "x": 72, "y": 63, "label": "3" },
+      { "type": "cone", "x": 50, "y": 75, "label": "4" },
+      { "type": "cone", "x": 28, "y": 63, "label": "5" },
+      { "type": "cone", "x": 28, "y": 37, "label": "6" },
+      { "type": "player", "x": 50, "y": 22, "label": "P", "color": "#2563eb" },
+      { "type": "ball", "x": 50, "y": 22 },
+      { "type": "run-path", "x": 50, "y": 25, "toX": 72, "toY": 37, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 72, "y": 37, "toX": 72, "toY": 63, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 72, "y": 63, "toX": 50, "toY": 75, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 50, "y": 75, "toX": 28, "toY": 63, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 28, "y": 63, "toX": 28, "toY": 37, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 28, "y": 37, "toX": 50, "toY": 25, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["fitness", "HIIT", "ball-mastery", "conditioning"]
+  }
+]
