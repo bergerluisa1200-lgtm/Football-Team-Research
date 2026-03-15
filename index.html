@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Football: National Teams Encyclopedia</title>
+    <style>
+        :root {
+            --bg-dark: #0a0e17;
+            --bg-card: #131a2b;
+            --bg-card-hover: #1a2340;
+            --text-primary: #e8eaf0;
+            --text-secondary: #8b92a8;
+            --accent-gold: #d4a843;
+            --accent-green: #2ecc71;
+            --border-subtle: #1e2a45;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            background: linear-gradient(180deg, #0f1629 0%, var(--bg-dark) 100%);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat .number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+        }
+
+        .hero-stat .label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation */
+        .team-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 14, 23, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0 20px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .team-nav::-webkit-scrollbar { height: 0; }
+
+        .team-nav-inner {
+            display: flex;
+            gap: 4px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8px 0;
+        }
+
+        .team-nav a {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .team-nav a:hover, .team-nav a.active {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .team-nav a .flag {
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .team-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .team-header .flag-large {
+            font-size: 3rem;
+        }
+
+        .team-header h2 {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .team-nickname {
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 24px;
+            font-size: 1rem;
+        }
+
+        /* Trophy Bar */
+        .trophy-bar {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .trophy {
+            background: linear-gradient(135deg, #2a1f0a, #1a1505);
+            border: 1px solid #3d2e0a;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .trophy .count {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+        }
+
+        .trophy .name {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid { grid-template-columns: 1fr; }
+            .hero-stats { gap: 20px; }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 24px;
+            transition: background 0.2s;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .card h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-gold);
+            margin-bottom: 14px;
+        }
+
+        .card p, .card li {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card ul li {
+            padding: 4px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .card ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 12px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            opacity: 0.6;
+        }
+
+        .card strong {
+            color: var(--text-primary);
+        }
+
+        /* Player Tags */
+        .player-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .player-tag {
+            background: rgba(212, 168, 67, 0.1);
+            border: 1px solid rgba(212, 168, 67, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            color: var(--accent-gold);
+        }
+
+        /* Formation Display */
+        .formation {
+            display: inline-block;
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--accent-green);
+            margin: 2px;
+        }
+
+        /* Stat Row */
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .stat-row:last-child { border-bottom: none; }
+
+        .stat-row .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+        }
+
+        .stat-row .stat-value {
+            font-weight: 700;
+            font-size: 0.88rem;
+        }
+
+        /* Fun Fact */
+        .fun-fact {
+            background: rgba(212, 168, 67, 0.05);
+            border-left: 3px solid var(--accent-gold);
+            padding: 12px 16px;
+            margin: 8px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .fun-fact p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+        }
+
+        /* Comparison Table */
+        .comparison-section {
+            padding: 60px 0;
+        }
+
+        .comparison-section h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            display: block;
+        }
+
+        .comparison-table thead th {
+            background: var(--bg-card);
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-gold);
+            position: sticky;
+            top: 52px;
+            white-space: nowrap;
+        }
+
+        .comparison-table tbody td {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-subtle);
+            white-space: nowrap;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: var(--bg-card);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        /* Scroll animations */
+        .team-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .team-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Style tab */
+        .style-badge {
+            display: inline-block;
+            background: rgba(46, 204, 113, 0.08);
+            border: 1px solid rgba(46, 204, 113, 0.15);
+            color: var(--accent-green);
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+    <h1>World Football Encyclopedia</h1>
+    <p>An in-depth guide to the playing styles, histories, and legends of the world's greatest national soccer teams.</p>
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <div class="number">10</div>
+            <div class="label">Teams Profiled</div>
+        </div>
+        <div class="hero-stat">
+            <div class="number">22</div>
+            <div class="label">World Cup Titles</div>
+        </div>
+        <div class="hero-stat">
+            <div class="number">90+</div>
+            <div class="label">Years of History</div>
+        </div>
+        <div class="hero-stat">
+            <div class="number">100+</div>
+            <div class="label">Legends Featured</div>
+        </div>
+    </div>
+</section>
+
+<!-- Sticky Nav -->
+<nav class="team-nav">
+    <div class="team-nav-inner">
+        <a href="#brazil"><span class="flag">&#127463;&#127479;</span> Brazil</a>
+        <a href="#germany"><span class="flag">&#127465;&#127466;</span> Germany</a>
+        <a href="#argentina"><span class="flag">&#127462;&#127479;</span> Argentina</a>
+        <a href="#france"><span class="flag">&#127467;&#127479;</span> France</a>
+        <a href="#spain"><span class="flag">&#127466;&#127480;</span> Spain</a>
+        <a href="#italy"><span class="flag">&#127470;&#127481;</span> Italy</a>
+        <a href="#netherlands"><span class="flag">&#127475;&#127473;</span> Netherlands</a>
+        <a href="#portugal"><span class="flag">&#127477;&#127481;</span> Portugal</a>
+        <a href="#japan"><span class="flag">&#127471;&#127477;</span> Japan</a>
+        <a href="#comparison"><span class="flag">&#128202;</span> Compare</a>
+    </div>
+</nav>
+
+<div class="container">
+
+<!-- ===================== BRAZIL ===================== -->
+<section class="team-section" id="brazil">
+    <div class="team-header">
+        <span class="flag-large">&#127463;&#127479;</span>
+        <h2>Brazil</h2>
+    </div>
+    <div class="team-nickname">"Seleção" &mdash; The Beautiful Game, Jogo Bonito</div>
+
+    <div class="trophy-bar">
+        <div class="trophy"><div class="count">5</div><div class="name">World Cups</div></div>
+        <div class="trophy"><div class="count">9</div><div class="name">Copa América</div></div>
+        <div class="trophy"><div class="count">4</div><div class="name">Confed. Cups</div></div>
+        <div class="trophy"><div class="count">2</div><div class="name">Olympic Gold</div></div>
+    </div>
+
+    <div class="content-grid">
+        <div class="card">
+            <h3>Playing Style</h3>
+            <p>Brazil's identity is inseparable from <strong>jogo bonito</strong> ("the beautiful game") &mdash; a philosophy that prizes creativity, improvisation, technical skill, and attacking flair above rigid tactical discipline. Born from street football and futsal culture, the style emphasizes close control, dribbling, and inventiveness in tight spaces.</p>
+            <p style="margin-top:10px">Brazil pioneered the <strong>attacking fullback</strong> role &mdash; from Nilton Santos to Cafu, Roberto Carlos, Dani Alves, and Marcelo. Their fullbacks are expected to bomb forward and contribute to attacks, creating numerical overloads in wide areas.</p>
+            <div style="margin-top:12px">
+                <span class="formation">4-2-4</span>
+                <span class="formation">4-3-3</span>
+                <span class="formation">4-2-3-1</span>
+                <span class="formation">3-5-2</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>World Cup History</h3>
+            <ul>
+                <li><strong>1958</strong> &mdash; 17-year-old Pelé burst onto the scene. Beat Sweden 5-2 in the final.</li>
+                <li><strong>1962</strong> &mdash; Defended the title with Garrincha carrying the team. Beat Czechoslovakia 3-1.</li>
+                <li><strong>1970</strong> &mdash; Widely regarded as the greatest team ever. Beat Italy 4-1. Won all six matches, scoring 19 goals.</li>
+                <li><strong>1994</strong> &mdash; Ended a 24-year drought. Beat Italy on penalties &mdash; first WC final decided by shootout.</li>
+                <li><strong>2002</strong> &mdash; Ronaldo scored twice in the final vs Germany. 8 goals total, Golden Boot winner.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Legendary Players</h3>
+            <div class="player-tags">
+                <span class="player-tag">Pelé</span>
+                <span class="player-tag">Garrincha</span>
+                <span class="player-tag">Ronaldo</span>
+                <span class="player-tag">Ronaldinho</span>
+                <span class="player-tag">Zico</span>
+                <span class="player-tag">Romário</span>
+                <span class="player-tag">Rivaldo</span>
+                <span class="player-tag">Cafu</span>
+                <span class="player-tag">Roberto Carlos</span>
+                <span class="player-tag">Neymar</span>
+                <span class="player-tag">Kaká</span>
+                <span class="player-tag">Sócrates</span>
+                <span class="player-tag">Didi</span>
+                <span class="player-tag">Jairzinho</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Key Stats</h3>
+            <div class="stat-row"><span class="stat-label">World Cup Appearances</span><span class="stat-value">22 (every edition)</span></div>
+            <div class="stat-row"><span class="stat-label">WC Matches Played</span><span class="stat-value">114 (most ever)</span></div>
+            <div class="stat-row"><span class="stat-label">WC Wins</span><span class="stat-value">76 (most ever)</span></div>
+            <div class="stat-row"><span class="stat-label">WC Goals</span><span class="stat-value">~237 (most ever)</span></div>
+            <div class="stat-row"><span class="stat-label">All-Time Win Rate</span><span class="stat-value">~62%</span></div>
+            <div class="stat-row"><span class="stat-label">All-Time Top Scorer</span><span class="stat-value">Neymar (79 goals)</span></div>
+        </div>
+
+        <div class="card full-width">
+            <h3>Notable Facts</h3>
+            <div class="fun-fact"><p><strong>Only team to play in every World Cup</strong> &mdash; Brazil has appeared in all 22 FIFA World Cups from 1930 to 2022.</p></div>
+            <div class="fun-fact"><p><strong>The Yellow Shirt</strong> &mdash; Brazil originally played in white. After the traumatic 1950 "Maracanazo" defeat at home, a competition redesigned the kit. The iconic yellow shirt was adopted in 1954.</p></div>
+            <div class="fun-fact"><p><strong>7-1 "Mineirazo" (2014)</strong> &mdash; Germany scored 5 goals in 18 first-half minutes in the semifinal. The most shocking result in modern World Cup history.</p></div>
+            <div class="fun-fact"><p><strong>Carlos Alberto's 1970 Final Goal</strong> &mdash; A sweeping team move involving virtually the entire squad, finished with a thundering shot into the corner. Often called the greatest World Cup goal ever.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== GERMANY ===================== -->
+<section class="team-section" id="germany">
+    <div class="team-header">
+        <span class="flag-large">&#127465;&#127466;</span>
+        <h2>Germany</h2>
+    </div>
+    <div class="team-nickname">"Die Mannschaft" &mdash; The Machine, Turniermannschaft (Tournament Team)</div>
+
+    <div class="trophy-bar">
+        <div class="trophy"><div class="count">4</div><div class="name">World Cups</div></div>
+        <div class="trophy"><div class="count">3</div><div class="name">Euro Champs</div></div>
+        <div class="trophy"><div class="count">1</div><div class="name">Confed. Cup</div></div>
+        <div class="trophy"><div class="count">13</div><div class="name">WC Semi-Finals</div></div>
+    </div>
+
+    <div class="content-grid">
+        <div class="card">
+            <h3>Playing Style</h3>
+            <p>Germany's identity is built on <strong>discipline, efficiency, and tactical organization</strong>. The "German machine" prioritized collective function over individual brilliance: structured defending, relentless pressing, and clinical finishing.</p>
+            <p style="margin-top:10px">After a disastrous Euro 2000, Germany overhauled its entire system &mdash; investing over <strong>700 million euros</strong> in youth development, mandating Bundesliga academies, and establishing 360+ regional training centers. This produced the golden generation that won the 2014 World Cup with a blend of traditional virtues and fluid, possession-oriented football.</p>
+            <div style="margin-top:12px">
+                <span class="style-badge">Gegenpressing</span>
+                <span class="style-badge">Sweeper-Keeper</span>
+                <span class="style-badge">Tactical Flexibility</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>World Cup History</h3>
+            <ul>
+                <li><strong>1954</strong> &mdash; "Miracle of Bern." Beat Hungary 3-2 after losing 8-3 to them in the group stage.</li>
+                <li><strong>1974</strong> &mdash; Hosted and won. Beckenbauer captained; Gerd Müller scored the final winner vs Netherlands.</li>
+                <li><strong>1990</strong> &mdash; Beat Argentina 1-0. Brehme's penalty. Last WC before reunification.</li>
+                <li><strong>2014</strong> &mdash; Beat Argentina 1-0 in extra time (Götze). The 7-1 semifinal demolition of Brazil.</li>
+            </ul>
+            <p style="margin-top:10px;color:var(--text-secondary);font-size:0.88rem"><strong>Also:</strong> 4 runner-up finishes (1966, 1982, 1986, 2002) and 4 third-place finishes.</p>
+        </div>
+
+        <div class="card">
+            <h3>Legendary Players</h3>
+            <div class="player-tags">
+                <span class="player-tag">Beckenbauer</span>
+                <span class="player-tag">Gerd Müller</span>
+                <span class="player-tag">Matthäus</span>
+                <span class="player-tag">Klinsmann</span>
+                <span class="player-tag">Kahn</span>
+                <span class="player-tag">Lahm</span>
+                <span class="player-tag">Schweinsteiger</span>
+                <span class="player-tag">Klose</span>
+                <span class="player-tag">Neuer</span>
+                <span class="player-tag">Kroos</span>
+                <span class="player-tag">Thomas Müller</span>
+                <span class="player-tag">Musiala</span>
+                <span class="player-tag">Wirtz</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Key Stats</h3>
+            <div class="stat-row"><span class="stat-label">WC Semi-Finals Reached</span><span class="stat-value">13 (most ever)</span></div>
+            <div class="stat-row"><span class="stat-label">All-Time WC Top Scorer</span><span class="stat-value">Klose (16 goals)</span></div>
+            <div class="stat-row"><span class="stat-label">Most Capped Player</span><span class="stat-value">Matthäus (150)</span></div>
+            <div class="stat-row"><span class="stat-label">All-Time Win Rate</span><span class="stat-value">~56%</span></div>
+            <div class="stat-row"><span class="stat-label">Consecutive QF+ Streak</span><span class="stat-value">1954-2014</span></div>
+        </div>
+
+        <div class="card full-width">
+            <h3>Notable Facts</h3>
+            <div class="fun-fact"><p><strong>The 7-1</strong> &mdash; In the 2014 semifinal, Germany scored 5 goals in 18 first-half minutes against host Brazil. Four goals came within 6 minutes (23rd-29th).</p></div>
+            <div class="fun-fact"><p><strong>Penalty Shootout Masters</strong> &mdash; Germany won 6 consecutive WC/Euro shootouts between 1982-2006, establishing an aura of invincibility in pressure moments.</p></div>
+            <div class="fun-fact"><p><strong>Post-2000 Revolution</strong> &mdash; The humiliating Euro 2000 group exit triggered the most successful football development overhaul in history, producing Özil, Müller, Kroos, Khedira, Götze, and Neuer.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== ARGENTINA ===================== -->
+<section class="team-section" id="argentina">
+    <div class="team-header">
+        <span class="flag-large">&#127462;&#127479;</span>
+        <h2>Argentina</h2>
+    </div>
+    <div class="team-nickname">"La Albiceleste" &mdash; La Garra, La Scaloneta</div>
+
+    <div class="trophy-bar">
+        <div class="trophy"><div class="count">3</div><div class="name">World Cups</div></div>
+        <div class="trophy"><div class="count">15</div><div class="name">Copa América</div></div>
+        <div class="trophy"><div class="count">2</div><div class="name">Olympic Gold</div></div>
+        <div class="trophy"><div class="count">6</div><div class="name">U-20 World Cups</div></div>
+    </div>
+
+    <div class="content-grid">
+        <div class="card">
+            <h3>Playing Style</h3>
+            <p>Argentine football is defined by <strong>la garra</strong> (fierce determination), the <strong>enganche</strong> (creative #10) tradition, and <strong>gambeta</strong> (close-control dribbling). The culture prizes passion, intensity, and individual brilliance alongside a never-say-die attitude.</p>
+            <p style="margin-top:10px">Under <strong>Lionel Scaloni</strong>, Argentina evolved into a defensively solid, tactically flexible side. The 4-3-3 system is built to free Messi from defensive responsibilities while the midfield (De Paul, Enzo Fernández, Mac Allister) controls tempo. Goalkeeper <strong>Emiliano "Dibu" Martínez</strong> has been a transformational weapon, especially in penalty shootouts.</p>
+        </div>
+
+        <div class="card">
+            <h3>World Cup History</h3>
+            <ul>
+                <li><strong>1978</strong> &mdash; Won as hosts. Kempes scored 6 goals including 2 in the final vs Netherlands (3-1 aet).</li>
+                <li><strong>1986</strong> &mdash; Maradona's tournament. "Hand of God" and "Goal of the Century" vs England. Beat West Germany 3-2 in final.</li>
+                <li><strong>2022</strong> &mdash; Greatest WC final ever: 3-3 vs France, won 4-2 on penalties. Messi scored twice; Mbappé scored a hat-trick.</li>
+            </ul>
+            <p style="margin-top:10px;color:var(--text-secondary);font-size:0.88rem"><strong>Also:</strong> 3 runner-up finishes (1930, 1990, 2014).</p>
+        </div>
+
+        <div class="card">
+            <h3>Legendary Players</h3>
+            <div class="player-tags">
+                <span class="player-tag">Messi</span>
+                <span class="player-tag">Maradona</span>
+                <span class="player-tag">Di Stéfano</span>
+                <span class="player-tag">Kempes</span>
+                <span class="player-tag">Batistuta</span>
+                <span class="player-tag">Zanetti</span>
+                <span class="player-tag">Riquelme</span>
+                <span class="player-tag">Agüero</span>
+                <span class="player-tag">Di María</span>
+                <span class="player-tag">Passarella</span>
+                <span class="player-tag">Enzo Fernández</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Key Stats</h3>
+            <div class="stat-row"><span class="stat-label">WC Finals Appearances</span><span class="stat-value">6</span></div>
+            <div class="stat-row"><span class="stat-label">All-Time Top Scorer</span><span class="stat-value">Messi (100+ goals)</span></div>
+            <div class="stat-row"><span class="stat-label">Most Capped</span><span class="stat-value">Messi (180+)</span></div>
+            <div class="stat-row"><span class="stat-label">Unbeaten Run (2019-22)</span><span class="stat-value">36 matches</span></div>
+            <div class="stat-row"><span class="stat-label">2021-22 Treble</span><span class="stat-value">Copa + Finalissima + WC</span></div>
+        </div>
+
+        <div class="card full-width">
+            <h3>Notable Facts</h3>
+            <div class="fun-fact"><p><strong>The Scaloneta</strong> &mdash; A portmanteau of "Scaloni" and "avalaneta" (vehicle), coined by fans to describe the unstoppable team machine. It became a cultural phenomenon across Argentina &mdash; murals, songs, and memes.</p></div>
+            <div class="fun-fact"><p><strong>Maradona's "Goal of the Century"</strong> &mdash; Received the ball in his own half and dribbled past 5 England players. In the same match, minutes earlier, he scored the "Hand of God" goal with his fist.</p></div>
+            <div class="fun-fact"><p><strong>Dibu's Penalty Mastery</strong> &mdash; Martínez saved critical penalties in the 2021 Copa América semifinal, the 2022 World Cup final, and multiple other shootouts &mdash; complete with psychological warfare against opposing kickers.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== FRANCE ===================== -->
+<section class="team-section" id="france">
+    <div class="team-header">
+        <span class="flag-large">&#127467;&#127479;</span>
+        <h2>France</h2>
+    </div>
+    <div class="team-nickname">"Les Bleus" &mdash; Technical Excellence Meets Athletic Power</div>
+
+    <div class="trophy-bar">
+        <div class="trophy"><div class="count">2</div><div class="name">World Cups</div></div>
+        <div class="trophy"><div class="count">2</div><div class="name">Euro Champs</div></div>
+        <div class="trophy"><div class="count">2</div><div class="name">Confed. Cups</div></div>
+        <div class="trophy"><div class="count">1</div><div class="name">Nations League</div></div>
+    </div>
+
+    <div class="content-grid">
+        <div class="card">
+            <h3>Playing Style</h3>
+            <p>France's footballing identity blends <strong>technical excellence with extraordinary athleticism</strong>, fueled by the most diverse and deep talent pool in world football. The <strong>Clairefontaine national academy</strong> (founded 1988) and mandatory club academies produce more professional players playing abroad than any other nation.</p>
+            <p style="margin-top:10px">Under <strong>Deschamps</strong>, France is built on <strong>defensive solidity and devastating counter-attacks</strong>. With Mbappé's blistering pace (clocked at 36+ km/h), France is arguably the most dangerous counter-attacking team in the world. The pragmatic approach has been criticized given the squad's depth, but results speak: 3 WC finals in 5 tournaments (2006, 2018, 2022).</p>
+        </div>
+
+        <div class="card">
+            <h3>World Cup History</h3>
+            <ul>
+                <li><strong>1998</strong> &mdash; Won as hosts. Zidane headed two in a 3-0 final rout of Brazil. "Black-Blanc-Beur" unity.</li>
+                <li><strong>2018</strong> &mdash; Young, athletic squad. Beat Croatia 4-2 in the final. Mbappé (19) scored in the final &mdash; second teenager after Pelé.</li>
+                <li><strong>2022 Final</strong> &mdash; Mbappé's hat-trick (only 2nd in a WC final). Trailed 2-0 in 80th minute, scored twice in 97 seconds. Lost on penalties.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Legendary Players</h3>
+            <div class="player-tags">
+                <span class="player-tag">Platini</span>
+                <span class="player-tag">Zidane</span>
+                <span class="player-tag">Henry</span>
+                <span class="player-tag">Mbappé</span>
+                <span class="player-tag">Thuram</span>
+                <span class="player-tag">Vieira</span>
+                <span class="player-tag">Deschamps</span>
+                <span class="player-tag">Griezmann</span>
+                <span class="player-tag">Kanté</span>
+                <span class="player-tag">Benzema</span>
+                <span class="player-tag">Just Fontaine</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Key Stats</h3>
+            <div class="stat-row"><span class="stat-label">All-Time Top Scorer</span><span class="stat-value">Henry (51 goals)</span></div>
+            <div class="stat-row"><span class="stat-label">Most Capped Player</span><span class="stat-value">Lloris (145)</span></div>
+            <div class="stat-row"><span class="stat-label">WC Finals (since 2006)</span><span class="stat-value">3 in 5 tournaments</span></div>
+            <div class="stat-row"><span class="stat-label">Single WC Record</span><span class="stat-value">Fontaine: 13 goals (1958)</span></div>
+            <div class="stat-row"><span class="stat-label">International Grand Slam</span><span class="stat-value">WC + Euro + Confed + Olympic</span></div>
+        </div>
+
+        <div class="card full-width">
+            <h3>Notable Facts</h3>
+            <div class="fun-fact"><p><strong>Just Fontaine's 13 goals</strong> in the 1958 World Cup remain the all-time record for a single tournament, achieved in only 6 matches. Widely considered unbreakable.</p></div>
+            <div class="fun-fact"><p><strong>Deschamps</strong> is one of only 3 people to win the World Cup as both player and manager, alongside Zagallo and Beckenbauer.</p></div>
+            <div class="fun-fact"><p><strong>Thuram's Only Goals</strong> &mdash; Lilian Thuram scored just 2 goals in 142 caps. Both came in the 1998 WC semifinal vs Croatia, turning a 1-0 deficit into a 2-1 win.</p></div>
+            <div class="fun-fact"><p><strong>The Knysna Affair (2010)</strong> &mdash; France's squad went on strike during the World Cup in South Africa, refusing to leave the team bus. One of the most embarrassing episodes in major football history.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== SPAIN ===================== -->
+<section class="team-section" id="spain">
+    <div class="team-header">
+        <span class="flag-large">&#127466;&#127480;</span>
+        <h2>Spain</h2>
+    </div>
+    <div class="team-nickname">"La Roja" &mdash; Tiki-Taka, The Possession Masters</div>
+
+    <div class="trophy-bar">
+        <div class="trophy"><div class="count">1</div><div class="name">World Cup</div></div>
+        <div class="trophy"><div class="count">4</div><div class="name">Euro Champs</div></div>
+        <div class="trophy"><div class="count">3</div><div class="name">Consecutive Majors</div></div>
+    </div>
+
+    <div class="content-grid">
+        <div class="card">
+            <h3>Playing Style</h3>
+            <p><strong>Tiki-taka</strong> &mdash; short, rapid passing, constant movement, and possession as both sword and shield. The philosophy: if you have the ball, the opponent cannot score. Rooted in <strong>FC Barcelona's La Masia</strong> academy and Johan Cruyff's positional play legacy.</p>
+            <p style="margin-top:10px">The 2008-2012 dynasty was essentially Barcelona's system transplanted to the international stage, regularly posting <strong>65-75% possession</strong>. Under <strong>Luis de la Fuente</strong>, Spain has evolved &mdash; adding pace and width through natural wingers (Yamal, Nico Williams) while retaining technical mastery.</p>
+            <div style="margin-top:12px">
+                <span class="style-badge">Possession Football</span>
+                <span class="style-badge">Positional Play</span>
+                <span class="style-badge">High Press</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Major Tournament Wins</h3>
+            <ul>
+                <li><strong>Euro 2008</strong> &mdash; Tiki-taka arrives. Beat Germany 1-0 in the final (Torres goal). End of 44 years without a trophy.</li>
+                <li><strong>2010 World Cup</strong> &mdash; Iniesta's 116th-minute winner vs Netherlands. First European team to win a WC on non-European soil.</li>
+                <li><strong>Euro 2012</strong> &mdash; Destroyed Italy 4-0 in the final. First team to win 3 consecutive major tournaments.</li>
+                <li><strong>Euro 2024</strong> &mdash; Won all 7 matches &mdash; first perfect record in Euros history. Yamal (16) became the youngest scorer.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Legendary Players</h3>
+            <div class="player-tags">
+                <span class="player-tag">Xavi</span>
+                <span class="player-tag">Iniesta</span>
+                <span class="player-tag">Casillas</span>
+                <span class="player-tag">Puyol</span>
+                <span class="player-tag">Ramos</span>
+                <span class="player-tag">Villa</span>
+                <span class="player-tag">Busquets</span>
+                <span class="player-tag">David Silva</span>
+                <span class="player-tag">Torres</span>
+                <span class="player-tag">Pedri</span>
+                <span class="player-tag">Rodri</span>
+                <span class="player-tag">Lamine Yamal</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Key Stats</h3>
+            <div class="stat-row"><span class="stat-label">Euro Titles (Record)</span><span class="stat-value">4</span></div>
+            <div class="stat-row"><span class="stat-label">Most Capped Player</span><span class="stat-value">Ramos (180)</span></div>
+            <div class="stat-row"><span class="stat-label">Consecutive Match Wins</span><span class="stat-value">35 (2007-2009)</span></div>
+            <div class="stat-row"><span class="stat-label">Euro 2012 Final Margin</span><span class="stat-value">4-0 (largest ever)</span></div>
+            <div class="stat-row"><span class="stat-label">Youngest Euro Scorer</span><span class="stat-value">Yamal (16y 362d)</span></div>
+        </div>
+
+        <div class="card full-width">
+            <h3>Notable Facts</h3>
+            <div class="fun-fact"><p><strong>44 Years of Heartbreak</strong> &mdash; Between 1964 and 2008, Spain won zero major trophies despite world-class talent. They were "the eternal bridesmaids" &mdash; exiting 7 consecutive tournaments in the QF or R16.</p></div>
+            <div class="fun-fact"><p><strong>Lamine Yamal</strong> was born on July 13, 2007. At Euro 2024, he became the youngest player and scorer in European Championship history at just 16.</p></div>
+            <div class="fun-fact"><p><strong>The False Nine Era</strong> &mdash; At Euro 2012, Spain often played without a recognized striker, using Fàbregas in a "false nine" role. They won the tournament scoring 12 goals, including 4 in the final.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== ITALY ===================== -->
+<section class="team-section" id="italy">
+    <div class="team-header">
+        <span class="flag-large">&#127470;&#127481;</span>
+        <h2>Italy</h2>
+    </div>
+    <div class="team-nickname">"Gli Azzurri" &mdash; Catenaccio, Tactical Mastery</div>
+
+    <div class="trophy-bar">
+        <div class="trophy"><div class="count">4</div><div class="name">World Cups</div></div>
+        <div class="trophy"><div class="count">2</div><div class="name">Euro Champs</div></div>
+        <div class="trophy"><div class="count">37</div><div class="name">Match Unbeaten Run</div></div>
+    </div>
+
+    <div class="content-grid">
+        <div class="card">
+            <h3>Playing Style</h3>
+            <p>Italy's identity is rooted in <strong>catenaccio</strong> ("door-bolt") &mdash; a defensive system featuring a sweeper (libero) behind the defensive line, man-marking, and ruthless counter-attacking. The Italian maxim: a 1-0 win is the most beautiful result.</p>
+            <p style="margin-top:10px"><strong>Tactical sophistication</strong> is Italy's greatest asset. Concepts like <strong>furbizia</strong> (cunning), the libero system, and zonal marking innovations by Arrigo Sacchi have made Italy a cradle of coaching genius. Under <strong>Mancini</strong>, Italy reinvented itself with a possession-based, attacking 4-3-3 that won Euro 2020.</p>
+            <div style="margin-top:12px">
+                <span class="style-badge">Catenaccio</span>
+                <span class="style-badge">Counter-Attack</span>
+                <span class="style-badge">Tactical Intelligence</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>World Cup History</h3>
+            <ul>
+                <li><strong>1934</strong> &mdash; Won as hosts under Vittorio Pozzo. Beat Czechoslovakia 2-1 aet.</li>
+                <li><strong>1938</strong> &mdash; Defended the title &mdash; only European nation with back-to-back WCs. Beat Hungary 4-2.</li>
+                <li><strong>1982</strong> &mdash; Paolo Rossi's redemption. Hat-trick vs Brazil (3-2), then beat W. Germany 3-1 in final.</li>
+                <li><strong>2006</strong> &mdash; Won amid Calciopoli scandal. Beat France on penalties after Zidane's infamous headbutt on Materazzi.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Legendary Players</h3>
+            <div class="player-tags">
+                <span class="player-tag">Maldini</span>
+                <span class="player-tag">Baresi</span>
+                <span class="player-tag">Buffon</span>
+                <span class="player-tag">Pirlo</span>
+                <span class="player-tag">Totti</span>
+                <span class="player-tag">Del Piero</span>
+                <span class="player-tag">Baggio</span>
+                <span class="player-tag">Cannavaro</span>
+                <span class="player-tag">Zoff</span>
+                <span class="player-tag">Meazza</span>
+                <span class="player-tag">Paolo Rossi</span>
+                <span class="player-tag">Scirea</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Key Stats</h3>
+            <div class="stat-row"><span class="stat-label">Most Capped Player</span><span class="stat-value">Buffon (176)</span></div>
+            <div class="stat-row"><span class="stat-label">Zoff's Clean Sheet Streak</span><span class="stat-value">1,142 minutes</span></div>
+            <div class="stat-row"><span class="stat-label">Unbeaten Run (2018-21)</span><span class="stat-value">37 matches (record)</span></div>
+            <div class="stat-row"><span class="stat-label">WCs Missed (2018, 2022)</span><span class="stat-value">2 consecutive</span></div>
+            <div class="stat-row"><span class="stat-label">Kit Color Origin</span><span class="stat-value">House of Savoy blue</span></div>
+        </div>
+
+        <div class="card full-width">
+            <h3>Notable Facts</h3>
+            <div class="fun-fact"><p><strong>Blue Shirts, Not the Flag</strong> &mdash; Italy play in blue ("Azzurri") not because of the Italian flag (green/white/red), but because blue was the color of the House of Savoy, Italy's former royal family.</p></div>
+            <div class="fun-fact"><p><strong>Paolo Rossi's Comeback</strong> &mdash; He returned from a 2-year match-fixing ban just before the 1982 WC. He won the Golden Boot, Golden Ball, and the World Cup.</p></div>
+            <div class="fun-fact"><p><strong>Superga Air Disaster (1949)</strong> &mdash; The entire Torino squad &mdash; the backbone of the national team &mdash; was killed in a plane crash. One of football's greatest tragedies.</p></div>
+            <div class="fun-fact"><p><strong>Baggio's Missed Penalty (1994)</strong> &mdash; Roberto Baggio's penalty miss in the WC final shootout against Brazil is one of football's most heartbreaking moments.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== NETHERLANDS ===================== -->
+<section class="team-section" id="netherlands">
+    <div class="team-header">
+        <span class="flag-large">&#127475;&#127473;</span>
+        <h2>Netherlands</h2>
+    </div>
+    <div class="team-nickname">"Oranje" &mdash; Total Football, The Best Team Never to Win a World Cup</div>
+
+    <div class="trophy-bar">
+        <div class="trophy"><div class="count">1</div><div class="name">Euro Champs</div></div>
+        <div class="trophy"><div class="count">3</div><div class="name">WC Finals</div></div>
+        <div class="trophy"><div class="count">0</div><div class="name">World Cups</div></div>
+    </div>
+
+    <div class="content-grid">
+        <div class="card">
+            <h3>Playing Style</h3>
+            <p><strong>Total Football (Totaalvoetbal)</strong> &mdash; the revolutionary philosophy where every outfield player is comfortable in any position, with constant rotation and interchange. Born under Rinus Michels at Ajax and epitomized by <strong>Johan Cruyff</strong>.</p>
+            <p style="margin-top:10px">The <strong>4-3-3</strong> is essentially the Netherlands' birthright. Dutch football prizes attacking play, technical excellence, wing play, and build-up from the back. The philosophy demands that matches be won through <strong>superior play rather than defensive pragmatism</strong> &mdash; both their greatest strength and their tragic flaw.</p>
+        </div>
+
+        <div class="card">
+            <h3>World Cup Finals &amp; Euro Glory</h3>
+            <ul>
+                <li><strong>1974 WC Final</strong> &mdash; Total Football's masterpiece. Lost 2-1 to West Germany despite opening with a goal before any German touched the ball.</li>
+                <li><strong>1978 WC Final</strong> &mdash; Lost 3-1 aet to hosts Argentina (without Cruyff, who declined to travel).</li>
+                <li><strong>Euro 1988</strong> &mdash; Their sole major trophy. Van Basten's volley in the final vs USSR is one of football's greatest goals.</li>
+                <li><strong>2010 WC Final</strong> &mdash; Lost 1-0 to Spain (Iniesta, 116th minute) in a notoriously aggressive match.</li>
+                <li><strong>2014 WC</strong> &mdash; Beat Spain 5-1. Van Persie's diving header. Lost SF to Argentina on penalties.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Legendary Players</h3>
+            <div class="player-tags">
+                <span class="player-tag">Johan Cruyff</span>
+                <span class="player-tag">Van Basten</span>
+                <span class="player-tag">Gullit</span>
+                <span class="player-tag">Rijkaard</span>
+                <span class="player-tag">Bergkamp</span>
+                <span class="player-tag">Robben</span>
+                <span class="player-tag">Van Persie</span>
+                <span class="player-tag">Van Dijk</span>
+                <span class="player-tag">De Jong</span>
+                <span class="player-tag">Seedorf</span>
+                <span class="player-tag">Davids</span>
+                <span class="player-tag">Sneijder</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>The Tragic Narrative</h3>
+            <p>Three World Cup final losses have cemented the Netherlands as football's <strong>greatest romantics and greatest underachievers</strong>. There's a uniquely Dutch melancholy: the belief that they are capable of greatness but destined to fall short.</p>
+            <p style="margin-top:10px">Many Dutch fans would <strong>rather play beautiful football and lose than win ugly</strong>. The 2010 final complicated this &mdash; the Dutch abandoned their style for aggression and still lost. Their commitment to attacking idealism may be both the cause of their failures and the source of their enduring global admiration.</p>
+        </div>
+
+        <div class="card full-width">
+            <h3>Notable Facts</h3>
+            <div class="fun-fact"><p><strong>The Cruyff Turn</strong> &mdash; Johan Cruyff invented one of football's most iconic moves at the 1974 World Cup, a feint that has been imitated by every generation of players since.</p></div>
+            <div class="fun-fact"><p><strong>Van Basten's Volley (1988)</strong> &mdash; His goal in the Euro final against the USSR, struck from an impossibly tight angle, is regularly voted the greatest goal in European Championship history.</p></div>
+            <div class="fun-fact"><p><strong>Bergkamp's Touch (1998)</strong> &mdash; His last-minute winner vs Argentina in the WC quarterfinal &mdash; controlling a 60-yard pass with an impossibly delicate touch, then finishing &mdash; is one of the greatest World Cup goals.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== PORTUGAL ===================== -->
+<section class="team-section" id="portugal">
+    <div class="team-header">
+        <span class="flag-large">&#127477;&#127481;</span>
+        <h2>Portugal</h2>
+    </div>
+    <div class="team-nickname">"A Seleção das Quinas" &mdash; Technical Flair Meets Modern Structure</div>
+
+    <div class="trophy-bar">
+        <div class="trophy"><div class="count">1</div><div class="name">Euro Champs</div></div>
+        <div class="trophy"><div class="count">1</div><div class="name">Nations League</div></div>
+        <div class="trophy"><div class="count">130+</div><div class="name">CR7 Goals</div></div>
+    </div>
+
+    <div class="content-grid">
+        <div class="card">
+            <h3>Playing Style</h3>
+            <p>Portuguese football blends <strong>technical flair and creative individual expression</strong> with increasingly sophisticated tactical structure. The "Big Three" (Benfica, Porto, Sporting CP) produce technically polished players far out of proportion to the country's 10 million population.</p>
+            <p style="margin-top:10px">Under <strong>Fernando Santos</strong>, Portugal became pragmatic and defensively solid. Under <strong>Roberto Martinez</strong> (2023+), the style has shifted toward more possession-based, attacking football. The post-Ronaldo transition is the defining challenge, but the talent pipeline (Bernardo Silva, Bruno Fernandes, Rafael Leão, João Neves) is exceptional.</p>
+        </div>
+
+        <div class="card">
+            <h3>Major Achievements</h3>
+            <ul>
+                <li><strong>1966 WC</strong> &mdash; Third place. Eusébio won the Golden Boot (9 goals). Comeback from 3-0 down vs North Korea to win 5-3.</li>
+                <li><strong>Euro 2004</strong> &mdash; Hosts reached the final but lost to Greece. 19-year-old Cristiano Ronaldo emerged.</li>
+                <li><strong>Euro 2016</strong> &mdash; First major trophy. Éder's extra-time goal beat France 1-0 despite Ronaldo's early injury.</li>
+                <li><strong>Nations League 2019</strong> &mdash; Beat Netherlands 1-0 at home. Two trophies in three years.</li>
+                <li><strong>2006 WC</strong> &mdash; Semi-finalists. Beat England on penalties in QF.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Legendary Players</h3>
+            <div class="player-tags">
+                <span class="player-tag">Cristiano Ronaldo</span>
+                <span class="player-tag">Eusébio</span>
+                <span class="player-tag">Luís Figo</span>
+                <span class="player-tag">Rui Costa</span>
+                <span class="player-tag">Bernardo Silva</span>
+                <span class="player-tag">Bruno Fernandes</span>
+                <span class="player-tag">Pepe</span>
+                <span class="player-tag">Deco</span>
+                <span class="player-tag">Rafael Leão</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Key Stats</h3>
+            <div class="stat-row"><span class="stat-label">All-Time Top Scorer</span><span class="stat-value">Ronaldo (130+ goals)</span></div>
+            <div class="stat-row"><span class="stat-label">Men's Int'l Goals Record</span><span class="stat-value">Ronaldo (all-time leader)</span></div>
+            <div class="stat-row"><span class="stat-label">Euro 2024 Qualifying</span><span class="stat-value">Perfect 10 wins</span></div>
+            <div class="stat-row"><span class="stat-label">Youth WC Titles</span><span class="stat-value">2 (U-20)</span></div>
+        </div>
+
+        <div class="card full-width">
+            <h3>Notable Facts</h3>
+            <div class="fun-fact"><p><strong>Ronaldo's Tears (Euro 2016 Final)</strong> &mdash; Injured in the 25th minute, Ronaldo was stretchered off in tears. He became an animated touchline coach, urging his teammates on as Portugal won 1-0 through Éder's extra-time thunderbolt.</p></div>
+            <div class="fun-fact"><p><strong>Eusébio's Legacy</strong> &mdash; Born in Mozambique, the "Black Panther" scored over 470 goals for Benfica. A statue stands outside the Estádio da Luz. His 9 goals at the 1966 WC remain Portugal's greatest individual tournament.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== JAPAN ===================== -->
+<section class="team-section" id="japan">
+    <div class="team-header">
+        <span class="flag-large">&#127471;&#127477;</span>
+        <h2>Japan</h2>
+    </div>
+    <div class="team-nickname">"Samurai Blue" &mdash; Discipline, Precision, Rising Power</div>
+
+    <div class="trophy-bar">
+        <div class="trophy"><div class="count">4</div><div class="name">Asian Cups</div></div>
+        <div class="trophy"><div class="count">7</div><div class="name">WC Appearances</div></div>
+        <div class="trophy"><div class="count">2</div><div class="name">Giant Kills 2022</div></div>
+    </div>
+
+    <div class="content-grid">
+        <div class="card">
+            <h3>Playing Style</h3>
+            <p>Japan's identity is built on <strong>technical precision, tactical discipline, and collective organization</strong>. The philosophy prizes selflessness and team cohesion over individual brilliance. Quick passing combinations, disciplined positional play, and relentless pressing define their approach.</p>
+            <p style="margin-top:10px">The steady pipeline of players in <strong>top European leagues</strong> (Bundesliga, Premier League, La Liga) has injected greater physicality and big-game mentality. Under <strong>Hajime Moriyasu</strong>, Japan demonstrated remarkable in-game adaptability at the 2022 WC, famously switching formations at halftime to exploit opponents.</p>
+            <div style="margin-top:12px">
+                <span class="formation">4-2-3-1</span>
+                <span class="formation">4-3-3</span>
+                <span class="formation">3-4-2-1</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Key Moments</h3>
+            <ul>
+                <li><strong>2002 WC</strong> &mdash; As co-hosts, reached the knockout stage for the first time. A watershed moment.</li>
+                <li><strong>2018 WC</strong> &mdash; Led Belgium 2-0 in R16 before losing 3-2 to a last-second counter-attack.</li>
+                <li><strong>2022 WC</strong> &mdash; Beat both Germany (2-1) and Spain (2-1) in the group stage &mdash; both come-from-behind wins. Topped the group.</li>
+                <li><strong>Asian Cups</strong> &mdash; Won in 1992, 2000, 2004, 2011. Most successful East Asian team.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>Key Players</h3>
+            <div class="player-tags">
+                <span class="player-tag">Nakata</span>
+                <span class="player-tag">Nakamura</span>
+                <span class="player-tag">Honda</span>
+                <span class="player-tag">Kagawa</span>
+                <span class="player-tag">Kubo</span>
+                <span class="player-tag">Mitoma</span>
+                <span class="player-tag">Kamada</span>
+                <span class="player-tag">Endo</span>
+                <span class="player-tag">Okazaki</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Strengths &amp; Weaknesses</h3>
+            <p><strong>Strengths:</strong> Exceptional fitness, tactical discipline, growing European experience, mental resilience (multiple come-from-behind WC wins), superb collective movement.</p>
+            <p style="margin-top:10px"><strong>Weaknesses:</strong> Never advanced past the Round of 16 at a WC. Penalty shootout struggles. Can lack a world-class clinical finisher. Occasionally vulnerable to physical opponents who disrupt their passing rhythm.</p>
+        </div>
+
+        <div class="card full-width">
+            <h3>Notable Facts</h3>
+            <div class="fun-fact"><p><strong>Giant Killers of 2022</strong> &mdash; Japan's victories over Germany and Spain in the same World Cup group stage were among the most remarkable achievements in tournament history. Both were come-from-behind wins featuring tactical halftime adjustments.</p></div>
+            <div class="fun-fact"><p><strong>The Belgium Heartbreak (2018)</strong> &mdash; Leading 2-0 with 21 minutes left, Japan conceded 3 goals, with Chadli's last-second counter completing one of the WC's greatest comebacks.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== COMPARISON TABLE ===================== -->
+<section class="comparison-section" id="comparison">
+    <h2>Head-to-Head Comparison</h2>
+
+    <div style="overflow-x:auto">
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>World Cups</th>
+                <th>WC Finals</th>
+                <th>Continental Titles</th>
+                <th>Style</th>
+                <th>All-Time Top Scorer</th>
+                <th>Most Capped</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>&#127463;&#127479; <strong>Brazil</strong></td>
+                <td>5</td>
+                <td>7</td>
+                <td>9 Copa América</td>
+                <td>Jogo Bonito</td>
+                <td>Neymar (79)</td>
+                <td>Cafu (142)</td>
+            </tr>
+            <tr>
+                <td>&#127465;&#127466; <strong>Germany</strong></td>
+                <td>4</td>
+                <td>8</td>
+                <td>3 Euros</td>
+                <td>Efficiency / Gegenpressing</td>
+                <td>Klose (71)</td>
+                <td>Matthäus (150)</td>
+            </tr>
+            <tr>
+                <td>&#127462;&#127479; <strong>Argentina</strong></td>
+                <td>3</td>
+                <td>6</td>
+                <td>15 Copa América</td>
+                <td>La Garra / Enganche</td>
+                <td>Messi (100+)</td>
+                <td>Messi (180+)</td>
+            </tr>
+            <tr>
+                <td>&#127467;&#127479; <strong>France</strong></td>
+                <td>2</td>
+                <td>3</td>
+                <td>2 Euros</td>
+                <td>Athletic Counter-Attack</td>
+                <td>Henry (51)</td>
+                <td>Lloris (145)</td>
+            </tr>
+            <tr>
+                <td>&#127466;&#127480; <strong>Spain</strong></td>
+                <td>1</td>
+                <td>1</td>
+                <td>4 Euros (record)</td>
+                <td>Tiki-Taka / Possession</td>
+                <td>Villa (59)</td>
+                <td>Ramos (180)</td>
+            </tr>
+            <tr>
+                <td>&#127470;&#127481; <strong>Italy</strong></td>
+                <td>4</td>
+                <td>6</td>
+                <td>2 Euros</td>
+                <td>Catenaccio / Tactical</td>
+                <td>Riva (35)</td>
+                <td>Buffon (176)</td>
+            </tr>
+            <tr>
+                <td>&#127475;&#127473; <strong>Netherlands</strong></td>
+                <td>0</td>
+                <td>3</td>
+                <td>1 Euro</td>
+                <td>Total Football</td>
+                <td>Van Persie (50)</td>
+                <td>Sneijder (134)</td>
+            </tr>
+            <tr>
+                <td>&#127477;&#127481; <strong>Portugal</strong></td>
+                <td>0</td>
+                <td>0</td>
+                <td>1 Euro</td>
+                <td>Technical Flair</td>
+                <td>Ronaldo (130+)</td>
+                <td>Ronaldo (200+)</td>
+            </tr>
+            <tr>
+                <td>&#127471;&#127477; <strong>Japan</strong></td>
+                <td>0</td>
+                <td>0</td>
+                <td>4 Asian Cups</td>
+                <td>Collective Discipline</td>
+                <td>Kamamoto (75)</td>
+                <td>Hasebe (180+)</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</section>
+
+</div>
+
+<footer>
+    <p>World Football Encyclopedia &mdash; A comprehensive guide to national soccer teams</p>
+    <p style="margin-top:6px">Data compiled from historical records through early 2026. Some statistics are approximate.</p>
+</footer>
+
+<script>
+    // Scroll animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.05 });
+
+    document.querySelectorAll('.team-section, .comparison-section').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Active nav highlighting
+    const sections = document.querySelectorAll('.team-section, .comparison-section');
+    const navLinks = document.querySelectorAll('.team-nav a');
+
+    const navObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                const activeLink = document.querySelector(`.team-nav a[href="#${entry.target.id}"]`);
+                if (activeLink) activeLink.classList.add('active');
+            }
+        });
+    }, { threshold: 0.3 });
+
+    sections.forEach(section => navObserver.observe(section));
+
+    // Smooth scroll
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const target = document.querySelector(link.getAttribute('href'));
+            const navHeight = document.querySelector('.team-nav').offsetHeight;
+            const top = target.offsetTop - navHeight - 10;
+            window.scrollTo({ top, behavior: 'smooth' });
+        });
+    });
+</script>
+
+</body>
+</html>
