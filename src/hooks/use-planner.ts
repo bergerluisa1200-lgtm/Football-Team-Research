@@ -1,90 +1,98 @@
 "use client";
 
-import { useSyncExternalStore, useCallback } from "react";
-
-const STORAGE_KEY = "pitchlab-planner";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  setDoc,
+  deleteDoc,
+  getDocs,
+  writeBatch,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useAuth } from "@/contexts/auth-context";
 
 export interface PlannedSession {
   id: string;
   name: string;
   drillIds: string[];
   totalDuration: number;
-  recurring?: boolean; // marks sessions that were auto-repeated
+  recurring?: boolean;
 }
 
 export interface RecurringWeek {
-  // day index 0=Mon, 6=Sun -> sessions to repeat
   [dayIndex: number]: PlannedSession[];
 }
 
-const RECURRING_KEY = "pitchlab-planner-recurring";
-
-// date string (YYYY-MM-DD) -> planned sessions
-type PlannerData = Record<string, PlannedSession[]>;
-
-let listeners: (() => void)[] = [];
-
-function emitChange() {
-  listeners.forEach((l) => l());
-}
-
-function subscribe(listener: () => void) {
-  listeners.push(listener);
-  return () => {
-    listeners = listeners.filter((l) => l !== listener);
-  };
-}
-
-let cachedSnapshot: PlannerData = {};
-let cachedRaw: string | null = null;
-
-function getSnapshot(): PlannerData {
-  if (typeof window === "undefined") return EMPTY;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw !== cachedRaw) {
-      cachedRaw = raw;
-      cachedSnapshot = raw ? JSON.parse(raw) : {};
-    }
-    return cachedSnapshot;
-  } catch {
-    return EMPTY;
-  }
-}
-
-const EMPTY: PlannerData = {};
-function getServerSnapshot(): PlannerData {
-  return EMPTY;
-}
-
 export function usePlanner() {
-  const planner = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const { user } = useAuth();
+  const [planner, setPlanner] = useState<Record<string, PlannedSession[]>>({});
+  const [recurringWeek, setRecurringWeekState] = useState<RecurringWeek | null>(null);
 
-  const addSession = useCallback((date: string, session: PlannedSession) => {
-    const current = getSnapshot();
-    const daySessions = current[date] || [];
-    const next = {
-      ...current,
-      [date]: [...daySessions, session],
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    cachedRaw = null;
-    emitChange();
-  }, []);
-
-  const removeSession = useCallback((date: string, sessionId: string) => {
-    const current = getSnapshot();
-    const daySessions = (current[date] || []).filter((s) => s.id !== sessionId);
-    const next = { ...current };
-    if (daySessions.length === 0) {
-      delete next[date];
-    } else {
-      next[date] = daySessions;
+  // Listen to planner collection
+  useEffect(() => {
+    if (!user) {
+      setPlanner({});
+      return;
     }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    cachedRaw = null;
-    emitChange();
-  }, []);
+    const colRef = collection(db, "users", user.uid, "planner");
+    const unsubscribe = onSnapshot(colRef, (snap) => {
+      const result: Record<string, PlannedSession[]> = {};
+      snap.docs.forEach((d) => {
+        result[d.id] = d.data().sessions || [];
+      });
+      setPlanner(result);
+    });
+    return unsubscribe;
+  }, [user]);
+
+  // Listen to recurring week
+  useEffect(() => {
+    if (!user) {
+      setRecurringWeekState(null);
+      return;
+    }
+    const colRef = collection(db, "users", user.uid, "plannerRecurring");
+    const unsubscribe = onSnapshot(colRef, (snap) => {
+      if (snap.empty) {
+        setRecurringWeekState(null);
+        return;
+      }
+      const result: RecurringWeek = {};
+      snap.docs.forEach((d) => {
+        result[parseInt(d.id)] = d.data().sessions || [];
+      });
+      setRecurringWeekState(result);
+    });
+    return unsubscribe;
+  }, [user]);
+
+  const addSession = useCallback(
+    async (date: string, session: PlannedSession) => {
+      if (!user) return;
+      const existing = planner[date] || [];
+      await setDoc(doc(db, "users", user.uid, "planner", date), {
+        sessions: [...existing, session],
+      });
+    },
+    [user, planner]
+  );
+
+  const removeSession = useCallback(
+    async (date: string, sessionId: string) => {
+      if (!user) return;
+      const existing = (planner[date] || []).filter((s) => s.id !== sessionId);
+      if (existing.length === 0) {
+        await deleteDoc(doc(db, "users", user.uid, "planner", date));
+      } else {
+        await setDoc(doc(db, "users", user.uid, "planner", date), {
+          sessions: existing,
+        });
+      }
+    },
+    [user, planner]
+  );
 
   const getSessionsForDate = useCallback(
     (date: string): PlannedSession[] => planner[date] || [],
@@ -105,76 +113,82 @@ export function usePlanner() {
     [planner]
   );
 
-  // Save the current week as a recurring template
-  const setRecurringWeek = useCallback((weekStartDate: Date) => {
-    const current = getSnapshot();
-    const recurring: RecurringWeek = {};
-    for (let i = 0; i < 7; i++) {
-      const d = new Date(weekStartDate);
-      d.setDate(d.getDate() + i);
-      const key = d.toISOString().split("T")[0];
-      const sessions = current[key] || [];
-      if (sessions.length > 0) {
-        recurring[i] = sessions.map((s) => ({
-          ...s,
-          recurring: true,
-        }));
+  const setRecurringWeek = useCallback(
+    async (weekStartDate: Date) => {
+      if (!user) return;
+      const batch = writeBatch(db);
+
+      // Clear old recurring
+      const colRef = collection(db, "users", user.uid, "plannerRecurring");
+      const existingSnap = await getDocs(colRef);
+      existingSnap.docs.forEach((d) => batch.delete(d.ref));
+
+      // Set new recurring from current week
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(weekStartDate);
+        d.setDate(d.getDate() + i);
+        const key = d.toISOString().split("T")[0];
+        const sessions = planner[key] || [];
+        if (sessions.length > 0) {
+          batch.set(
+            doc(db, "users", user.uid, "plannerRecurring", String(i)),
+            {
+              sessions: sessions.map((s) => ({ ...s, recurring: true })),
+            }
+          );
+        }
       }
-    }
-    localStorage.setItem(RECURRING_KEY, JSON.stringify(recurring));
-    cachedRaw = null;
-    emitChange();
-  }, []);
 
-  // Clear recurring week
-  const clearRecurringWeek = useCallback(() => {
-    localStorage.removeItem(RECURRING_KEY);
-    cachedRaw = null;
-    emitChange();
-  }, []);
+      await batch.commit();
+    },
+    [user, planner]
+  );
 
-  // Check if recurring is set
-  const getRecurringWeek = useCallback((): RecurringWeek | null => {
-    try {
-      const raw = localStorage.getItem(RECURRING_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
-  }, []);
+  const clearRecurringWeek = useCallback(async () => {
+    if (!user) return;
+    const colRef = collection(db, "users", user.uid, "plannerRecurring");
+    const snap = await getDocs(colRef);
+    const batch = writeBatch(db);
+    snap.docs.forEach((d) => batch.delete(d.ref));
+    await batch.commit();
+  }, [user]);
 
-  // Apply recurring sessions to a specific week (fills in days that have no sessions)
-  const applyRecurringToWeek = useCallback((weekStartDate: Date) => {
-    const recurring = getRecurringWeek();
-    if (!recurring) return;
-    const current = getSnapshot();
-    const next = { ...current };
-    let changed = false;
+  const getRecurringWeek = useCallback(
+    (): RecurringWeek | null => recurringWeek,
+    [recurringWeek]
+  );
 
-    for (let i = 0; i < 7; i++) {
-      const d = new Date(weekStartDate);
-      d.setDate(d.getDate() + i);
-      const key = d.toISOString().split("T")[0];
-      const existing = next[key] || [];
-      const template = recurring[i];
+  const applyRecurringToWeek = useCallback(
+    async (weekStartDate: Date) => {
+      if (!user || !recurringWeek) return;
+      const batch = writeBatch(db);
+      let changed = false;
 
-      if (template && existing.length === 0) {
-        // Add recurring sessions with fresh IDs
-        next[key] = template.map((s) => ({
-          ...s,
-          id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-          recurring: true,
-        }));
-        changed = true;
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(weekStartDate);
+        d.setDate(d.getDate() + i);
+        const key = d.toISOString().split("T")[0];
+        const existing = planner[key] || [];
+        const template = recurringWeek[i];
+
+        if (template && existing.length === 0) {
+          batch.set(doc(db, "users", user.uid, "planner", key), {
+            sessions: template.map((s) => ({
+              ...s,
+              id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+              recurring: true,
+            })),
+          });
+          changed = true;
+        }
       }
-    }
 
-    if (changed) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      cachedRaw = null;
-      emitChange();
-    }
-  }, [getRecurringWeek]);
+      if (changed) {
+        await batch.commit();
+      }
+    },
+    [user, planner, recurringWeek]
+  );
 
   return {
     planner,

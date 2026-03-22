@@ -1,27 +1,46 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import { doc, setDoc, getDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useAuth } from "@/contexts/auth-context";
 import { Session, SessionDrill } from "@/types/drill";
+import { canCreateSession } from "@/lib/plans";
 
-const STORAGE_KEY = "pitchlab-session";
-
-function loadSession(): Session {
-  if (typeof window === "undefined") {
-    return { id: "default", name: "My Session", drills: [], createdAt: new Date().toISOString() };
-  }
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return JSON.parse(stored);
-  } catch {}
-  return { id: "default", name: "My Session", drills: [], createdAt: new Date().toISOString() };
-}
+const DEFAULT_SESSION: Session = {
+  id: "default",
+  name: "My Session",
+  drills: [],
+  createdAt: new Date().toISOString(),
+};
 
 export function useSession() {
-  const [session, setSession] = useState<Session>(loadSession);
+  const { user, userData } = useAuth();
+  const [session, setSession] = useState<Session>(DEFAULT_SESSION);
+  const [loaded, setLoaded] = useState(false);
 
+  // Load current session from Firestore on mount
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
-  }, [session]);
+    if (!user) {
+      setSession(DEFAULT_SESSION);
+      setLoaded(false);
+      return;
+    }
+    const docRef = doc(db, "users", user.uid, "currentSession", "active");
+    getDoc(docRef).then((snap) => {
+      if (snap.exists()) {
+        setSession(snap.data() as Session);
+      }
+      setLoaded(true);
+    });
+  }, [user]);
+
+  // Persist current session to Firestore
+  useEffect(() => {
+    if (!user || !loaded) return;
+    const docRef = doc(db, "users", user.uid, "currentSession", "active");
+    setDoc(docRef, session);
+  }, [session, user, loaded]);
 
   const addDrill = useCallback((drillId: string, defaultDuration: number = 10) => {
     setSession((prev) => {
@@ -100,6 +119,34 @@ export function useSession() {
     });
   }, []);
 
+  // Save the current session as a named session (for plan limit tracking)
+  const saveSession = useCallback(
+    async (): Promise<boolean> => {
+      if (!user || !userData) return false;
+      const colRef = collection(db, "users", user.uid, "sessions");
+      const snap = await getDocs(colRef);
+      if (!canCreateSession(userData.plan, snap.size)) {
+        return false; // limit reached
+      }
+      const id = `session-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+      await setDoc(doc(db, "users", user.uid, "sessions", id), {
+        ...session,
+        id,
+        createdAt: new Date().toISOString(),
+      });
+      return true;
+    },
+    [user, userData, session]
+  );
+
+  // Get count of saved sessions (for plan limit checks)
+  const getSavedSessionCount = useCallback(async (): Promise<number> => {
+    if (!user) return 0;
+    const colRef = collection(db, "users", user.uid, "sessions");
+    const snap = await getDocs(colRef);
+    return snap.size;
+  }, [user]);
+
   const totalDuration = session.drills.reduce((sum, d) => sum + d.duration, 0);
   const totalRestSeconds = session.drills.reduce((sum, d) => sum + (d.restAfter || 0), 0);
 
@@ -114,6 +161,8 @@ export function useSession() {
     updateName,
     clearSession,
     loadTemplate,
+    saveSession,
+    getSavedSessionCount,
     totalDuration,
     totalRestSeconds,
   };

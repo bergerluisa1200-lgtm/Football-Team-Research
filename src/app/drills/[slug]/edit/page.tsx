@@ -38,8 +38,8 @@ export default function EditDrillPage({ params }: Props) {
     );
   }
 
-  function handleSubmit(data: DrillFormData) {
-    updateDrill(drill!.id, data);
+  async function handleSubmit(data: DrillFormData) {
+    await updateDrill(drill!.id, data);
     router.push(`/drills/${drill!.slug}`);
   }
 

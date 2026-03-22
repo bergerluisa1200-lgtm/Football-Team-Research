@@ -1,84 +1,77 @@
 "use client";
 
-import { useSyncExternalStore, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  orderBy,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useAuth } from "@/contexts/auth-context";
 import { TrainingLogEntry } from "@/types/drill";
 
-const STORAGE_KEY = "pitchlab-training-log";
-
-let listeners: (() => void)[] = [];
-let cachedSnapshot: TrainingLogEntry[] = [];
-let cachedRaw: string | null = null;
-const EMPTY: TrainingLogEntry[] = [];
-
-function emitChange() {
-  cachedRaw = null;
-  listeners.forEach((l) => l());
-}
-
-function subscribe(listener: () => void) {
-  listeners.push(listener);
-  return () => {
-    listeners = listeners.filter((l) => l !== listener);
-  };
-}
-
-function getSnapshot(): TrainingLogEntry[] {
-  if (typeof window === "undefined") return EMPTY;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw !== cachedRaw) {
-      cachedRaw = raw;
-      cachedSnapshot = raw ? JSON.parse(raw) : [];
-    }
-    return cachedSnapshot;
-  } catch {
-    return EMPTY;
-  }
-}
-
-function getServerSnapshot(): TrainingLogEntry[] {
-  return EMPTY;
-}
-
 export function useTrainingLog() {
-  const entries = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const { user } = useAuth();
+  const [entries, setEntries] = useState<TrainingLogEntry[]>([]);
+
+  useEffect(() => {
+    if (!user) {
+      setEntries([]);
+      return;
+    }
+    const colRef = collection(db, "users", user.uid, "trainingLog");
+    const q = query(colRef, orderBy("date", "desc"));
+    const unsubscribe = onSnapshot(q, (snap) => {
+      setEntries(snap.docs.map((d) => d.data() as TrainingLogEntry));
+    });
+    return unsubscribe;
+  }, [user]);
 
   const addEntry = useCallback(
-    (draft: Omit<TrainingLogEntry, "id" | "createdAt">): TrainingLogEntry => {
-      const id = "log-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
-      const entry: TrainingLogEntry = { ...draft, id, createdAt: new Date().toISOString() };
-      const current = getSnapshot();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([entry, ...current]));
-      emitChange();
+    async (
+      draft: Omit<TrainingLogEntry, "id" | "createdAt">
+    ): Promise<TrainingLogEntry> => {
+      const id =
+        "log-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
+      const entry: TrainingLogEntry = {
+        ...draft,
+        id,
+        createdAt: new Date().toISOString(),
+      };
+      if (user) {
+        await setDoc(doc(db, "users", user.uid, "trainingLog", id), entry);
+      }
       return entry;
     },
-    []
+    [user]
   );
 
   const updateEntry = useCallback(
-    (id: string, updates: Partial<Omit<TrainingLogEntry, "id" | "createdAt">>): TrainingLogEntry | null => {
-      const current = getSnapshot();
-      const index = current.findIndex((e) => e.id === id);
-      if (index === -1) return null;
-      const updated = { ...current[index], ...updates };
-      const next = [...current];
-      next[index] = updated;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      emitChange();
-      return updated;
+    async (
+      id: string,
+      updates: Partial<Omit<TrainingLogEntry, "id" | "createdAt">>
+    ): Promise<TrainingLogEntry | null> => {
+      if (!user) return null;
+      const docRef = doc(db, "users", user.uid, "trainingLog", id);
+      await updateDoc(docRef, updates);
+      const existing = entries.find((e) => e.id === id);
+      return existing ? { ...existing, ...updates } : null;
     },
-    []
+    [user, entries]
   );
 
-  const deleteEntry = useCallback((id: string) => {
-    const current = getSnapshot();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(current.filter((e) => e.id !== id)));
-    emitChange();
-  }, []);
-
-  const sortedEntries = [...entries].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  const deleteEntry = useCallback(
+    async (id: string) => {
+      if (!user) return;
+      await deleteDoc(doc(db, "users", user.uid, "trainingLog", id));
+    },
+    [user]
   );
 
-  return { entries: sortedEntries, addEntry, updateEntry, deleteEntry };
+  return { entries, addEntry, updateEntry, deleteEntry };
 }

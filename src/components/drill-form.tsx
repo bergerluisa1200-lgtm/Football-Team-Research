@@ -158,7 +158,7 @@ export interface DrillFormData {
 
 interface DrillFormProps {
   initialData?: DrillFormData;
-  onSubmit: (data: DrillFormData) => void;
+  onSubmit: (data: DrillFormData) => void | Promise<void>;
   submitLabel: string;
   cancelHref: string;
 }

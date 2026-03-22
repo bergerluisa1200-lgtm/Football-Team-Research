@@ -1,56 +1,44 @@
 "use client";
 
-import { useSyncExternalStore, useCallback } from "react";
-
-const STORAGE_KEY = "pitchlab-mastered";
-
-let listeners: (() => void)[] = [];
-
-function emitChange() {
-  listeners.forEach((l) => l());
-}
-
-function subscribe(listener: () => void) {
-  listeners.push(listener);
-  return () => {
-    listeners = listeners.filter((l) => l !== listener);
-  };
-}
-
-let cachedSnapshot: string[] = [];
-let cachedRaw: string | null = null;
-
-function getSnapshot(): string[] {
-  if (typeof window === "undefined") return EMPTY;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw !== cachedRaw) {
-      cachedRaw = raw;
-      cachedSnapshot = raw ? JSON.parse(raw) : [];
-    }
-    return cachedSnapshot;
-  } catch {
-    return EMPTY;
-  }
-}
-
-const EMPTY: string[] = [];
-function getServerSnapshot(): string[] {
-  return EMPTY;
-}
+import { useState, useEffect, useCallback } from "react";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  setDoc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useAuth } from "@/contexts/auth-context";
 
 export function useMasteredDrills() {
-  const mastered = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const { user } = useAuth();
+  const [mastered, setMastered] = useState<string[]>([]);
 
-  const toggleMastered = useCallback((drillId: string) => {
-    const current = getSnapshot();
-    const next = current.includes(drillId)
-      ? current.filter((id) => id !== drillId)
-      : [...current, drillId];
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    cachedRaw = null;
-    emitChange();
-  }, []);
+  useEffect(() => {
+    if (!user) {
+      setMastered([]);
+      return;
+    }
+    const colRef = collection(db, "users", user.uid, "masteredDrills");
+    const unsubscribe = onSnapshot(colRef, (snap) => {
+      setMastered(snap.docs.map((d) => d.id));
+    });
+    return unsubscribe;
+  }, [user]);
+
+  const toggleMastered = useCallback(
+    async (drillId: string) => {
+      if (!user) return;
+      const docRef = doc(db, "users", user.uid, "masteredDrills", drillId);
+      if (mastered.includes(drillId)) {
+        await deleteDoc(docRef);
+      } else {
+        await setDoc(docRef, { masteredAt: new Date().toISOString() });
+      }
+    },
+    [user, mastered]
+  );
 
   const isMastered = useCallback(
     (drillId: string) => mastered.includes(drillId),

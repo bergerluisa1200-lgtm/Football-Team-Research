@@ -1,95 +1,95 @@
 "use client";
 
-import { useSyncExternalStore, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  getDocs,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useAuth } from "@/contexts/auth-context";
 import { Drill } from "@/types/drill";
-
-const STORAGE_KEY = "pitchlab-custom-drills";
-
-let listeners: (() => void)[] = [];
-let cachedSnapshot: Drill[] = [];
-let cachedRaw: string | null = null;
-const EMPTY: Drill[] = [];
-
-function emitChange() {
-  cachedRaw = null; // invalidate cache
-  listeners.forEach((l) => l());
-}
-
-function subscribe(listener: () => void) {
-  listeners.push(listener);
-  return () => {
-    listeners = listeners.filter((l) => l !== listener);
-  };
-}
-
-function getSnapshot(): Drill[] {
-  if (typeof window === "undefined") return EMPTY;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw !== cachedRaw) {
-      cachedRaw = raw;
-      cachedSnapshot = raw ? JSON.parse(raw) : [];
-    }
-    return cachedSnapshot;
-  } catch {
-    return EMPTY;
-  }
-}
-
-function getServerSnapshot(): Drill[] {
-  return EMPTY;
-}
+import { canCreateDrill } from "@/lib/plans";
 
 function generateId(): string {
   return "custom-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
 }
 
 function slugify(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-    || "drill";
+  return (
+    title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "") || "drill"
+  );
 }
 
 export function useCustomDrills() {
-  const drills = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const { user, userData } = useAuth();
+  const [customDrills, setCustomDrills] = useState<Drill[]>([]);
 
-  const addDrill = useCallback((draft: Omit<Drill, "id" | "slug">): Drill => {
-    const id = generateId();
-    const slug = slugify(draft.title) + "-" + id.slice(-6);
-    const drill: Drill = { ...draft, id, slug };
-    const current = getSnapshot();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...current, drill]));
-    emitChange();
-    return drill;
-  }, []);
+  useEffect(() => {
+    if (!user) {
+      setCustomDrills([]);
+      return;
+    }
+    const colRef = collection(db, "users", user.uid, "customDrills");
+    const unsubscribe = onSnapshot(colRef, (snap) => {
+      setCustomDrills(snap.docs.map((d) => d.data() as Drill));
+    });
+    return unsubscribe;
+  }, [user]);
 
-  const updateDrill = useCallback((id: string, updates: Partial<Omit<Drill, "id" | "slug">>): Drill | null => {
-    const current = getSnapshot();
-    const index = current.findIndex((d) => d.id === id);
-    if (index === -1) return null;
-    const updated = { ...current[index], ...updates };
-    const next = [...current];
-    next[index] = updated;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    emitChange();
-    return updated;
-  }, []);
+  const addDrill = useCallback(
+    async (draft: Omit<Drill, "id" | "slug">): Promise<Drill | null> => {
+      if (!user || !userData) return null;
 
-  const deleteDrill = useCallback((id: string) => {
-    const current = getSnapshot();
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(current.filter((d) => d.id !== id))
-    );
-    emitChange();
-  }, []);
+      // Check plan limits
+      const colRef = collection(db, "users", user.uid, "customDrills");
+      const snap = await getDocs(colRef);
+      if (!canCreateDrill(userData.plan, snap.size)) {
+        return null; // limit reached
+      }
 
-  const getCustomDrill = useCallback(
-    (slug: string) => drills.find((d) => d.slug === slug),
-    [drills]
+      const id = generateId();
+      const slug = slugify(draft.title) + "-" + id.slice(-6);
+      const drill: Drill = { ...draft, id, slug };
+      await setDoc(doc(db, "users", user.uid, "customDrills", id), drill);
+      return drill;
+    },
+    [user, userData]
   );
 
-  return { customDrills: drills, addDrill, updateDrill, deleteDrill, getCustomDrill };
+  const updateDrill = useCallback(
+    async (
+      id: string,
+      updates: Partial<Omit<Drill, "id" | "slug">>
+    ): Promise<Drill | null> => {
+      if (!user) return null;
+      const docRef = doc(db, "users", user.uid, "customDrills", id);
+      await updateDoc(docRef, updates);
+      const existing = customDrills.find((d) => d.id === id);
+      return existing ? { ...existing, ...updates } : null;
+    },
+    [user, customDrills]
+  );
+
+  const deleteDrill = useCallback(
+    async (id: string) => {
+      if (!user) return;
+      await deleteDoc(doc(db, "users", user.uid, "customDrills", id));
+    },
+    [user]
+  );
+
+  const getCustomDrill = useCallback(
+    (slug: string) => customDrills.find((d) => d.slug === slug),
+    [customDrills]
+  );
+
+  return { customDrills, addDrill, updateDrill, deleteDrill, getCustomDrill };
 }
