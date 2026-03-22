@@ -31,7 +31,7 @@ export function useSession() {
         ...prev,
         drills: [
           ...prev.drills,
-          { drillId, duration: defaultDuration, order: prev.drills.length },
+          { drillId, duration: defaultDuration, order: prev.drills.length, restAfter: 0 },
         ],
       };
     });
@@ -62,6 +62,22 @@ export function useSession() {
     }));
   }, []);
 
+  const updateRestPeriod = useCallback((drillId: string, restAfter: number) => {
+    setSession((prev) => ({
+      ...prev,
+      drills: prev.drills.map((d) =>
+        d.drillId === drillId ? { ...d, restAfter } : d
+      ),
+    }));
+  }, []);
+
+  const setDefaultRest = useCallback((seconds: number) => {
+    setSession((prev) => ({
+      ...prev,
+      drills: prev.drills.map((d) => ({ ...d, restAfter: seconds })),
+    }));
+  }, []);
+
   const updateName = useCallback((name: string) => {
     setSession((prev) => ({ ...prev, name }));
   }, []);
@@ -75,7 +91,17 @@ export function useSession() {
     });
   }, []);
 
+  const loadTemplate = useCallback((template: { name: string; drills: SessionDrill[] }) => {
+    setSession({
+      id: "default",
+      name: template.name,
+      drills: template.drills.map((d, i) => ({ ...d, order: i })),
+      createdAt: new Date().toISOString(),
+    });
+  }, []);
+
   const totalDuration = session.drills.reduce((sum, d) => sum + d.duration, 0);
+  const totalRestSeconds = session.drills.reduce((sum, d) => sum + (d.restAfter || 0), 0);
 
   return {
     session,
@@ -83,8 +109,12 @@ export function useSession() {
     removeDrill,
     reorderDrills,
     updateDrillDuration,
+    updateRestPeriod,
+    setDefaultRest,
     updateName,
     clearSession,
+    loadTemplate,
     totalDuration,
+    totalRestSeconds,
   };
 }

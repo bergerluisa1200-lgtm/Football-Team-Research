@@ -3,14 +3,14 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { SessionDrill } from "@/types/drill";
 
-function playBeep() {
+function playBeep(frequency: number = 880) {
   try {
     const ctx = new AudioContext();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain);
     gain.connect(ctx.destination);
-    osc.frequency.value = 880;
+    osc.frequency.value = frequency;
     osc.type = "sine";
     gain.gain.value = 0.3;
     osc.start();
@@ -26,10 +26,14 @@ export function useTimer(drills: SessionDrill[]) {
   );
   const [isRunning, setIsRunning] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [isResting, setIsResting] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const completedDrillsRef = useRef<Set<string>>(new Set());
 
   const currentDrill = drills[currentIndex] || null;
-  const totalSeconds = currentDrill ? currentDrill.duration * 60 : 0;
+  const totalSeconds = isResting
+    ? (currentDrill?.restAfter || 0)
+    : (currentDrill ? currentDrill.duration * 60 : 0);
   const progress = totalSeconds > 0 ? (totalSeconds - secondsLeft) / totalSeconds : 0;
 
   const clearTimer = useCallback(() => {
@@ -47,6 +51,7 @@ export function useTimer(drills: SessionDrill[]) {
         setSecondsLeft(drills[index].duration * 60);
         setIsRunning(false);
         setIsComplete(false);
+        setIsResting(false);
       }
     },
     [drills, clearTimer]
@@ -75,8 +80,25 @@ export function useTimer(drills: SessionDrill[]) {
   }, [currentIndex, goToIndex]);
 
   const reset = useCallback(() => {
+    completedDrillsRef.current = new Set();
     goToIndex(0);
   }, [goToIndex]);
+
+  const skipRest = useCallback(() => {
+    if (!isResting) return;
+    clearTimer();
+    setIsResting(false);
+    // Advance to next drill
+    if (currentIndex < drills.length - 1) {
+      const nextIdx = currentIndex + 1;
+      setCurrentIndex(nextIdx);
+      setSecondsLeft(drills[nextIdx].duration * 60);
+    } else {
+      setIsRunning(false);
+      setIsComplete(true);
+      setSecondsLeft(0);
+    }
+  }, [isResting, currentIndex, drills, clearTimer]);
 
   const toggle = useCallback(() => {
     if (isRunning) {
@@ -86,26 +108,49 @@ export function useTimer(drills: SessionDrill[]) {
     }
   }, [isRunning, pause, start]);
 
+  // Track which drills have been completed for history recording
+  const getCompletedDrills = useCallback(() => completedDrillsRef.current, []);
+
   useEffect(() => {
     if (!isRunning) return;
 
     intervalRef.current = setInterval(() => {
       setSecondsLeft((prev) => {
         if (prev <= 1) {
-          playBeep();
-          // auto-advance
-          if (currentIndex < drills.length - 1) {
-            setCurrentIndex((ci) => {
-              const next = ci + 1;
-              setSecondsLeft(drills[next].duration * 60);
-              return next;
-            });
-            return drills[currentIndex + 1].duration * 60;
+          if (isResting) {
+            // Rest period ended, advance to next drill
+            playBeep(660);
+            setIsResting(false);
+            if (currentIndex < drills.length - 1) {
+              const nextIdx = currentIndex + 1;
+              setCurrentIndex(nextIdx);
+              return drills[nextIdx].duration * 60;
+            } else {
+              clearTimer();
+              setIsRunning(false);
+              setIsComplete(true);
+              return 0;
+            }
           } else {
-            clearTimer();
-            setIsRunning(false);
-            setIsComplete(true);
-            return 0;
+            // Drill ended
+            playBeep(880);
+            completedDrillsRef.current.add(drills[currentIndex].drillId);
+
+            const restTime = drills[currentIndex].restAfter || 0;
+            if (restTime > 0) {
+              // Start rest period
+              setIsResting(true);
+              return restTime;
+            } else if (currentIndex < drills.length - 1) {
+              // No rest, advance directly
+              setCurrentIndex((ci) => ci + 1);
+              return drills[currentIndex + 1].duration * 60;
+            } else {
+              clearTimer();
+              setIsRunning(false);
+              setIsComplete(true);
+              return 0;
+            }
           }
         }
         return prev - 1;
@@ -113,7 +158,7 @@ export function useTimer(drills: SessionDrill[]) {
     }, 1000);
 
     return clearTimer;
-  }, [isRunning, currentIndex, drills, clearTimer]);
+  }, [isRunning, isResting, currentIndex, drills, clearTimer]);
 
   return {
     currentIndex,
@@ -121,6 +166,7 @@ export function useTimer(drills: SessionDrill[]) {
     secondsLeft,
     isRunning,
     isComplete,
+    isResting,
     progress,
     totalDrills: drills.length,
     start,
@@ -129,6 +175,8 @@ export function useTimer(drills: SessionDrill[]) {
     next,
     prev,
     reset,
+    skipRest,
     goToIndex,
+    getCompletedDrills,
   };
 }

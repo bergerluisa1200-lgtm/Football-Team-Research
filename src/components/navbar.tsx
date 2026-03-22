@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BookOpen,
-  Heart,
   LayoutList,
   Timer,
   Menu,
   ClipboardList,
+  CalendarDays,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -20,9 +20,9 @@ import { useState } from "react";
 const NAV_LINKS = [
   { href: "/drills", label: "Drills", icon: BookOpen },
   { href: "/session-builder", label: "Session Builder", icon: LayoutList },
-  { href: "/training-log", label: "Training Log", icon: ClipboardList },
-  { href: "/favorites", label: "Favorites", icon: Heart },
+  { href: "/planner", label: "Planner", icon: CalendarDays },
   { href: "/timer", label: "Timer", icon: Timer },
+  { href: "/training-log", label: "Training Log", icon: ClipboardList },
 ];
 
 export function Navbar() {

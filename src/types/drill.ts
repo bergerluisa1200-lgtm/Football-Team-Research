@@ -33,6 +33,7 @@ export interface SessionDrill {
   drillId: string;
   duration: number; // minutes (can be adjusted from default)
   order: number;
+  restAfter?: number; // seconds of rest after this drill
 }
 
 export interface Session {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   Play,
@@ -9,12 +9,15 @@ import {
   SkipForward,
   RotateCcw,
   ArrowLeft,
+  Coffee,
+  FastForward,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useTimer } from "@/hooks/use-timer";
 import { useSession } from "@/hooks/use-session";
 import { useAllDrills } from "@/hooks/use-all-drills";
+import { useDrillHistory } from "@/hooks/use-drill-history";
 import { CATEGORY_META } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -26,10 +29,12 @@ function formatTime(seconds: number) {
 
 function ProgressRing({
   progress,
+  isResting,
   size = 280,
   strokeWidth = 8,
 }: {
   progress: number;
+  isResting?: boolean;
   size?: number;
   strokeWidth?: number;
 }) {
@@ -58,7 +63,10 @@ function ProgressRing({
         strokeDasharray={circumference}
         strokeDashoffset={offset}
         strokeLinecap="round"
-        className="text-primary transition-all duration-1000 ease-linear"
+        className={cn(
+          "transition-all duration-1000 ease-linear",
+          isResting ? "text-amber-500" : "text-primary"
+        )}
       />
     </svg>
   );
@@ -67,22 +75,54 @@ function ProgressRing({
 export default function TimerPage() {
   const { session } = useSession();
   const { getDrillById } = useAllDrills();
+  const { recordUsage } = useDrillHistory();
   const {
     currentIndex,
     currentDrill,
     secondsLeft,
     isRunning,
     isComplete,
+    isResting,
     progress,
     totalDrills,
     toggle,
     next,
     prev,
     reset,
+    skipRest,
   } = useTimer(session.drills);
 
   const drill = currentDrill ? getDrillById(currentDrill.drillId) : null;
   const catMeta = drill ? CATEGORY_META[drill.category] : null;
+
+  // Track completed drills for history
+  const recordedRef = useRef<Set<number>>(new Set());
+
+  useEffect(() => {
+    // Record usage when moving past a drill (either to rest or next drill)
+    if (currentIndex > 0 && !recordedRef.current.has(currentIndex - 1)) {
+      const prevDrill = session.drills[currentIndex - 1];
+      if (prevDrill) {
+        recordUsage(prevDrill.drillId);
+        recordedRef.current.add(currentIndex - 1);
+      }
+    }
+    // Record last drill when complete
+    if (isComplete && !recordedRef.current.has(currentIndex)) {
+      const lastDrill = session.drills[currentIndex];
+      if (lastDrill) {
+        recordUsage(lastDrill.drillId);
+        recordedRef.current.add(currentIndex);
+      }
+    }
+  }, [currentIndex, isComplete, session.drills, recordUsage]);
+
+  // Reset recorded drills when timer resets
+  useEffect(() => {
+    if (currentIndex === 0 && !isRunning && !isComplete) {
+      recordedRef.current = new Set();
+    }
+  }, [currentIndex, isRunning, isComplete]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -91,14 +131,18 @@ export default function TimerPage() {
         e.preventDefault();
         toggle();
       } else if (e.code === "ArrowRight") {
-        next();
+        if (isResting) {
+          skipRest();
+        } else {
+          next();
+        }
       } else if (e.code === "ArrowLeft") {
         prev();
       }
     }
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [toggle, next, prev]);
+  }, [toggle, next, prev, skipRest, isResting]);
 
   if (session.drills.length === 0) {
     return (
@@ -128,27 +172,43 @@ export default function TimerPage() {
       {/* Drill info */}
       {drill && catMeta && (
         <div className="text-center space-y-2">
-          <Badge
-            variant="secondary"
-            style={{ backgroundColor: catMeta.color + "20", color: catMeta.color }}
-          >
-            {catMeta.label}
-          </Badge>
-          <h2 className="text-2xl font-bold">{drill.title}</h2>
-          <p className="text-sm text-muted-foreground">
-            Drill {currentIndex + 1} of {totalDrills}
-          </p>
+          {isResting ? (
+            <>
+              <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200 gap-1">
+                <Coffee className="h-3 w-3" />
+                Rest
+              </Badge>
+              <h2 className="text-2xl font-bold text-muted-foreground">Rest Period</h2>
+              <p className="text-sm text-muted-foreground">
+                Next: {getDrillById(session.drills[currentIndex + 1]?.drillId)?.title || "Done"}
+              </p>
+            </>
+          ) : (
+            <>
+              <Badge
+                variant="secondary"
+                style={{ backgroundColor: catMeta.color + "20", color: catMeta.color }}
+              >
+                {catMeta.label}
+              </Badge>
+              <h2 className="text-2xl font-bold">{drill.title}</h2>
+              <p className="text-sm text-muted-foreground">
+                Drill {currentIndex + 1} of {totalDrills}
+              </p>
+            </>
+          )}
         </div>
       )}
 
       {/* Timer display */}
       <div className="relative flex items-center justify-center glass rounded-full p-8">
-        <ProgressRing progress={progress} />
+        <ProgressRing progress={progress} isResting={isResting} />
         <div className="absolute inset-0 flex items-center justify-center">
           <span
             className={cn(
               "text-5xl sm:text-6xl font-mono font-bold tabular-nums",
-              isComplete && "text-primary"
+              isComplete && "text-primary",
+              isResting && "text-amber-500"
             )}
           >
             {isComplete ? "Done!" : formatTime(secondsLeft)}
@@ -163,14 +223,17 @@ export default function TimerPage() {
           size="icon"
           className="h-12 w-12"
           onClick={prev}
-          disabled={currentIndex === 0}
+          disabled={currentIndex === 0 || isResting}
         >
           <SkipBack className="h-5 w-5" />
         </Button>
 
         <Button
           size="icon"
-          className="h-16 w-16 rounded-full"
+          className={cn(
+            "h-16 w-16 rounded-full",
+            isResting && "bg-amber-500 hover:bg-amber-600"
+          )}
           onClick={toggle}
           disabled={isComplete}
         >
@@ -181,15 +244,26 @@ export default function TimerPage() {
           )}
         </Button>
 
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-12 w-12"
-          onClick={next}
-          disabled={currentIndex >= totalDrills - 1}
-        >
-          <SkipForward className="h-5 w-5" />
-        </Button>
+        {isResting ? (
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-12 w-12"
+            onClick={skipRest}
+          >
+            <FastForward className="h-5 w-5" />
+          </Button>
+        ) : (
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-12 w-12"
+            onClick={next}
+            disabled={currentIndex >= totalDrills - 1}
+          >
+            <SkipForward className="h-5 w-5" />
+          </Button>
+        )}
       </div>
 
       <Button variant="ghost" size="sm" className="gap-1" onClick={reset}>
@@ -202,22 +276,30 @@ export default function TimerPage() {
         {session.drills.map((sd, i) => {
           const d = getDrillById(sd.drillId);
           if (!d) return null;
-          const isCurrent = i === currentIndex;
+          const isCurrent = i === currentIndex && !isResting;
+          const isCurrentRest = i === currentIndex && isResting;
           const isPast = i < currentIndex;
           return (
-            <div
-              key={sd.drillId}
-              className={cn(
-                "flex items-center justify-between px-3 py-2 rounded-md text-sm transition-colors",
-                isCurrent && "bg-primary/10 font-medium",
-                isPast && "text-muted-foreground line-through",
-                !isCurrent && !isPast && "text-muted-foreground"
+            <div key={sd.drillId}>
+              <div
+                className={cn(
+                  "flex items-center justify-between px-3 py-2 rounded-md text-sm transition-colors",
+                  isCurrent && "bg-primary/10 font-medium",
+                  isPast && "text-muted-foreground line-through",
+                  !isCurrent && !isPast && "text-muted-foreground"
+                )}
+              >
+                <span className="truncate">
+                  {i + 1}. {d.title}
+                </span>
+                <span className="text-xs shrink-0 ml-2">{sd.duration} min</span>
+              </div>
+              {isCurrentRest && (
+                <div className="flex items-center gap-2 px-3 py-1 text-xs text-amber-600 dark:text-amber-400">
+                  <Coffee className="h-3 w-3" />
+                  Resting...
+                </div>
               )}
-            >
-              <span className="truncate">
-                {i + 1}. {d.title}
-              </span>
-              <span className="text-xs shrink-0 ml-2">{sd.duration} min</span>
             </div>
           );
         })}

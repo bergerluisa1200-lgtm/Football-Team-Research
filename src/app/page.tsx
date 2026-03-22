@@ -9,10 +9,10 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { DrillGrid } from "@/components/drill-grid";
-import { getFeaturedDrills } from "@/lib/drills";
 import { ALL_CATEGORIES, CATEGORY_META } from "@/lib/constants";
 import { Category } from "@/types/drill";
+import { OnboardingTooltip } from "@/components/onboarding-tooltip";
+import { DrillOfTheDay } from "@/components/drill-of-the-day";
 
 const CATEGORY_ICONS: Record<Category, React.ReactNode> = {
   passing: <ArrowRightLeft className="h-8 w-8" />,
@@ -23,8 +23,6 @@ const CATEGORY_ICONS: Record<Category, React.ReactNode> = {
 };
 
 export default function HomePage() {
-  const featured = getFeaturedDrills();
-
   return (
     <div className="space-y-16 pb-16">
       {/* Hero */}
@@ -61,8 +59,14 @@ export default function HomePage() {
               </Button>
             </Link>
           </div>
+
+          {/* Onboarding tooltip */}
+          <OnboardingTooltip />
         </div>
       </section>
+
+      {/* Drill of the Day */}
+      <DrillOfTheDay />
 
       {/* Categories */}
       <section className="mx-auto max-w-7xl px-4">
@@ -92,19 +96,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Drills */}
-      <section className="mx-auto max-w-7xl px-4">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold">Featured Drills</h2>
-          <Link href="/drills">
-            <Button variant="ghost" className="gap-1">
-              View all
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-        <DrillGrid drills={featured} />
-      </section>
     </div>
   );
 }

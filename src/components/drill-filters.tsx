@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search } from "lucide-react";
+import { Search, Heart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -23,6 +23,7 @@ export function DrillFilters() {
   const search = searchParams.get("search") || "";
   const category = searchParams.get("category") || "";
   const difficulty = searchParams.get("difficulty") || "";
+  const favorites = searchParams.get("favorites") === "true";
 
   const updateParams = useCallback(
     (key: string, value: string) => {
@@ -48,8 +49,17 @@ export function DrillFilters() {
           onChange={(e) => updateParams("search", e.target.value)}
         />
       </div>
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row gap-4 items-start">
         <div className="flex flex-wrap gap-1.5">
+          <Button
+            variant={favorites ? "default" : "outline"}
+            size="sm"
+            className={cn("gap-1.5", favorites && "bg-rose-500 hover:bg-rose-600 text-white")}
+            onClick={() => updateParams("favorites", favorites ? "" : "true")}
+          >
+            <Heart className={cn("h-3.5 w-3.5", favorites && "fill-current")} />
+            Favorites
+          </Button>
           {ALL_CATEGORIES.map((cat) => (
             <Button
               key={cat}

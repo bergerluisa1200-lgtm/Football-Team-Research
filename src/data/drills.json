@@ -445,5 +445,1205 @@
       { "type": "run-path", "x": 28, "y": 37, "toX": 50, "toY": 25, "color": "#2563eb", "dashed": true }
     ],
     "tags": ["fitness", "HIIT", "ball-mastery", "conditioning"]
+  },
+  {
+    "id": "11",
+    "slug": "switch-play-diamond",
+    "title": "Switch of Play Diamond",
+    "category": "passing",
+    "difficulty": "advanced",
+    "duration": 20,
+    "playerCountMin": 8,
+    "playerCountMax": 16,
+    "equipment": ["balls", "cones", "bibs"],
+    "instructions": [
+      "Set up a large diamond shape with cones, roughly 40 yards wide and 30 yards tall.",
+      "Place one player at each cone and two in the center.",
+      "Ball starts at the bottom of the diamond — pass to a central player.",
+      "Central player opens up and plays a long switch to the opposite wide cone.",
+      "Wide player receives, controls, and plays into the other central player.",
+      "Pattern continues: always look to switch the ball through the middle.",
+      "Rotate positions every 3 minutes."
+    ],
+    "coachingPoints": [
+      "First touch should set the ball for the switch — receive across your body.",
+      "Long passes must be driven and accurate, not floated.",
+      "Central players must constantly check their shoulders.",
+      "Receiving players should show for the ball at an angle."
+    ],
+    "variations": [
+      "Add two defenders in the middle to create pressure.",
+      "One-touch only in the center.",
+      "Progress to playing into a final third and finishing."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 50, "y": 80 },
+      { "type": "cone", "x": 15, "y": 50 },
+      { "type": "cone", "x": 85, "y": 50 },
+      { "type": "cone", "x": 50, "y": 20 },
+      { "type": "player", "x": 50, "y": 80, "label": "1", "color": "#2563eb" },
+      { "type": "player", "x": 15, "y": 50, "label": "2", "color": "#2563eb" },
+      { "type": "player", "x": 85, "y": 50, "label": "3", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 20, "label": "4", "color": "#2563eb" },
+      { "type": "player", "x": 40, "y": 50, "label": "CM", "color": "#f59e0b" },
+      { "type": "player", "x": 60, "y": 50, "label": "CM", "color": "#f59e0b" },
+      { "type": "ball", "x": 50, "y": 80 },
+      { "type": "arrow", "x": 50, "y": 80, "toX": 40, "toY": 50, "color": "#2563eb" },
+      { "type": "arrow", "x": 40, "y": 50, "toX": 85, "toY": 50, "color": "#f59e0b" },
+      { "type": "run-path", "x": 85, "y": 50, "toX": 60, "toY": 50, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["passing", "switching-play", "long-balls", "tactical"]
+  },
+  {
+    "id": "12",
+    "slug": "give-and-go-circuit",
+    "title": "Give & Go Circuit",
+    "category": "passing",
+    "difficulty": "beginner",
+    "duration": 12,
+    "playerCountMin": 4,
+    "playerCountMax": 12,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up 4 stations in a square, 15 yards apart, with a cone at each.",
+      "Place a mannequin or passive player 5 yards from each station.",
+      "Player passes to the wall player, sprints around the mannequin, and receives the return pass.",
+      "Carry the ball to the next station and repeat.",
+      "Complete full circuits — one clockwise, one counter-clockwise."
+    ],
+    "coachingPoints": [
+      "Pass must be crisp and to feet — no bobbling passes.",
+      "Sprint immediately after playing the ball — don't admire your pass.",
+      "Receive on the move, don't stop and wait.",
+      "Use both feet — pass with the right going one way, left the other."
+    ],
+    "variations": [
+      "One-touch wall passes only.",
+      "Add a time challenge — fastest circuit wins.",
+      "Include a shot on goal at the final station."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 30, "y": 30 },
+      { "type": "cone", "x": 70, "y": 30 },
+      { "type": "cone", "x": 70, "y": 70 },
+      { "type": "cone", "x": 30, "y": 70 },
+      { "type": "player", "x": 30, "y": 70, "label": "P", "color": "#2563eb" },
+      { "type": "player", "x": 30, "y": 50, "label": "W", "color": "#f59e0b" },
+      { "type": "ball", "x": 30, "y": 70 },
+      { "type": "arrow", "x": 30, "y": 70, "toX": 30, "toY": 50, "color": "#2563eb" },
+      { "type": "arrow", "x": 30, "y": 50, "toX": 30, "toY": 32, "color": "#f59e0b" },
+      { "type": "run-path", "x": 30, "y": 70, "toX": 25, "toY": 50, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 25, "y": 50, "toX": 30, "toY": 30, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["passing", "wall-pass", "movement", "warm-up"]
+  },
+  {
+    "id": "13",
+    "slug": "volley-finishing",
+    "title": "Volley Finishing",
+    "category": "shooting",
+    "difficulty": "advanced",
+    "duration": 15,
+    "playerCountMin": 3,
+    "playerCountMax": 10,
+    "equipment": ["balls", "goals"],
+    "instructions": [
+      "Goalkeeper in goal. Server stands 25 yards out to the side.",
+      "Striker starts at the penalty spot facing the server.",
+      "Server tosses or chips the ball toward the striker.",
+      "Striker must volley or half-volley first-time into the goal.",
+      "Alternate serves from left and right side.",
+      "10 attempts per player, then rotate."
+    ],
+    "coachingPoints": [
+      "Watch the ball all the way onto your foot.",
+      "Lock the ankle and keep your knee over the ball.",
+      "Aim for placement over power — pick your corner.",
+      "Adjust body shape quickly based on the flight of the ball."
+    ],
+    "variations": [
+      "Add a passive defender to block the shot.",
+      "Require headers from crossed serves.",
+      "Serve from further away to simulate game crosses."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 50, "y": 30, "label": "ST", "color": "#2563eb" },
+      { "type": "player", "x": 20, "y": 40, "label": "S", "color": "#f59e0b" },
+      { "type": "ball", "x": 20, "y": 40 },
+      { "type": "arrow", "x": 20, "y": 40, "toX": 50, "toY": 25, "color": "#f59e0b" },
+      { "type": "arrow", "x": 50, "y": 25, "toX": 50, "toY": 8, "color": "#dc2626" },
+      { "type": "cone", "x": 35, "y": 5 },
+      { "type": "cone", "x": 65, "y": 5 },
+      { "type": "player", "x": 50, "y": 5, "label": "GK", "color": "#10b981" }
+    ],
+    "tags": ["shooting", "volleys", "finishing", "technique"]
+  },
+  {
+    "id": "14",
+    "slug": "penalty-box-chaos",
+    "title": "Penalty Box Chaos",
+    "category": "shooting",
+    "difficulty": "beginner",
+    "duration": 10,
+    "playerCountMin": 4,
+    "playerCountMax": 12,
+    "equipment": ["balls", "goals", "cones"],
+    "instructions": [
+      "Goalkeeper in goal. 3-4 shooters line up at the edge of the box.",
+      "Coach plays balls into the box randomly — bouncing, rolling, in the air.",
+      "First player in line attacks the ball and shoots first-time.",
+      "After shooting, immediately clear the box for the next player.",
+      "Coach varies the type of delivery to simulate unpredictable game situations.",
+      "Play for 5 minutes, count goals, then rotate goalkeeper."
+    ],
+    "coachingPoints": [
+      "React quickly — don't overthink, just shoot.",
+      "Use whichever foot the ball arrives on.",
+      "Keep shots low and on target — beat the keeper, don't blast over.",
+      "Be alert and ready before the ball is played."
+    ],
+    "variations": [
+      "Add a defender to pressure the shooter.",
+      "Two players race for the ball — first to shoot.",
+      "Limit touches to one."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 35, "y": 42, "label": "1", "color": "#2563eb" },
+      { "type": "player", "x": 42, "y": 46, "label": "2", "color": "#2563eb" },
+      { "type": "player", "x": 49, "y": 50, "label": "3", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 5, "label": "GK", "color": "#10b981" },
+      { "type": "player", "x": 75, "y": 50, "label": "C", "color": "#f59e0b" },
+      { "type": "ball", "x": 75, "y": 50 },
+      { "type": "arrow", "x": 75, "y": 50, "toX": 50, "toY": 25, "color": "#f59e0b" },
+      { "type": "arrow", "x": 50, "y": 25, "toX": 50, "toY": 8, "color": "#dc2626" },
+      { "type": "cone", "x": 25, "y": 35 },
+      { "type": "cone", "x": 75, "y": 35 },
+      { "type": "run-path", "x": 35, "y": 42, "toX": 50, "toY": 25, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["shooting", "reactions", "finishing", "fun"]
+  },
+  {
+    "id": "15",
+    "slug": "cruyff-turn-drill",
+    "title": "Cruyff Turn & Accelerate",
+    "category": "dribbling",
+    "difficulty": "beginner",
+    "duration": 10,
+    "playerCountMin": 1,
+    "playerCountMax": 16,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up pairs of cones 10 yards apart in a line.",
+      "Dribble toward the first cone at jogging pace.",
+      "At the cone, perform a Cruyff turn — fake to kick, drag the ball behind your standing leg.",
+      "Explode with the ball toward the next cone.",
+      "Perform the Cruyff turn again and accelerate back.",
+      "Complete 8 repetitions, alternating which foot performs the turn."
+    ],
+    "coachingPoints": [
+      "Sell the fake — shape your body as if you're going to pass or shoot.",
+      "Use the inside of the foot to drag the ball behind you.",
+      "Accelerate immediately after the turn — the first 3 steps are crucial.",
+      "Keep the ball close throughout the move."
+    ],
+    "variations": [
+      "Add a step-over before the Cruyff turn.",
+      "Introduce a passive defender to beat with the turn.",
+      "Chain Cruyff turns with other moves (e.g., Cruyff into a chop)."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 50, "y": 85, "label": "P", "color": "#2563eb" },
+      { "type": "ball", "x": 50, "y": 85 },
+      { "type": "cone", "x": 50, "y": 65 },
+      { "type": "cone", "x": 50, "y": 45 },
+      { "type": "cone", "x": 50, "y": 25 },
+      { "type": "run-path", "x": 50, "y": 85, "toX": 50, "toY": 67, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 50, "y": 67, "toX": 40, "toY": 70, "color": "#f59e0b" },
+      { "type": "run-path", "x": 40, "y": 70, "toX": 50, "toY": 47, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["dribbling", "skill-moves", "technique", "cruyff-turn"]
+  },
+  {
+    "id": "16",
+    "slug": "dribble-under-pressure",
+    "title": "Dribble Under Pressure 2v1",
+    "category": "dribbling",
+    "difficulty": "advanced",
+    "duration": 15,
+    "playerCountMin": 3,
+    "playerCountMax": 12,
+    "equipment": ["balls", "cones", "goals"],
+    "instructions": [
+      "Mark a 20x15 yard channel leading to a mini goal.",
+      "Attacker starts with the ball at one end, defender starts 10 yards ahead.",
+      "A support player stands wide as a passing option but cannot score.",
+      "Attacker must dribble past the defender and score — using the support player is allowed.",
+      "If the defender wins the ball, they try to dribble out through the start line.",
+      "Play 1 minute rounds, then rotate all positions."
+    ],
+    "coachingPoints": [
+      "Commit the defender before deciding to dribble or pass.",
+      "Attack the defender's front foot at pace.",
+      "Use the support player to unbalance the defender, then take them on.",
+      "Be decisive — half-hearted dribbles get tackled."
+    ],
+    "variations": [
+      "Remove the support player for pure 1v1.",
+      "Add a second defender to make it 2v2.",
+      "Require a specific skill move to beat the defender."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 30, "y": 25 },
+      { "type": "cone", "x": 70, "y": 25 },
+      { "type": "cone", "x": 30, "y": 80 },
+      { "type": "cone", "x": 70, "y": 80 },
+      { "type": "player", "x": 50, "y": 78, "label": "ATT", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 50, "label": "DEF", "color": "#dc2626" },
+      { "type": "player", "x": 80, "y": 60, "label": "SUP", "color": "#f59e0b" },
+      { "type": "ball", "x": 50, "y": 78 },
+      { "type": "run-path", "x": 50, "y": 78, "toX": 50, "toY": 50, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 50, "y": 78, "toX": 80, "toY": 60, "color": "#2563eb", "dashed": true },
+      { "type": "cone", "x": 40, "y": 22 },
+      { "type": "cone", "x": 60, "y": 22 }
+    ],
+    "tags": ["dribbling", "1v1", "attacking", "skill"]
+  },
+  {
+    "id": "17",
+    "slug": "recovery-runs",
+    "title": "Recovery Run Challenge",
+    "category": "defending",
+    "difficulty": "beginner",
+    "duration": 12,
+    "playerCountMin": 4,
+    "playerCountMax": 10,
+    "equipment": ["balls", "cones", "bibs"],
+    "instructions": [
+      "Set up a 30-yard channel with a goal at one end.",
+      "Attacker starts at the halfway point with the ball, facing the goal.",
+      "Defender starts 5 yards behind the attacker, facing away.",
+      "On the coach's whistle, the defender turns and sprints to recover.",
+      "Attacker tries to score before the defender can make a tackle or block.",
+      "Play 5 rounds per pair, then switch roles."
+    ],
+    "coachingPoints": [
+      "Sprint at full speed to get goalside — take the shortest recovery line.",
+      "Don't dive in when you arrive — get your body between the ball and the goal.",
+      "Slow down and jockey once you're goalside.",
+      "Force the attacker wide, away from the goal center."
+    ],
+    "variations": [
+      "Increase the defender's starting distance for harder recovery.",
+      "Add a second attacker for 2v1 recovery situations.",
+      "Start the defender on the ground (simulating getting up after a tackle)."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 50, "y": 55, "label": "ATT", "color": "#dc2626" },
+      { "type": "player", "x": 50, "y": 65, "label": "DEF", "color": "#2563eb" },
+      { "type": "ball", "x": 50, "y": 55 },
+      { "type": "run-path", "x": 50, "y": 55, "toX": 50, "toY": 15, "color": "#dc2626", "dashed": true },
+      { "type": "run-path", "x": 50, "y": 65, "toX": 45, "toY": 20, "color": "#2563eb", "dashed": true },
+      { "type": "cone", "x": 35, "y": 10 },
+      { "type": "cone", "x": 65, "y": 10 },
+      { "type": "player", "x": 50, "y": 8, "label": "GK", "color": "#10b981" },
+      { "type": "cone", "x": 30, "y": 70 },
+      { "type": "cone", "x": 70, "y": 70 }
+    ],
+    "tags": ["defending", "recovery", "1v1", "speed"]
+  },
+  {
+    "id": "18",
+    "slug": "zonal-marking-crosses",
+    "title": "Zonal Marking from Crosses",
+    "category": "defending",
+    "difficulty": "advanced",
+    "duration": 20,
+    "playerCountMin": 8,
+    "playerCountMax": 14,
+    "equipment": ["balls", "cones", "bibs", "goals"],
+    "instructions": [
+      "Full-size goal with a goalkeeper. Mark 3 zones in the box: near post, central, far post.",
+      "Assign one defender to each zone.",
+      "A wide player delivers crosses from the wing.",
+      "3 attackers make runs into the box trying to score from the cross.",
+      "Defenders must win the ball in their zone — clear it or catch it (if GK).",
+      "Play 10 crosses, count goals conceded, then rotate."
+    ],
+    "coachingPoints": [
+      "Own your zone — attack the ball, don't let it come to you.",
+      "Get your body in front of the attacker before the ball arrives.",
+      "Head the ball up, away, and wide — not back toward goal.",
+      "Communicate with the goalkeeper and adjacent defenders."
+    ],
+    "variations": [
+      "Switch to man-marking to compare effectiveness.",
+      "Add a second crosser for cutback deliveries.",
+      "Include a midfielder arriving late from deep."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 85, "y": 40, "label": "W", "color": "#dc2626" },
+      { "type": "player", "x": 35, "y": 18, "label": "D1", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 18, "label": "D2", "color": "#2563eb" },
+      { "type": "player", "x": 65, "y": 18, "label": "D3", "color": "#2563eb" },
+      { "type": "player", "x": 40, "y": 35, "label": "A1", "color": "#dc2626" },
+      { "type": "player", "x": 55, "y": 38, "label": "A2", "color": "#dc2626" },
+      { "type": "player", "x": 68, "y": 35, "label": "A3", "color": "#dc2626" },
+      { "type": "player", "x": 50, "y": 5, "label": "GK", "color": "#10b981" },
+      { "type": "ball", "x": 85, "y": 40 },
+      { "type": "arrow", "x": 85, "y": 40, "toX": 50, "toY": 15, "color": "#f59e0b" },
+      { "type": "run-path", "x": 40, "y": 35, "toX": 35, "toY": 15, "color": "#dc2626", "dashed": true },
+      { "type": "run-path", "x": 55, "y": 38, "toX": 50, "toY": 15, "color": "#dc2626", "dashed": true },
+      { "type": "run-path", "x": 68, "y": 35, "toX": 63, "toY": 15, "color": "#dc2626", "dashed": true }
+    ],
+    "tags": ["defending", "zonal-marking", "crosses", "set-pieces"]
+  },
+  {
+    "id": "19",
+    "slug": "sprint-interval-ladders",
+    "title": "Sprint Interval Ladders",
+    "category": "fitness",
+    "difficulty": "intermediate",
+    "duration": 15,
+    "playerCountMin": 1,
+    "playerCountMax": 20,
+    "equipment": ["cones"],
+    "instructions": [
+      "Set up 5 cones in a line at 10, 20, 30, 40, and 50 yards.",
+      "Round 1: Sprint to 10-yard cone, jog back. Sprint to 20-yard cone, jog back.",
+      "Continue the ladder — sprint to each cone and jog back to the start.",
+      "After reaching the 50-yard cone, work back down: 40, 30, 20, 10.",
+      "Rest 60 seconds between full ladders.",
+      "Complete 3 full ladders."
+    ],
+    "coachingPoints": [
+      "Explode out of each start — drive with the arms.",
+      "Stay on the balls of your feet — no flat-footed jogging.",
+      "Use the jog back as active recovery, don't walk.",
+      "Maintain sprint quality — don't let form break down when tired."
+    ],
+    "variations": [
+      "Add a ball — dribble out, pass to a partner, sprint back.",
+      "Side shuffle or backpedal instead of sprinting.",
+      "Pair up and race to each cone."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 50, "y": 90, "label": "P", "color": "#2563eb" },
+      { "type": "cone", "x": 50, "y": 75 },
+      { "type": "cone", "x": 50, "y": 60 },
+      { "type": "cone", "x": 50, "y": 45 },
+      { "type": "cone", "x": 50, "y": 30 },
+      { "type": "cone", "x": 50, "y": 15 },
+      { "type": "run-path", "x": 50, "y": 90, "toX": 50, "toY": 15, "color": "#dc2626", "dashed": true },
+      { "type": "run-path", "x": 48, "y": 15, "toX": 48, "toY": 90, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["fitness", "sprints", "conditioning", "speed"]
+  },
+  {
+    "id": "20",
+    "slug": "agility-box-footwork",
+    "title": "Agility Box Footwork",
+    "category": "fitness",
+    "difficulty": "beginner",
+    "duration": 10,
+    "playerCountMin": 1,
+    "playerCountMax": 20,
+    "equipment": ["cones"],
+    "instructions": [
+      "Set up a 5x5 yard square with cones at each corner.",
+      "Start at one corner. Sprint forward to the next cone.",
+      "Shuffle sideways to the next cone.",
+      "Backpedal to the next cone.",
+      "Shuffle sideways back to the start.",
+      "Complete the box 6 times, rest 30 seconds, then repeat in the opposite direction.",
+      "3 total sets."
+    ],
+    "coachingPoints": [
+      "Stay low and athletic throughout — bent knees, weight on toes.",
+      "During shuffles, don't cross your feet.",
+      "Backpedal with short, choppy steps — don't turn and run.",
+      "Touch each cone as you arrive for accountability."
+    ],
+    "variations": [
+      "Add a ball — dribble while performing each movement pattern.",
+      "Coach calls out random directions for reaction training.",
+      "Increase box size to 10x10 yards for more endurance demand."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 40, "y": 40 },
+      { "type": "cone", "x": 60, "y": 40 },
+      { "type": "cone", "x": 60, "y": 60 },
+      { "type": "cone", "x": 40, "y": 60 },
+      { "type": "player", "x": 40, "y": 60, "label": "P", "color": "#2563eb" },
+      { "type": "run-path", "x": 40, "y": 60, "toX": 40, "toY": 40, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 40, "y": 40, "toX": 60, "toY": 40, "color": "#10b981", "dashed": true },
+      { "type": "run-path", "x": 60, "y": 40, "toX": 60, "toY": 60, "color": "#f59e0b", "dashed": true },
+      { "type": "run-path", "x": 60, "y": 60, "toX": 40, "toY": 60, "color": "#dc2626", "dashed": true }
+    ],
+    "tags": ["fitness", "agility", "footwork", "warm-up"]
+  },
+  {
+    "id": "21",
+    "slug": "overlap-and-cross",
+    "title": "Overlap & Cross",
+    "category": "passing",
+    "difficulty": "intermediate",
+    "duration": 15,
+    "playerCountMin": 6,
+    "playerCountMax": 14,
+    "equipment": ["balls", "cones", "goals"],
+    "instructions": [
+      "Set up on one half of the pitch with a full-size goal.",
+      "Full-back starts deep with the ball. Winger starts wide and high.",
+      "Full-back passes to the winger's feet.",
+      "Winger receives and plays inside, drawing the imaginary defender.",
+      "Full-back overlaps around the winger on the outside.",
+      "Winger plays a through ball for the overlapping full-back.",
+      "Full-back crosses into the box for two strikers to finish."
+    ],
+    "coachingPoints": [
+      "Timing of the overlap — don't go too early or the winger has no one to pass to.",
+      "Winger must check inside first to create the space for the overlap.",
+      "Cross should be driven into the danger zone between keeper and defenders.",
+      "Strikers: stagger near and far post runs."
+    ],
+    "variations": [
+      "Add a covering defender to pressure the crosser.",
+      "Alternate between left and right side overlaps.",
+      "Double overlap — winger then midfielder overlaps the full-back."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 80, "y": 75, "label": "FB", "color": "#2563eb" },
+      { "type": "player", "x": 82, "y": 45, "label": "W", "color": "#2563eb" },
+      { "type": "player", "x": 45, "y": 30, "label": "ST1", "color": "#2563eb" },
+      { "type": "player", "x": 55, "y": 35, "label": "ST2", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 5, "label": "GK", "color": "#10b981" },
+      { "type": "ball", "x": 80, "y": 75 },
+      { "type": "arrow", "x": 80, "y": 75, "toX": 82, "toY": 45, "color": "#2563eb" },
+      { "type": "arrow", "x": 82, "y": 45, "toX": 70, "toY": 40, "color": "#2563eb" },
+      { "type": "run-path", "x": 80, "y": 75, "toX": 88, "toY": 45, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 88, "y": 45, "toX": 88, "toY": 20, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 70, "y": 40, "toX": 88, "toY": 25, "color": "#f59e0b" },
+      { "type": "arrow", "x": 88, "y": 20, "toX": 50, "toY": 15, "color": "#f59e0b" }
+    ],
+    "tags": ["passing", "overlap", "crossing", "attacking-play"]
+  },
+  {
+    "id": "22",
+    "slug": "turn-and-shoot",
+    "title": "Turn & Shoot",
+    "category": "shooting",
+    "difficulty": "intermediate",
+    "duration": 12,
+    "playerCountMin": 3,
+    "playerCountMax": 10,
+    "equipment": ["balls", "goals", "cones"],
+    "instructions": [
+      "Striker starts with back to goal at the edge of the penalty area.",
+      "Server plays a firm pass into the striker's feet from 15 yards behind.",
+      "Striker receives, takes a touch to turn, and shoots on goal.",
+      "Alternate receiving on the left and right side to practice both turns.",
+      "After 5 attempts, add a passive defender behind the striker.",
+      "10 shots per player, then rotate."
+    ],
+    "coachingPoints": [
+      "Check your shoulder before the ball arrives to know where the goal is.",
+      "First touch must take you toward goal — don't let it bounce off you.",
+      "Use your body to shield the ball from the defender during the turn.",
+      "Strike early — the longer you wait, the more time the keeper has to set."
+    ],
+    "variations": [
+      "Active defender who can tackle.",
+      "Require a specific turn (Cruyff, drag-back, spin).",
+      "Add a one-two option with a support player."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 50, "y": 35, "label": "ST", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 65, "label": "S", "color": "#f59e0b" },
+      { "type": "player", "x": 50, "y": 5, "label": "GK", "color": "#10b981" },
+      { "type": "ball", "x": 50, "y": 65 },
+      { "type": "arrow", "x": 50, "y": 65, "toX": 50, "toY": 37, "color": "#f59e0b" },
+      { "type": "arrow", "x": 48, "y": 35, "toX": 40, "toY": 30, "color": "#2563eb" },
+      { "type": "arrow", "x": 40, "y": 30, "toX": 45, "toY": 8, "color": "#dc2626" },
+      { "type": "cone", "x": 35, "y": 5 },
+      { "type": "cone", "x": 65, "y": 5 }
+    ],
+    "tags": ["shooting", "turning", "finishing", "striker-play"]
+  },
+  {
+    "id": "23",
+    "slug": "la-pausa-passing-square",
+    "title": "La Pausa Passing Square",
+    "category": "passing",
+    "difficulty": "advanced",
+    "duration": 20,
+    "playerCountMin": 8,
+    "playerCountMax": 16,
+    "equipment": ["balls", "cones", "bibs"],
+    "instructions": [
+      "Set up a 25x25 yard square with cones. Place a 5x5 yard inner square in the center.",
+      "Four outside players position at the midpoints of each side. Four players work inside.",
+      "Inside players combine to play the ball from one outside player to the opposite side.",
+      "The ball must pass through the central square at least once per sequence.",
+      "Outside players are two-touch, inside players are one-touch.",
+      "After every 3 minutes, inside and outside players rotate."
+    ],
+    "coachingPoints": [
+      "Inside players must constantly adjust position to offer passing angles.",
+      "Use 'La Pausa' — the brief pause before accelerating the pass to wrong-foot pressure.",
+      "Body shape open to the field, not just to the ball.",
+      "Weight of pass must be precise — firm but playable."
+    ],
+    "variations": [
+      "Add two defenders inside to press.",
+      "One-touch for everyone.",
+      "Score a point only if the switch is completed in under 4 seconds."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 25, "y": 25 },
+      { "type": "cone", "x": 75, "y": 25 },
+      { "type": "cone", "x": 75, "y": 75 },
+      { "type": "cone", "x": 25, "y": 75 },
+      { "type": "cone", "x": 45, "y": 45 },
+      { "type": "cone", "x": 55, "y": 45 },
+      { "type": "cone", "x": 55, "y": 55 },
+      { "type": "cone", "x": 45, "y": 55 },
+      { "type": "player", "x": 50, "y": 23, "label": "O1", "color": "#2563eb" },
+      { "type": "player", "x": 77, "y": 50, "label": "O2", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 77, "label": "O3", "color": "#2563eb" },
+      { "type": "player", "x": 23, "y": 50, "label": "O4", "color": "#2563eb" },
+      { "type": "player", "x": 42, "y": 42, "label": "I1", "color": "#f59e0b" },
+      { "type": "player", "x": 58, "y": 42, "label": "I2", "color": "#f59e0b" },
+      { "type": "player", "x": 58, "y": 58, "label": "I3", "color": "#f59e0b" },
+      { "type": "player", "x": 42, "y": 58, "label": "I4", "color": "#f59e0b" },
+      { "type": "ball", "x": 50, "y": 23 },
+      { "type": "arrow", "x": 50, "y": 23, "toX": 42, "toY": 42, "color": "#2563eb" },
+      { "type": "arrow", "x": 42, "y": 42, "toX": 58, "toY": 58, "color": "#f59e0b" },
+      { "type": "arrow", "x": 58, "y": 58, "toX": 50, "toY": 77, "color": "#f59e0b" }
+    ],
+    "tags": ["passing", "possession", "quick-play", "tactical"]
+  },
+  {
+    "id": "24",
+    "slug": "power-shot-stations",
+    "title": "Power Shot Stations",
+    "category": "shooting",
+    "difficulty": "intermediate",
+    "duration": 15,
+    "playerCountMin": 4,
+    "playerCountMax": 12,
+    "equipment": ["balls", "cones", "goals"],
+    "instructions": [
+      "Set up three shooting stations at 20, 25, and 30 yards from goal.",
+      "Place a cone at each station. Goalkeeper in goal.",
+      "Player starts at Station 1 (20 yards) — receives a lay-off from a server and shoots first-time.",
+      "Immediately moves to Station 2 (25 yards) — drives forward with the ball and strikes.",
+      "Finally moves to Station 3 (30 yards) — hits a dead ball aiming for a specific corner.",
+      "Complete all three stations, then join the back of the line. 3 full rounds per player."
+    ],
+    "coachingPoints": [
+      "Plant foot next to the ball, pointing at the target.",
+      "Strike through the center of the ball for power, slightly below center for loft.",
+      "Follow through fully — don't stab at the ball.",
+      "Keep your head steady and eyes on the ball at the moment of contact."
+    ],
+    "variations": [
+      "Weak foot only at one or more stations.",
+      "Add a wall of mannequins to shoot over or around.",
+      "Require a curl shot at Station 3 instead of power."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 50, "y": 45, "label": "S1" },
+      { "type": "cone", "x": 35, "y": 55, "label": "S2" },
+      { "type": "cone", "x": 65, "y": 65, "label": "S3" },
+      { "type": "player", "x": 50, "y": 5, "label": "GK", "color": "#10b981" },
+      { "type": "player", "x": 50, "y": 47, "label": "P", "color": "#2563eb" },
+      { "type": "player", "x": 65, "y": 45, "label": "SV", "color": "#f59e0b" },
+      { "type": "ball", "x": 65, "y": 45 },
+      { "type": "arrow", "x": 65, "y": 45, "toX": 52, "toY": 44, "color": "#f59e0b" },
+      { "type": "arrow", "x": 50, "y": 45, "toX": 50, "toY": 8, "color": "#dc2626" },
+      { "type": "run-path", "x": 50, "y": 47, "toX": 35, "toY": 55, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 35, "y": 55, "toX": 65, "toY": 65, "color": "#2563eb", "dashed": true },
+      { "type": "cone", "x": 35, "y": 5 },
+      { "type": "cone", "x": 65, "y": 5 }
+    ],
+    "tags": ["shooting", "power", "technique", "finishing"]
+  },
+  {
+    "id": "25",
+    "slug": "elastico-and-go",
+    "title": "Elastico & Go",
+    "category": "dribbling",
+    "difficulty": "advanced",
+    "duration": 15,
+    "playerCountMin": 1,
+    "playerCountMax": 10,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up 5 cones in a straight line, 4 yards apart.",
+      "Dribble at moderate speed toward the first cone.",
+      "Perform an elastico (outside-inside flick with the same foot) to go around the cone.",
+      "Accelerate to the next cone and repeat.",
+      "At the last cone, perform a sharp turn and dribble back using the other foot.",
+      "Complete 6 full runs. Rest 30 seconds between each."
+    ],
+    "coachingPoints": [
+      "The elastico is one fluid motion — push outside, snap inside with the same foot.",
+      "Drop the shoulder opposite to the direction you want to go to sell the fake.",
+      "Keep the ball on the ground — don't scoop it.",
+      "Explode past the cone after each elastico — the move is wasted without acceleration."
+    ],
+    "variations": [
+      "Alternate between elastico and step-over at each cone.",
+      "Add a passive defender at every second cone.",
+      "Finish with a shot on goal after the final cone."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 50, "y": 88, "label": "P", "color": "#2563eb" },
+      { "type": "ball", "x": 50, "y": 88 },
+      { "type": "cone", "x": 50, "y": 75 },
+      { "type": "cone", "x": 50, "y": 62 },
+      { "type": "cone", "x": 50, "y": 49 },
+      { "type": "cone", "x": 50, "y": 36 },
+      { "type": "cone", "x": 50, "y": 23 },
+      { "type": "run-path", "x": 50, "y": 88, "toX": 55, "toY": 75, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 55, "y": 75, "toX": 45, "toY": 73, "color": "#f59e0b" },
+      { "type": "run-path", "x": 45, "y": 73, "toX": 55, "toY": 62, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 55, "y": 62, "toX": 45, "toY": 60, "color": "#f59e0b" }
+    ],
+    "tags": ["dribbling", "skill-moves", "elastico", "technique"]
+  },
+  {
+    "id": "26",
+    "slug": "counter-press-3v3",
+    "title": "Counter-Press 3v3",
+    "category": "defending",
+    "difficulty": "intermediate",
+    "duration": 15,
+    "playerCountMin": 6,
+    "playerCountMax": 12,
+    "equipment": ["balls", "cones", "bibs"],
+    "instructions": [
+      "Set up a 25x20 yard grid with a mini goal at each end.",
+      "Two teams of 3 play inside the grid.",
+      "Normal possession rules — score in the opponent's mini goal.",
+      "When a team loses the ball, they have 5 seconds to win it back (counter-press).",
+      "If they win it back within 5 seconds, a goal counts double.",
+      "If they fail to win it back, they must drop into a compact defensive shape."
+    ],
+    "coachingPoints": [
+      "Immediate reaction on losing the ball — nearest player must press the ball instantly.",
+      "Other two players cut off passing lanes, don't all chase the ball.",
+      "Hunt in pairs — one presses, one covers the next pass.",
+      "Transition mindset: attack one second, defend the next."
+    ],
+    "variations": [
+      "Increase to 4v4 in a bigger grid.",
+      "Add neutral wide players who play for the team in possession.",
+      "Remove the 5-second rule and just reward counter-press goals."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 25, "y": 30 },
+      { "type": "cone", "x": 75, "y": 30 },
+      { "type": "cone", "x": 75, "y": 70 },
+      { "type": "cone", "x": 25, "y": 70 },
+      { "type": "cone", "x": 45, "y": 30 },
+      { "type": "cone", "x": 55, "y": 30 },
+      { "type": "cone", "x": 45, "y": 70 },
+      { "type": "cone", "x": 55, "y": 70 },
+      { "type": "player", "x": 40, "y": 45, "label": "1", "color": "#2563eb" },
+      { "type": "player", "x": 55, "y": 40, "label": "2", "color": "#2563eb" },
+      { "type": "player", "x": 45, "y": 55, "label": "3", "color": "#2563eb" },
+      { "type": "player", "x": 60, "y": 55, "label": "1", "color": "#dc2626" },
+      { "type": "player", "x": 50, "y": 60, "label": "2", "color": "#dc2626" },
+      { "type": "player", "x": 35, "y": 60, "label": "3", "color": "#dc2626" },
+      { "type": "ball", "x": 40, "y": 45 },
+      { "type": "arrow", "x": 40, "y": 45, "toX": 55, "toY": 40, "color": "#2563eb" },
+      { "type": "run-path", "x": 60, "y": 55, "toX": 55, "toY": 42, "color": "#dc2626", "dashed": true },
+      { "type": "run-path", "x": 50, "y": 60, "toX": 48, "toY": 45, "color": "#dc2626", "dashed": true }
+    ],
+    "tags": ["defending", "counter-press", "transition", "small-sided"]
+  },
+  {
+    "id": "27",
+    "slug": "yo-yo-endurance-test",
+    "title": "Yo-Yo Endurance Runs",
+    "category": "fitness",
+    "difficulty": "intermediate",
+    "duration": 20,
+    "playerCountMin": 1,
+    "playerCountMax": 30,
+    "equipment": ["cones"],
+    "instructions": [
+      "Mark three lines: start, 20 yards, and a recovery zone 5 yards behind the start.",
+      "Players run 20 yards out and 20 yards back within a set time window.",
+      "After each shuttle, jog to the recovery zone and back (10 seconds active rest).",
+      "Start at a slow pace. Each level increases the required speed.",
+      "If a player fails to reach the line before the beep twice, they are eliminated.",
+      "Continue until all players are eliminated or 20 minutes is reached."
+    ],
+    "coachingPoints": [
+      "Pace yourself in the early levels — don't sprint from the start.",
+      "Turn efficiently — decelerate in 2-3 steps, pivot, and drive out.",
+      "Use the recovery jog wisely — control breathing.",
+      "Mental toughness matters as much as fitness in the later levels."
+    ],
+    "variations": [
+      "Add a ball — dribble the shuttle for football-specific endurance.",
+      "Team format: each player's level adds to a team total score.",
+      "Perform a skill move at each turning point."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 30, "y": 80 },
+      { "type": "cone", "x": 70, "y": 80 },
+      { "type": "cone", "x": 30, "y": 30 },
+      { "type": "cone", "x": 70, "y": 30 },
+      { "type": "cone", "x": 30, "y": 90 },
+      { "type": "cone", "x": 70, "y": 90 },
+      { "type": "player", "x": 40, "y": 80, "label": "P1", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 80, "label": "P2", "color": "#2563eb" },
+      { "type": "player", "x": 60, "y": 80, "label": "P3", "color": "#2563eb" },
+      { "type": "run-path", "x": 50, "y": 80, "toX": 50, "toY": 30, "color": "#dc2626", "dashed": true },
+      { "type": "run-path", "x": 52, "y": 30, "toX": 52, "toY": 80, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 50, "y": 82, "toX": 50, "toY": 90, "color": "#10b981", "dashed": true }
+    ],
+    "tags": ["fitness", "endurance", "yo-yo", "conditioning"]
+  },
+  {
+    "id": "28",
+    "slug": "third-man-run-pattern",
+    "title": "Third Man Run Pattern",
+    "category": "passing",
+    "difficulty": "advanced",
+    "duration": 20,
+    "playerCountMin": 6,
+    "playerCountMax": 12,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up three stations in an L-shape: Player A (deep), Player B (central), Player C (high and wide).",
+      "Player A passes to Player B. Player B sets the ball back first-time.",
+      "Player A plays a through ball into the space behind for Player C, who has timed a run.",
+      "Player C is the 'third man' — they were not involved in the initial pass but exploit the space it creates.",
+      "Players rotate: A goes to B, B goes to C, C collects the ball and goes to A.",
+      "Run the pattern on both sides of the pitch."
+    ],
+    "coachingPoints": [
+      "The third man run must be timed — start moving as the first pass is played, not before.",
+      "Player B's set must be accurate — angled to allow a first-time through ball.",
+      "Player A must have the vision to see the third man run developing.",
+      "Quality of the through ball is critical — weight it into the space, not to feet."
+    ],
+    "variations": [
+      "Add a defender to track Player C's run.",
+      "Finish with a cross or shot on goal after receiving the through ball.",
+      "Combine two patterns simultaneously on both sides."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 40, "y": 75 },
+      { "type": "cone", "x": 40, "y": 50 },
+      { "type": "cone", "x": 70, "y": 30 },
+      { "type": "player", "x": 40, "y": 77, "label": "A", "color": "#2563eb" },
+      { "type": "player", "x": 40, "y": 52, "label": "B", "color": "#f59e0b" },
+      { "type": "player", "x": 70, "y": 45, "label": "C", "color": "#10b981" },
+      { "type": "ball", "x": 40, "y": 77 },
+      { "type": "arrow", "x": 40, "y": 77, "toX": 40, "toY": 54, "color": "#2563eb" },
+      { "type": "arrow", "x": 40, "y": 52, "toX": 40, "toY": 70, "color": "#f59e0b" },
+      { "type": "arrow", "x": 40, "y": 70, "toX": 70, "toY": 30, "color": "#2563eb" },
+      { "type": "run-path", "x": 70, "y": 45, "toX": 70, "toY": 30, "color": "#10b981", "dashed": true }
+    ],
+    "tags": ["passing", "third-man-run", "combination-play", "tactical"]
+  },
+  {
+    "id": "29",
+    "slug": "one-touch-shooting-circle",
+    "title": "One-Touch Shooting Circle",
+    "category": "shooting",
+    "difficulty": "beginner",
+    "duration": 12,
+    "playerCountMin": 5,
+    "playerCountMax": 14,
+    "equipment": ["balls", "cones", "goals"],
+    "instructions": [
+      "Set up a semicircle of cones around the penalty area at 20 yards from goal.",
+      "Place a ball at each cone. Players line up behind one cone.",
+      "First player runs to the first cone, shoots first-time, then sprints to the next cone.",
+      "Shoot at every cone around the semicircle — all first-time.",
+      "Goalkeeper stays in goal for continuous action.",
+      "After completing the arc, jog back and next player goes. 3 rounds each."
+    ],
+    "coachingPoints": [
+      "Set your body early — don't arrive at the ball off-balance.",
+      "Pick your target before you reach the ball.",
+      "Hit the target — accuracy beats power at this range.",
+      "Stay composed even when fatigued — game situations demand it."
+    ],
+    "variations": [
+      "A server plays each ball in instead of having them placed.",
+      "Alternate between left foot and right foot at each station.",
+      "Add a time limit to complete the arc."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 20, "y": 40 },
+      { "type": "cone", "x": 30, "y": 32 },
+      { "type": "cone", "x": 42, "y": 28 },
+      { "type": "cone", "x": 58, "y": 28 },
+      { "type": "cone", "x": 70, "y": 32 },
+      { "type": "cone", "x": 80, "y": 40 },
+      { "type": "ball", "x": 20, "y": 40 },
+      { "type": "ball", "x": 30, "y": 32 },
+      { "type": "ball", "x": 42, "y": 28 },
+      { "type": "ball", "x": 58, "y": 28 },
+      { "type": "ball", "x": 70, "y": 32 },
+      { "type": "ball", "x": 80, "y": 40 },
+      { "type": "player", "x": 18, "y": 43, "label": "P", "color": "#2563eb" },
+      { "type": "player", "x": 50, "y": 5, "label": "GK", "color": "#10b981" },
+      { "type": "arrow", "x": 20, "y": 40, "toX": 50, "toY": 8, "color": "#dc2626" },
+      { "type": "arrow", "x": 42, "y": 28, "toX": 50, "toY": 8, "color": "#dc2626" },
+      { "type": "arrow", "x": 70, "y": 32, "toX": 50, "toY": 8, "color": "#dc2626" },
+      { "type": "run-path", "x": 20, "y": 40, "toX": 30, "toY": 32, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 30, "y": 32, "toX": 42, "toY": 28, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 42, "y": 28, "toX": 58, "toY": 28, "color": "#2563eb", "dashed": true },
+      { "type": "cone", "x": 35, "y": 5 },
+      { "type": "cone", "x": 65, "y": 5 }
+    ],
+    "tags": ["shooting", "first-time", "finishing", "conditioning"]
+  },
+  {
+    "id": "30",
+    "slug": "stepovers-and-scissors",
+    "title": "Stepovers & Scissors Drill",
+    "category": "dribbling",
+    "difficulty": "intermediate",
+    "duration": 12,
+    "playerCountMin": 1,
+    "playerCountMax": 12,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up 4 cones in a straight line, 6 yards apart. Place a gate (2 cones, 2 yards wide) next to each.",
+      "Dribble toward the first gate. Perform a single stepover and exit through the gate.",
+      "At the second gate, perform a double stepover (scissors) and exit.",
+      "At the third gate, perform a reverse stepover and exit.",
+      "At the fourth gate, combine any two moves and accelerate through.",
+      "Jog back and repeat. Complete 8 runs."
+    ],
+    "coachingPoints": [
+      "Circle the ball fully with the stepover — don't just dangle your foot.",
+      "Drop the shoulder in the direction of the fake to sell it.",
+      "Exit with the outside of the opposite foot — push the ball away at pace.",
+      "Speed up the stepovers as you become comfortable."
+    ],
+    "variations": [
+      "Add a passive defender standing at each gate.",
+      "Race a partner through parallel courses.",
+      "Finish with a shot on goal after the final gate."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 30, "y": 85, "label": "P", "color": "#2563eb" },
+      { "type": "ball", "x": 30, "y": 85 },
+      { "type": "cone", "x": 28, "y": 70 },
+      { "type": "cone", "x": 34, "y": 70 },
+      { "type": "cone", "x": 28, "y": 55 },
+      { "type": "cone", "x": 34, "y": 55 },
+      { "type": "cone", "x": 28, "y": 40 },
+      { "type": "cone", "x": 34, "y": 40 },
+      { "type": "cone", "x": 28, "y": 25 },
+      { "type": "cone", "x": 34, "y": 25 },
+      { "type": "run-path", "x": 30, "y": 85, "toX": 25, "toY": 72, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 25, "y": 72, "toX": 36, "toY": 68, "color": "#f59e0b" },
+      { "type": "run-path", "x": 36, "y": 68, "toX": 25, "toY": 57, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 25, "y": 57, "toX": 36, "toY": 53, "color": "#f59e0b" }
+    ],
+    "tags": ["dribbling", "stepovers", "skill-moves", "technique"]
+  },
+  {
+    "id": "31",
+    "slug": "box-to-box-intervals",
+    "title": "Box-to-Box Intervals",
+    "category": "fitness",
+    "difficulty": "advanced",
+    "duration": 18,
+    "playerCountMin": 1,
+    "playerCountMax": 20,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Use the full pitch — start on one penalty box line.",
+      "Sprint to the halfway line, perform 5 ball taps, sprint to the opposite penalty box.",
+      "At the far box, perform 10 quick feet on the ball, then sprint back to halfway.",
+      "At halfway, do 5 push-ups, then sprint back to the start.",
+      "That is one rep. Rest 45 seconds between reps.",
+      "Complete 6 reps total."
+    ],
+    "coachingPoints": [
+      "Maintain sprint quality — don't jog the second half of each sprint.",
+      "Ball work at the stations must be fast and purposeful, not sloppy.",
+      "Breathe rhythmically during push-ups to recover while working.",
+      "This drill simulates the demands of a box-to-box midfielder — replicate match intensity."
+    ],
+    "variations": [
+      "Replace push-ups with burpees for extra intensity.",
+      "Add a pass-and-receive station at halfway with a partner.",
+      "Extend to full pitch length for higher fitness demands."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 25, "y": 85 },
+      { "type": "cone", "x": 75, "y": 85 },
+      { "type": "cone", "x": 25, "y": 50 },
+      { "type": "cone", "x": 75, "y": 50 },
+      { "type": "cone", "x": 25, "y": 15 },
+      { "type": "cone", "x": 75, "y": 15 },
+      { "type": "player", "x": 50, "y": 85, "label": "P", "color": "#2563eb" },
+      { "type": "ball", "x": 50, "y": 50 },
+      { "type": "run-path", "x": 50, "y": 85, "toX": 50, "toY": 50, "color": "#dc2626", "dashed": true },
+      { "type": "run-path", "x": 50, "y": 50, "toX": 50, "toY": 15, "color": "#dc2626", "dashed": true },
+      { "type": "run-path", "x": 48, "y": 15, "toX": 48, "toY": 50, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 48, "y": 50, "toX": 48, "toY": 85, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["fitness", "box-to-box", "high-intensity", "conditioning"]
+  },
+  {
+    "id": "32",
+    "slug": "long-ball-switching",
+    "title": "Long Ball Switching Play",
+    "category": "passing",
+    "difficulty": "intermediate",
+    "duration": 15,
+    "playerCountMin": 6,
+    "playerCountMax": 14,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up two wide zones (10x10 yards) on opposite sides of the pitch, 40 yards apart.",
+      "Place 3 players in each wide zone. One ball starts in the left zone.",
+      "Players in the left zone combine with quick passes (3 minimum).",
+      "After the combination, one player plays a long diagonal switch to the right zone.",
+      "Right zone players control, combine, and switch back to the left zone.",
+      "Rotate one player from each zone every 3 minutes."
+    ],
+    "coachingPoints": [
+      "Long pass technique: lock ankle, lean slightly back, strike through the bottom half of the ball.",
+      "Receiving the long ball: get in line, cushion with the chest or thigh, set it for the next pass.",
+      "Quick combination before the switch creates rhythm — don't rush the long ball.",
+      "Communicate with the far zone — call for the ball, signal where you want it."
+    ],
+    "variations": [
+      "Add a central defender who tries to intercept the long switch.",
+      "One-touch combinations before the switch.",
+      "Require a specific type of long pass: driven, lofted, or chipped."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 10, "y": 40 },
+      { "type": "cone", "x": 25, "y": 40 },
+      { "type": "cone", "x": 25, "y": 60 },
+      { "type": "cone", "x": 10, "y": 60 },
+      { "type": "cone", "x": 75, "y": 40 },
+      { "type": "cone", "x": 90, "y": 40 },
+      { "type": "cone", "x": 90, "y": 60 },
+      { "type": "cone", "x": 75, "y": 60 },
+      { "type": "player", "x": 15, "y": 43, "label": "L1", "color": "#2563eb" },
+      { "type": "player", "x": 22, "y": 50, "label": "L2", "color": "#2563eb" },
+      { "type": "player", "x": 15, "y": 57, "label": "L3", "color": "#2563eb" },
+      { "type": "player", "x": 80, "y": 43, "label": "R1", "color": "#f59e0b" },
+      { "type": "player", "x": 87, "y": 50, "label": "R2", "color": "#f59e0b" },
+      { "type": "player", "x": 80, "y": 57, "label": "R3", "color": "#f59e0b" },
+      { "type": "ball", "x": 15, "y": 43 },
+      { "type": "arrow", "x": 15, "y": 43, "toX": 22, "toY": 50, "color": "#2563eb" },
+      { "type": "arrow", "x": 22, "y": 50, "toX": 15, "toY": 57, "color": "#2563eb" },
+      { "type": "arrow", "x": 15, "y": 57, "toX": 80, "toY": 43, "color": "#10b981" }
+    ],
+    "tags": ["passing", "long-balls", "switching-play", "technique"]
+  },
+  {
+    "id": "33",
+    "slug": "double-cut-dribble",
+    "title": "Double Cut & Explode",
+    "category": "dribbling",
+    "difficulty": "beginner",
+    "duration": 10,
+    "playerCountMin": 1,
+    "playerCountMax": 14,
+    "equipment": ["balls", "cones"],
+    "instructions": [
+      "Set up pairs of cones as gates (2 yards wide), staggered left and right, 5 yards apart.",
+      "Dribble toward the first gate. Perform a cut (inside of the foot) to change direction through the gate.",
+      "Immediately perform a second cut with the other foot to redirect toward the next gate.",
+      "The 'double cut' simulates changing direction twice to beat a defender.",
+      "Accelerate between gates. Complete 6 full runs through all gates.",
+      "Focus on close control and quick feet."
+    ],
+    "coachingPoints": [
+      "Plant the non-cutting foot firmly and cut with the inside of the other foot.",
+      "The second cut must be immediate — no pause between the two cuts.",
+      "Stay low with bent knees to change direction quickly.",
+      "Accelerate explosively after the double cut — that's where you gain the advantage."
+    ],
+    "variations": [
+      "Use outside-of-the-foot cuts instead of inside.",
+      "Alternate between inside and outside cuts.",
+      "Add a race element with a partner on a parallel course."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 35, "y": 88, "label": "P", "color": "#2563eb" },
+      { "type": "ball", "x": 35, "y": 88 },
+      { "type": "cone", "x": 33, "y": 73 },
+      { "type": "cone", "x": 39, "y": 73 },
+      { "type": "cone", "x": 58, "y": 60 },
+      { "type": "cone", "x": 64, "y": 60 },
+      { "type": "cone", "x": 33, "y": 47 },
+      { "type": "cone", "x": 39, "y": 47 },
+      { "type": "cone", "x": 58, "y": 34 },
+      { "type": "cone", "x": 64, "y": 34 },
+      { "type": "run-path", "x": 35, "y": 88, "toX": 36, "toY": 73, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 36, "y": 73, "toX": 61, "toY": 60, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 61, "y": 60, "toX": 36, "toY": 47, "color": "#2563eb", "dashed": true },
+      { "type": "run-path", "x": 36, "y": 47, "toX": 61, "toY": 34, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["dribbling", "cutting", "technique", "individual"]
+  },
+  {
+    "id": "34",
+    "slug": "near-post-far-post-finishing",
+    "title": "Near Post / Far Post Finishing",
+    "category": "shooting",
+    "difficulty": "intermediate",
+    "duration": 15,
+    "playerCountMin": 4,
+    "playerCountMax": 10,
+    "equipment": ["balls", "cones", "goals"],
+    "instructions": [
+      "Goalkeeper in goal. Two servers stand wide, one on each side, with a supply of balls.",
+      "Striker starts centrally at the edge of the box.",
+      "Server 1 plays a low ball across the face of goal — striker attacks the near post to finish.",
+      "Striker immediately recovers to center. Server 2 plays a ball to the far post — striker finishes.",
+      "That is one rep. Complete 8 reps, then rotate the striker.",
+      "Emphasis on quick transitions between near and far post."
+    ],
+    "coachingPoints": [
+      "Near post: get across the defender, attack the ball with a side-foot redirect.",
+      "Far post: arrive late, keep the ball low, sweep it into the net.",
+      "Recovery between shots must be game-speed — don't walk back to center.",
+      "Read the flight of the ball early and adjust your run accordingly."
+    ],
+    "variations": [
+      "Add a defender who tries to block the striker's run.",
+      "Servers vary height — low, bouncing, or in the air.",
+      "Two strikers competing for the same ball."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 50, "y": 35, "label": "ST", "color": "#2563eb" },
+      { "type": "player", "x": 20, "y": 25, "label": "S1", "color": "#f59e0b" },
+      { "type": "player", "x": 80, "y": 25, "label": "S2", "color": "#f59e0b" },
+      { "type": "player", "x": 50, "y": 5, "label": "GK", "color": "#10b981" },
+      { "type": "ball", "x": 20, "y": 25 },
+      { "type": "arrow", "x": 20, "y": 25, "toX": 40, "toY": 10, "color": "#f59e0b" },
+      { "type": "run-path", "x": 50, "y": 35, "toX": 40, "toY": 10, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 40, "y": 10, "toX": 45, "toY": 5, "color": "#dc2626" },
+      { "type": "arrow", "x": 80, "y": 25, "toX": 60, "toY": 10, "color": "#f59e0b", "dashed": true },
+      { "type": "run-path", "x": 50, "y": 35, "toX": 60, "toY": 10, "color": "#2563eb", "dashed": true },
+      { "type": "cone", "x": 35, "y": 5 },
+      { "type": "cone", "x": 65, "y": 5 }
+    ],
+    "tags": ["shooting", "finishing", "movement", "striker-play"]
+  },
+  {
+    "id": "35",
+    "slug": "defensive-block-shape",
+    "title": "Defensive Block 4-4-2 Shape",
+    "category": "defending",
+    "difficulty": "advanced",
+    "duration": 20,
+    "playerCountMin": 10,
+    "playerCountMax": 16,
+    "equipment": ["balls", "cones", "bibs"],
+    "instructions": [
+      "Set up a half-pitch with a full-size goal. 8 defenders form a 4-4-2 block.",
+      "6 attackers (plus a goalkeeper) try to break through and score.",
+      "Defenders must maintain compact shape — no more than 25 yards between the front and back line.",
+      "When the ball goes wide, the entire block shifts. When it's central, the block narrows.",
+      "Defenders win by forcing a turnover and clearing the ball past the halfway line.",
+      "Play 5-minute rounds, then rotate attackers and defenders."
+    ],
+    "coachingPoints": [
+      "Move as a block — if one line shifts, the other must follow.",
+      "Distances matter: 10-12 yards between each line, 5-8 yards between players.",
+      "Near-side players press, far-side players tuck in.",
+      "Be patient — don't break shape to chase the ball, let the block do the work."
+    ],
+    "variations": [
+      "Switch to a 4-5-1 or 5-3-2 shape.",
+      "Allow defenders to counter-attack through mini goals on the halfway line.",
+      "Add a time limit — if attackers don't score in 90 seconds, defenders win."
+    ],
+    "pitchElements": [
+      { "type": "player", "x": 20, "y": 65, "label": "LB", "color": "#2563eb" },
+      { "type": "player", "x": 40, "y": 65, "label": "CB", "color": "#2563eb" },
+      { "type": "player", "x": 60, "y": 65, "label": "CB", "color": "#2563eb" },
+      { "type": "player", "x": 80, "y": 65, "label": "RB", "color": "#2563eb" },
+      { "type": "player", "x": 20, "y": 50, "label": "LM", "color": "#2563eb" },
+      { "type": "player", "x": 40, "y": 50, "label": "CM", "color": "#2563eb" },
+      { "type": "player", "x": 60, "y": 50, "label": "CM", "color": "#2563eb" },
+      { "type": "player", "x": 80, "y": 50, "label": "RM", "color": "#2563eb" },
+      { "type": "player", "x": 40, "y": 38, "label": "ST", "color": "#2563eb" },
+      { "type": "player", "x": 60, "y": 38, "label": "ST", "color": "#2563eb" },
+      { "type": "player", "x": 30, "y": 25, "label": "A1", "color": "#dc2626" },
+      { "type": "player", "x": 50, "y": 20, "label": "A2", "color": "#dc2626" },
+      { "type": "player", "x": 70, "y": 25, "label": "A3", "color": "#dc2626" },
+      { "type": "player", "x": 15, "y": 30, "label": "A4", "color": "#dc2626" },
+      { "type": "player", "x": 85, "y": 30, "label": "A5", "color": "#dc2626" },
+      { "type": "player", "x": 50, "y": 30, "label": "A6", "color": "#dc2626" },
+      { "type": "ball", "x": 30, "y": 25 },
+      { "type": "arrow", "x": 30, "y": 25, "toX": 15, "toY": 30, "color": "#dc2626" },
+      { "type": "run-path", "x": 20, "y": 50, "toX": 18, "toY": 35, "color": "#2563eb", "dashed": true },
+      { "type": "arrow", "x": 40, "y": 50, "toX": 30, "toY": 50, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["defending", "shape", "tactical", "team-defending", "low-block"]
+  },
+  {
+    "id": "36",
+    "slug": "ladder-footwork-circuit",
+    "title": "Ladder & Footwork Circuit",
+    "category": "fitness",
+    "difficulty": "beginner",
+    "duration": 12,
+    "playerCountMin": 1,
+    "playerCountMax": 20,
+    "equipment": ["cones", "agility ladder"],
+    "instructions": [
+      "Lay out an agility ladder (or mark rungs with cones 18 inches apart).",
+      "Station 1: Two feet in each rung — quick high knees through the ladder.",
+      "Station 2: Lateral shuffle — two feet in each rung moving sideways.",
+      "Station 3: In-in-out-out (Icky Shuffle) — one foot in, other in, first out, second out.",
+      "Station 4: Single-leg hop through each rung.",
+      "Complete each station twice. Rest 20 seconds between stations."
+    ],
+    "coachingPoints": [
+      "Stay on the balls of your feet — no heel strikes.",
+      "Pump the arms to drive foot speed.",
+      "Accuracy before speed — don't trip on the rungs.",
+      "Keep the core engaged and torso upright."
+    ],
+    "variations": [
+      "Add a ball — dribble after exiting the ladder.",
+      "Time each station and track improvement over weeks.",
+      "Combine two patterns in one run for advanced footwork."
+    ],
+    "pitchElements": [
+      { "type": "cone", "x": 48, "y": 85 },
+      { "type": "cone", "x": 52, "y": 85 },
+      { "type": "cone", "x": 48, "y": 78 },
+      { "type": "cone", "x": 52, "y": 78 },
+      { "type": "cone", "x": 48, "y": 71 },
+      { "type": "cone", "x": 52, "y": 71 },
+      { "type": "cone", "x": 48, "y": 64 },
+      { "type": "cone", "x": 52, "y": 64 },
+      { "type": "cone", "x": 48, "y": 57 },
+      { "type": "cone", "x": 52, "y": 57 },
+      { "type": "cone", "x": 48, "y": 50 },
+      { "type": "cone", "x": 52, "y": 50 },
+      { "type": "cone", "x": 48, "y": 43 },
+      { "type": "cone", "x": 52, "y": 43 },
+      { "type": "cone", "x": 48, "y": 36 },
+      { "type": "cone", "x": 52, "y": 36 },
+      { "type": "player", "x": 50, "y": 92, "label": "P", "color": "#2563eb" },
+      { "type": "run-path", "x": 50, "y": 92, "toX": 50, "toY": 33, "color": "#2563eb", "dashed": true }
+    ],
+    "tags": ["fitness", "agility", "footwork", "warm-up", "ladder"]
   }
 ]
