@@ -1,28 +1,48 @@
 "use client";
 
-import { useState } from "react";
-import { Check, Crown, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import { Crown, AlertTriangle, CheckCircle, XCircle, Clock } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/auth-context";
-import { cn } from "@/lib/utils";
+import { PricingPlans } from "@/components/pricing-plans";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
-const FEATURES = [
-  { name: "Browse all drills", free: true, pro: true },
-  { name: "Interactive pitch diagrams", free: true, pro: true },
-  { name: "Session timer", free: true, pro: true },
-  { name: "Custom drills", free: "Up to 3", pro: "Unlimited" },
-  { name: "Saved sessions", free: "Up to 3", pro: "Unlimited" },
-  { name: "Weekly planner", free: true, pro: true },
-  { name: "Training log", free: true, pro: true },
-  { name: "Drill notes & history", free: true, pro: true },
-  { name: "Priority support", free: false, pro: true },
-];
+interface SubscriptionInfo {
+  plan: string;
+  stripeSubscriptionId?: string;
+  stripeCustomerId?: string;
+  subscriptionStatus?: string;
+  cancelAtPeriodEnd?: boolean;
+  currentPeriodEnd?: string;
+}
 
 export default function UpgradePage() {
-  const { user, userData } = useAuth();
+  const { user, userData, refreshUserData } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [subInfo, setSubInfo] = useState<SubscriptionInfo | null>(null);
 
-  const isPro = userData?.plan === "pro";
+  // Listen to user doc for real-time subscription updates
+  useEffect(() => {
+    if (!user) return;
+    const unsubscribe = onSnapshot(doc(db, "users", user.uid), (snap) => {
+      if (snap.exists()) {
+        setSubInfo(snap.data() as SubscriptionInfo);
+      }
+    });
+    return unsubscribe;
+  }, [user]);
+
+  // Refresh user data when returning from Stripe
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("success") === "true") {
+      refreshUserData();
+    }
+  }, [refreshUserData]);
+
+  const isPro = subInfo?.plan === "pro" || userData?.plan === "pro";
+  const isCanceled = subInfo?.cancelAtPeriodEnd === true;
 
   async function handleUpgrade() {
     if (!user) return;
@@ -75,95 +95,132 @@ export default function UpgradePage() {
       <div className="text-center space-y-3">
         <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 dark:bg-amber-900 px-4 py-1.5 text-sm font-medium text-amber-800 dark:text-amber-200">
           <Crown className="h-4 w-4" />
-          Upgrade to Pro
+          {isPro ? "Your Subscription" : "Upgrade to Pro"}
         </div>
         <h1 className="text-4xl font-bold tracking-tight">
-          Unlock Unlimited Training
+          {isPro ? "Manage Your Plan" : "Unlock Unlimited Training"}
         </h1>
         <p className="text-muted-foreground max-w-xl mx-auto">
-          Create unlimited custom drills, save unlimited sessions, and take your
-          coaching to the next level.
+          {isPro
+            ? "You're on the Pro plan. Manage your subscription below."
+            : "Create unlimited custom drills, save unlimited sessions, and take your coaching to the next level."}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Free Plan */}
-        <div className="glass rounded-xl p-6 space-y-6">
-          <div>
-            <h3 className="text-xl font-bold">Free</h3>
-            <p className="text-3xl font-bold mt-2">
-              $0<span className="text-base font-normal text-muted-foreground">/month</span>
-            </p>
-          </div>
-          <ul className="space-y-3">
-            {FEATURES.map((f) => (
-              <li key={f.name} className="flex items-center gap-2 text-sm">
-                {f.free ? (
-                  <Check className="h-4 w-4 text-green-500 shrink-0" />
-                ) : (
-                  <div className="h-4 w-4 rounded-full border border-muted-foreground/30 shrink-0" />
-                )}
-                <span className={cn(!f.free && "text-muted-foreground")}>
-                  {f.name}
-                  {typeof f.free === "string" && (
-                    <span className="text-muted-foreground ml-1">({f.free})</span>
-                  )}
-                </span>
-              </li>
-            ))}
-          </ul>
-          {!isPro && (
-            <Button variant="outline" className="w-full" disabled>
-              Current Plan
-            </Button>
-          )}
-        </div>
+      {/* Subscription Status Banner */}
+      {user && (
+        <div className="space-y-3">
+          {/* Success banner after checkout */}
+          {typeof window !== "undefined" &&
+            new URLSearchParams(window.location.search).get("success") ===
+              "true" && (
+              <div className="flex items-center gap-3 rounded-xl bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 p-4">
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 shrink-0" />
+                <div>
+                  <p className="text-sm font-medium text-green-800 dark:text-green-200">
+                    Payment successful!
+                  </p>
+                  <p className="text-xs text-green-700 dark:text-green-300">
+                    Your Pro plan is now active. It may take a moment to update.
+                  </p>
+                </div>
+              </div>
+            )}
 
-        {/* Pro Plan */}
-        <div className="glass rounded-xl p-6 space-y-6 ring-2 ring-primary">
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-xl font-bold">Pro</h3>
-              <Zap className="h-5 w-5 text-primary" />
+          {/* Canceled banner */}
+          {typeof window !== "undefined" &&
+            new URLSearchParams(window.location.search).get("canceled") ===
+              "true" && (
+              <div className="flex items-center gap-3 rounded-xl bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 p-4">
+                <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 shrink-0" />
+                <p className="text-sm text-amber-800 dark:text-amber-200">
+                  Checkout was canceled. You can try again anytime.
+                </p>
+              </div>
+            )}
+
+          {/* Current subscription status */}
+          <div className="glass rounded-xl p-5">
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium">Current Plan:</span>
+                <Badge
+                  className={
+                    isPro
+                      ? "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200"
+                      : ""
+                  }
+                  variant={isPro ? "default" : "secondary"}
+                >
+                  {isPro ? "Pro" : "Free"}
+                </Badge>
+
+                {isPro && isCanceled && (
+                  <Badge
+                    variant="outline"
+                    className="border-red-300 text-red-600 dark:border-red-700 dark:text-red-400 gap-1"
+                  >
+                    <XCircle className="h-3 w-3" />
+                    Cancels at period end
+                  </Badge>
+                )}
+
+                {isPro && !isCanceled && (
+                  <Badge
+                    variant="outline"
+                    className="border-green-300 text-green-600 dark:border-green-700 dark:text-green-400 gap-1"
+                  >
+                    <CheckCircle className="h-3 w-3" />
+                    Active
+                  </Badge>
+                )}
+              </div>
+
+              <div className="text-xs text-muted-foreground">
+                {!isPro && "3 custom drills & 3 sessions included"}
+                {isPro && !isCanceled && "Unlimited drills & sessions"}
+                {isPro &&
+                  isCanceled &&
+                  subInfo?.currentPeriodEnd &&
+                  `Access until ${new Date(subInfo.currentPeriodEnd).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`}
+              </div>
             </div>
-            <p className="text-3xl font-bold mt-2">
-              $9.99<span className="text-base font-normal text-muted-foreground">/month</span>
-            </p>
+
+            {isPro && isCanceled && (
+              <div className="mt-3 flex items-start gap-2 rounded-lg bg-red-50 dark:bg-red-950 p-3">
+                <Clock className="h-4 w-4 text-red-500 shrink-0 mt-0.5" />
+                <div className="text-sm">
+                  <p className="font-medium text-red-800 dark:text-red-200">
+                    Subscription canceled
+                  </p>
+                  <p className="text-red-700 dark:text-red-300 text-xs mt-0.5">
+                    Your Pro features will remain active until the end of your
+                    current billing period. After that, you&apos;ll be
+                    downgraded to the Free plan (3 custom drills, 3 sessions).
+                    You can resubscribe anytime.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {!isPro && (
+              <p className="mt-3 text-xs text-muted-foreground">
+                On the free plan, you can create up to 3 custom drills and save
+                up to 3 sessions. All other features including the drill
+                library, timer, planner, and training log are fully available.
+              </p>
+            )}
           </div>
-          <ul className="space-y-3">
-            {FEATURES.map((f) => (
-              <li key={f.name} className="flex items-center gap-2 text-sm">
-                <Check className="h-4 w-4 text-green-500 shrink-0" />
-                <span>
-                  {f.name}
-                  {typeof f.pro === "string" && (
-                    <span className="text-primary font-medium ml-1">({f.pro})</span>
-                  )}
-                </span>
-              </li>
-            ))}
-          </ul>
-          {isPro ? (
-            <Button
-              variant="outline"
-              className="w-full"
-              onClick={handleManageSubscription}
-              disabled={loading}
-            >
-              {loading ? "Loading..." : "Manage Subscription"}
-            </Button>
-          ) : (
-            <Button
-              className="w-full gap-2 shadow-lg shadow-primary/20"
-              onClick={handleUpgrade}
-              disabled={loading}
-            >
-              {loading ? "Loading..." : "Upgrade to Pro"}
-              <Zap className="h-4 w-4" />
-            </Button>
-          )}
         </div>
-      </div>
+      )}
+
+      {/* Pricing Cards */}
+      <PricingPlans
+        currentPlan={isPro ? "pro" : userData ? "free" : null}
+        onUpgrade={handleUpgrade}
+        onManage={handleManageSubscription}
+        loading={loading}
+      />
     </div>
   );
 }

@@ -29,10 +29,26 @@ export async function POST(req: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session;
         const uid = session.metadata?.firebaseUid;
         if (uid) {
-          await getAdminDb().collection("users").doc(uid).update({
+          const updateData: Record<string, unknown> = {
             plan: "pro",
             stripeSubscriptionId: session.subscription as string,
-          });
+            subscriptionStatus: "active",
+            cancelAtPeriodEnd: false,
+          };
+
+          // Fetch subscription to get period end
+          if (session.subscription) {
+            const sub = await getStripe().subscriptions.retrieve(
+              session.subscription as string
+            );
+            const periodEnd = (sub as unknown as { current_period_end: number })
+              .current_period_end;
+            updateData.currentPeriodEnd = new Date(
+              periodEnd * 1000
+            ).toISOString();
+          }
+
+          await getAdminDb().collection("users").doc(uid).update(updateData);
         }
         break;
       }
@@ -51,10 +67,19 @@ export async function POST(req: NextRequest) {
           const isActive =
             subscription.status === "active" ||
             subscription.status === "trialing";
-          await userDoc.ref.update({
+          const updateFields: Record<string, unknown> = {
             plan: isActive ? "pro" : "free",
             stripeSubscriptionId: subscription.id,
-          });
+            subscriptionStatus: subscription.status,
+            cancelAtPeriodEnd: subscription.cancel_at_period_end,
+          };
+          // cancel_at holds the timestamp when the subscription will end
+          if (subscription.cancel_at) {
+            updateFields.currentPeriodEnd = new Date(
+              subscription.cancel_at * 1000
+            ).toISOString();
+          }
+          await userDoc.ref.update(updateFields);
         }
         break;
       }
@@ -73,6 +98,9 @@ export async function POST(req: NextRequest) {
           await userDoc.ref.update({
             plan: "free",
             stripeSubscriptionId: null,
+            subscriptionStatus: "canceled",
+            cancelAtPeriodEnd: false,
+            currentPeriodEnd: null,
           });
         }
         break;

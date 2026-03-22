@@ -6,6 +6,7 @@ import {
   Shield,
   Timer,
   ArrowRight,
+  Crown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,6 +14,7 @@ import { ALL_CATEGORIES, CATEGORY_META } from "@/lib/constants";
 import { Category } from "@/types/drill";
 import { OnboardingTooltip } from "@/components/onboarding-tooltip";
 import { DrillOfTheDay } from "@/components/drill-of-the-day";
+import { PricingPlans } from "@/components/pricing-plans";
 
 const CATEGORY_ICONS: Record<Category, React.ReactNode> = {
   passing: <ArrowRightLeft className="h-8 w-8" />,
@@ -93,6 +95,26 @@ export default function HomePage() {
               </Link>
             );
           })}
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className="mx-auto max-w-7xl px-4">
+        <div className="text-center space-y-3 mb-8">
+          <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 dark:bg-amber-900 px-4 py-1.5 text-sm font-medium text-amber-800 dark:text-amber-200">
+            <Crown className="h-4 w-4" />
+            Pricing
+          </div>
+          <h2 className="text-3xl font-bold tracking-tight">
+            Free to Start, Pro to Scale
+          </h2>
+          <p className="text-muted-foreground max-w-xl mx-auto">
+            Start building sessions for free with up to 3 custom drills and 3 saved sessions.
+            Upgrade to Pro for unlimited access.
+          </p>
+        </div>
+        <div className="max-w-4xl mx-auto">
+          <PricingPlans />
         </div>
       </section>
 
