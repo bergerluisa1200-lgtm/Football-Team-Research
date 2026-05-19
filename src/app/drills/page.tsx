@@ -10,6 +10,7 @@ import { DrillGrid } from "@/components/drill-grid";
 import { filterDrills } from "@/lib/drills";
 import { useCustomDrills } from "@/hooks/use-custom-drills";
 import { useFavorites } from "@/hooks/use-favorites";
+import { useMasteredDrills } from "@/hooks/use-mastered-drills";
 import { Category, Difficulty, Drill } from "@/types/drill";
 
 function DrillsContent() {
@@ -18,10 +19,12 @@ function DrillsContent() {
   const category = (searchParams.get("category") as Category) || undefined;
   const difficulty = (searchParams.get("difficulty") as Difficulty) || undefined;
   const favoritesOnly = searchParams.get("favorites") === "true";
+  const masteredOnly = searchParams.get("mastered") === "true";
 
   const seedDrills = filterDrills({ search, category, difficulty });
   const { customDrills } = useCustomDrills();
   const { isFavorite } = useFavorites();
+  const { isMastered } = useMasteredDrills();
 
   // Apply same filters to custom drills
   let filteredCustom: Drill[] = customDrills;
@@ -47,6 +50,9 @@ function DrillsContent() {
   if (favoritesOnly) {
     allDrills = allDrills.filter((d) => isFavorite(d.id));
   }
+  if (masteredOnly) {
+    allDrills = allDrills.filter((d) => isMastered(d.id));
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 space-y-8">
@@ -56,6 +62,7 @@ function DrillsContent() {
           <p className="text-muted-foreground mt-1">
             {allDrills.length} drill{allDrills.length !== 1 ? "s" : ""} available
             {favoritesOnly && " (favorites)"}
+            {masteredOnly && " (mastered)"}
           </p>
         </div>
         <Link href="/drills/new">

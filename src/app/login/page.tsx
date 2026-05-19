@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/auth-context";
 
 function LoginForm() {
-  const { signIn } = useAuth();
+  const { signIn, user, loading: authLoading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
@@ -16,6 +16,15 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Already signed in (Firebase persisted the session in localStorage but the
+  // proxy cookie was missing/expired). Bounce them back instead of asking for
+  // credentials they already gave.
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.replace(callbackUrl);
+    }
+  }, [authLoading, user, callbackUrl, router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -31,6 +40,16 @@ function LoginForm() {
     } finally {
       setLoading(false);
     }
+  }
+
+  // While auth is hydrating or we're already signed in, show a minimal state
+  // rather than the form (the effect above will redirect).
+  if (authLoading || user) {
+    return (
+      <div className="mx-auto max-w-md px-4 py-16 text-center text-muted-foreground">
+        Loading…
+      </div>
+    );
   }
 
   return (

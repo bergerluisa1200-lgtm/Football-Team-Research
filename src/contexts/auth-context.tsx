@@ -50,19 +50,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      setUser(firebaseUser);
-      if (firebaseUser) {
-        await fetchUserData(firebaseUser.uid);
-      } else {
-        setUserData(null);
-      }
-      setLoading(false);
-    });
-    return unsubscribe;
-  }, [fetchUserData]);
-
   const setSessionCookie = useCallback(async (firebaseUser: User) => {
     const idToken = await firebaseUser.getIdToken();
     await fetch("/api/session", {
@@ -71,6 +58,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       body: JSON.stringify({ idToken }),
     });
   }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        // Refresh the proxy's session cookie BEFORE flipping `loading` to
+        // false. Pages that key off `loading` (e.g. /login's redirect-if-
+        // signed-in effect) will only fire once the cookie is actually
+        // written — otherwise we race the cookie write and the proxy
+        // bounces us back to /login.
+        try {
+          await setSessionCookie(firebaseUser);
+        } catch (err) {
+          console.warn("Failed to refresh session cookie:", err);
+        }
+        setUser(firebaseUser);
+        await fetchUserData(firebaseUser.uid);
+      } else {
+        setUser(null);
+        setUserData(null);
+      }
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, [fetchUserData, setSessionCookie]);
 
   const signIn = useCallback(async (email: string, password: string) => {
     const cred = await signInWithEmailAndPassword(auth, email, password);

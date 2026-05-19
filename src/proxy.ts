@@ -8,6 +8,7 @@ const PROTECTED_PATHS = [
   "/training-log",
   "/upgrade",
   "/profile",
+  "/stats",
 ];
 
 function isProtected(pathname: string): boolean {
@@ -16,7 +17,7 @@ function isProtected(pathname: string): boolean {
   );
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Only check auth for protected paths

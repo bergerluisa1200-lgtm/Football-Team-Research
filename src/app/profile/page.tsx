@@ -4,16 +4,20 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { updateProfile } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
-import { User, Mail, Crown, Calendar, Save, Zap } from "lucide-react";
+import { User, Mail, Crown, Calendar, Save, Zap, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/auth-context";
+import { useTrainingLog } from "@/hooks/use-training-log";
+import { computeStreak } from "@/lib/streak";
 import { db } from "@/lib/firebase";
 import Link from "next/link";
 
 export default function ProfilePage() {
   const { user, userData, loading } = useAuth();
+  const { entries } = useTrainingLog();
+  const streak = computeStreak(entries);
   const router = useRouter();
   const [name, setName] = useState("");
   const [nameInit, setNameInit] = useState(false);
@@ -156,6 +160,24 @@ export default function ProfilePage() {
             </Button>
           </Link>
         </div>
+      </div>
+
+      {/* Streak */}
+      <div className="glass rounded-xl p-6 space-y-2">
+        <h2 className="text-lg font-bold flex items-center gap-2">
+          <Flame className="h-5 w-5 text-orange-500" />
+          Streak
+        </h2>
+        {streak > 0 ? (
+          <p className="text-sm text-muted-foreground">
+            <span className="text-2xl font-bold text-foreground tabular-nums">{streak}</span>{" "}
+            day{streak === 1 ? "" : "s"} in a row — keep it going.
+          </p>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            Log a session today to start a streak.
+          </p>
+        )}
       </div>
 
       {/* Account Info */}

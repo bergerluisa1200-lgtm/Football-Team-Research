@@ -111,6 +111,21 @@ export function useTimer(drills: SessionDrill[]) {
   // Track which drills have been completed for history recording
   const getCompletedDrills = useCallback(() => completedDrillsRef.current, []);
 
+  // Auto-pause when the tab is hidden so we don't drift while backgrounded.
+  // We pause the visible timer but don't try to resume on focus — coaches
+  // returning to the tab can hit play themselves.
+  useEffect(() => {
+    if (!isRunning) return;
+    const onVisibility = () => {
+      if (document.hidden) {
+        clearTimer();
+        setIsRunning(false);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, [isRunning, clearTimer]);
+
   useEffect(() => {
     if (!isRunning) return;
 

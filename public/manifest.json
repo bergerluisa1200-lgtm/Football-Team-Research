@@ -1,0 +1,10 @@
+{
+  "name": "PitchLab — Football Drills & Training",
+  "short_name": "PitchLab",
+  "description": "Browse football drills, build training sessions, and run session timers.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a"
+}

@@ -1,7 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+import { useAuth } from "@/contexts/auth-context";
 import {
   DndContext,
   closestCenter,
@@ -61,6 +65,7 @@ import { CATEGORY_META, DIFFICULTY_META } from "@/lib/constants";
 import { SESSION_TEMPLATES, SessionTemplate } from "@/data/session-templates";
 import { Drill, SessionDrill } from "@/types/drill";
 import { cn } from "@/lib/utils";
+import { SessionPrintSheet } from "@/components/session-print-sheet";
 
 const TEMPLATE_ICONS: Record<string, React.ReactNode> = {
   warmup: <Flame className="h-5 w-5" />,
@@ -254,7 +259,7 @@ function DrillSidebar({
   );
 }
 
-export default function SessionBuilderPage() {
+function SessionBuilderContent() {
   const {
     session,
     addDrill,
@@ -271,8 +276,40 @@ export default function SessionBuilderPage() {
   } = useSession();
 
   const { allDrills: allAvailableDrills, getDrillById } = useAllDrills();
+  const { user } = useAuth();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [templateDialogOpen, setTemplateDialogOpen] = useState(false);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [sharing, setSharing] = useState(false);
+  const sharedParam = searchParams.get("shared");
+
+  // Load a shared session when ?shared={id} is in the URL.
+  useEffect(() => {
+    if (!sharedParam) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const snap = await getDoc(doc(db, "sharedSessions", sharedParam));
+        if (!cancelled && snap.exists()) {
+          const data = snap.data() as { name: string; drills: SessionDrill[] };
+          loadTemplate({ name: data.name, drills: data.drills });
+        }
+      } catch (err) {
+        console.error("Failed to load shared session:", err);
+      } finally {
+        if (!cancelled) {
+          const params = new URLSearchParams(searchParams.toString());
+          params.delete("shared");
+          router.replace(`/session-builder${params.toString() ? `?${params}` : ""}`);
+        }
+      }
+    })();
+    return () => { cancelled = true; };
+    // We only want this to run when the param first appears.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sharedParam]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
@@ -299,21 +336,26 @@ export default function SessionBuilderPage() {
     setTemplateDialogOpen(false);
   }
 
-  function handleCopyLink() {
-    const data = {
-      name: session.name,
-      drills: session.drills.map((d) => ({
-        id: d.drillId,
-        dur: d.duration,
-        rest: d.restAfter || 0,
-      })),
-    };
-    const encoded = btoa(JSON.stringify(data));
-    const url = `${window.location.origin}/session-builder?import=${encoded}`;
-    navigator.clipboard.writeText(url).then(() => {
-      alert("Link copied to clipboard!");
-      setShareDialogOpen(false);
-    });
+  async function handleCopyLink() {
+    if (sharing) return;
+    setSharing(true);
+    try {
+      const shareId = `share-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      await setDoc(doc(db, "sharedSessions", shareId), {
+        name: session.name,
+        drills: session.drills,
+        ownerUid: user?.uid ?? null,
+        createdAt: new Date().toISOString(),
+      });
+      const url = `${window.location.origin}/session-builder?shared=${shareId}`;
+      await navigator.clipboard.writeText(url);
+      setShareUrl(url);
+    } catch (err) {
+      console.error("Failed to share session:", err);
+      alert("Failed to create share link. Please try again.");
+    } finally {
+      setSharing(false);
+    }
   }
 
   function handlePrint() {
@@ -324,7 +366,8 @@ export default function SessionBuilderPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="flex items-center justify-between mb-6">
+      <SessionPrintSheet session={session} getDrillById={getDrillById} />
+      <div className="print-hide flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Session Builder</h1>
           <p className="text-muted-foreground mt-1">
@@ -386,7 +429,13 @@ export default function SessionBuilderPage() {
               <Button variant="outline" size="icon" onClick={() => setShareDialogOpen(true)}>
                 <Share2 className="h-4 w-4" />
               </Button>
-              <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
+              <Dialog
+                open={shareDialogOpen}
+                onOpenChange={(open) => {
+                  setShareDialogOpen(open);
+                  if (!open) setShareUrl(null);
+                }}
+              >
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Share Session</DialogTitle>
@@ -395,10 +444,20 @@ export default function SessionBuilderPage() {
                     </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-3 mt-2">
-                    <Button className="w-full gap-2" onClick={handleCopyLink}>
+                    <Button
+                      className="w-full gap-2"
+                      onClick={handleCopyLink}
+                      disabled={sharing}
+                    >
                       <Copy className="h-4 w-4" />
-                      Copy Share Link
+                      {sharing ? "Creating link…" : "Copy Share Link"}
                     </Button>
+                    {shareUrl && (
+                      <div className="rounded-md bg-muted p-2 text-xs break-all">
+                        Copied to clipboard:{" "}
+                        <span className="font-mono">{shareUrl}</span>
+                      </div>
+                    )}
                     <Button variant="outline" className="w-full gap-2" onClick={handlePrint}>
                       <Printer className="h-4 w-4" />
                       Export as PDF (Print)
@@ -418,7 +477,7 @@ export default function SessionBuilderPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="print-hide grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Sidebar - desktop */}
         <div className="hidden lg:block">
           <Card>
@@ -550,5 +609,13 @@ export default function SessionBuilderPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SessionBuilderPage() {
+  return (
+    <Suspense>
+      <SessionBuilderContent />
+    </Suspense>
   );
 }

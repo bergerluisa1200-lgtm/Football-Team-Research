@@ -15,6 +15,7 @@ import { Category } from "@/types/drill";
 import { OnboardingTooltip } from "@/components/onboarding-tooltip";
 import { DrillOfTheDay } from "@/components/drill-of-the-day";
 import { PricingPlans } from "@/components/pricing-plans";
+import { StreakBanner } from "@/components/streak-banner";
 
 const CATEGORY_ICONS: Record<Category, React.ReactNode> = {
   passing: <ArrowRightLeft className="h-8 w-8" />,
@@ -66,6 +67,9 @@ export default function HomePage() {
           <OnboardingTooltip />
         </div>
       </section>
+
+      {/* Streak banner (signed-in users with a streak) */}
+      <StreakBanner />
 
       {/* Drill of the Day */}
       <DrillOfTheDay />

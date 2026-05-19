@@ -13,6 +13,7 @@ import {
   Crown,
   User,
   Settings,
+  BarChart3,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ const NAV_LINKS = [
   { href: "/planner", label: "Planner", icon: CalendarDays },
   { href: "/timer", label: "Timer", icon: Timer },
   { href: "/training-log", label: "Training Log", icon: ClipboardList },
+  { href: "/stats", label: "Stats", icon: BarChart3 },
 ];
 
 export function Navbar() {

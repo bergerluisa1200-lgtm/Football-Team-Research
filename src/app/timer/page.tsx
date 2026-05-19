@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   Play,
@@ -11,6 +11,8 @@ import {
   ArrowLeft,
   Coffee,
   FastForward,
+  ClipboardList,
+  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +20,11 @@ import { useTimer } from "@/hooks/use-timer";
 import { useSession } from "@/hooks/use-session";
 import { useAllDrills } from "@/hooks/use-all-drills";
 import { useDrillHistory } from "@/hooks/use-drill-history";
+import { useDrillNotes } from "@/hooks/use-drill-notes";
+import { useTrainingLog } from "@/hooks/use-training-log";
 import { CATEGORY_META } from "@/lib/constants";
+import { Category } from "@/types/drill";
+import { StickyNote } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 function formatTime(seconds: number) {
@@ -76,6 +82,9 @@ export default function TimerPage() {
   const { session } = useSession();
   const { getDrillById } = useAllDrills();
   const { recordUsage } = useDrillHistory();
+  const { getNote } = useDrillNotes();
+  const { addEntry } = useTrainingLog();
+  const [logged, setLogged] = useState(false);
   const {
     currentIndex,
     currentDrill,
@@ -94,6 +103,7 @@ export default function TimerPage() {
 
   const drill = currentDrill ? getDrillById(currentDrill.drillId) : null;
   const catMeta = drill ? CATEGORY_META[drill.category] : null;
+  const drillNote = drill && !isResting ? getNote(drill.id) : "";
 
   // Track completed drills for history
   const recordedRef = useRef<Set<number>>(new Set());
@@ -121,8 +131,31 @@ export default function TimerPage() {
   useEffect(() => {
     if (currentIndex === 0 && !isRunning && !isComplete) {
       recordedRef.current = new Set();
+      setLogged(false);
     }
   }, [currentIndex, isRunning, isComplete]);
+
+  async function handleLogSession() {
+    const drillsInSession = session.drills
+      .map((sd) => getDrillById(sd.drillId))
+      .filter((d): d is NonNullable<typeof d> => !!d);
+    const totalMinutes = session.drills.reduce((sum, sd) => sum + sd.duration, 0);
+    const categories: Category[] = Array.from(
+      new Set(drillsInSession.map((d) => d.category))
+    );
+    const practiced = drillsInSession.map((d) => d.title).join(", ");
+    await addEntry({
+      date: new Date().toISOString().split("T")[0],
+      categories,
+      duration: totalMinutes,
+      rating: 8,
+      mood: "good",
+      practiced,
+      improvements: "",
+      notes: "",
+    });
+    setLogged(true);
+  }
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -200,6 +233,14 @@ export default function TimerPage() {
         </div>
       )}
 
+      {/* Drill note */}
+      {drillNote && (
+        <div className="glass rounded-lg px-4 py-2 max-w-md flex items-start gap-2 text-sm">
+          <StickyNote className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+          <p className="text-left text-muted-foreground">{drillNote}</p>
+        </div>
+      )}
+
       {/* Timer display */}
       <div className="relative flex items-center justify-center glass rounded-full p-8">
         <ProgressRing progress={progress} isResting={isResting} />
@@ -270,6 +311,28 @@ export default function TimerPage() {
         <RotateCcw className="h-4 w-4" />
         Reset
       </Button>
+
+      {isComplete && (
+        <div className="glass rounded-xl px-4 py-3 flex items-center gap-3 max-w-md">
+          <ClipboardList className="h-5 w-5 text-primary shrink-0" />
+          {logged ? (
+            <>
+              <p className="text-sm flex-1">Session logged.</p>
+              <Link href="/training-log">
+                <Button variant="outline" size="sm">View log</Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <p className="text-sm flex-1">Log this session to your training log?</p>
+              <Button size="sm" onClick={handleLogSession} className="gap-1.5">
+                <Check className="h-4 w-4" />
+                Log
+              </Button>
+            </>
+          )}
+        </div>
+      )}
 
       {/* Drill list */}
       <div className="w-full max-w-md glass rounded-xl p-3 space-y-1">

@@ -175,14 +175,21 @@
   border-color: oklch(1 0 0 / 10%);
 }
 
+.print-only {
+  display: none;
+}
+
 @media print {
-  .no-print {
+  .no-print, .print-hide {
     display: none !important;
+  }
+  .print-only {
+    display: block !important;
   }
   body {
     background: white !important;
     color: black !important;
-    font-size: 14px !important;
+    font-size: 12pt !important;
   }
   .glass, .glass-subtle, .glass-heavy {
     background: white !important;
@@ -192,5 +199,76 @@
   }
   header, footer {
     display: none !important;
+  }
+
+  .print-sheet {
+    color: black;
+    padding: 0;
+    max-width: 100%;
+  }
+  .print-sheet-header {
+    border-bottom: 2px solid black;
+    padding-bottom: 8pt;
+    margin-bottom: 12pt;
+  }
+  .print-sheet-header h1 {
+    font-size: 20pt;
+    font-weight: 700;
+    margin: 0;
+  }
+  .print-sheet-meta {
+    display: flex;
+    gap: 16pt;
+    font-size: 10pt;
+    color: #444;
+    margin-top: 4pt;
+  }
+  .print-sheet-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .print-sheet-drill {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    padding: 8pt 0;
+    border-bottom: 1px solid #ccc;
+  }
+  .print-sheet-drill-head {
+    display: flex;
+    align-items: baseline;
+    gap: 8pt;
+    margin-bottom: 2pt;
+  }
+  .print-sheet-num {
+    font-weight: 700;
+    min-width: 18pt;
+  }
+  .print-sheet-title {
+    font-weight: 600;
+    font-size: 13pt;
+    flex: 1;
+  }
+  .print-sheet-dur {
+    font-size: 10pt;
+    color: #555;
+    white-space: nowrap;
+  }
+  .print-sheet-tags {
+    font-size: 9pt;
+    color: #666;
+    margin: 2pt 0 4pt 26pt;
+    display: flex;
+    gap: 4pt;
+    flex-wrap: wrap;
+  }
+  .print-sheet-steps {
+    margin: 4pt 0 0 26pt;
+    padding-left: 14pt;
+    font-size: 10pt;
+    line-height: 1.4;
+  }
+  .print-sheet-steps li {
+    margin-bottom: 2pt;
   }
 }

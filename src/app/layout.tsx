@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -6,6 +6,7 @@ import { AuthProvider } from "@/contexts/auth-context";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { PwaRegister } from "@/components/pwa-register";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-sans",
@@ -22,6 +23,16 @@ export const metadata: Metadata = {
   title: "PitchLab — Football Drills & Training",
   description:
     "Browse football drills, build training sessions, and run session timers with interactive pitch diagrams.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "PitchLab",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#16a34a",
 };
 
 export default function RootLayout({
@@ -42,6 +53,7 @@ export default function RootLayout({
                 <main className="flex-1">{children}</main>
                 <Footer />
               </div>
+              <PwaRegister />
             </TooltipProvider>
           </AuthProvider>
         </ThemeProvider>

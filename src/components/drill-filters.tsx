@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search, Heart } from "lucide-react";
+import { Search, Heart, Trophy } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -24,6 +24,7 @@ export function DrillFilters() {
   const category = searchParams.get("category") || "";
   const difficulty = searchParams.get("difficulty") || "";
   const favorites = searchParams.get("favorites") === "true";
+  const masteredOnly = searchParams.get("mastered") === "true";
 
   const updateParams = useCallback(
     (key: string, value: string) => {
@@ -59,6 +60,15 @@ export function DrillFilters() {
           >
             <Heart className={cn("h-3.5 w-3.5", favorites && "fill-current")} />
             Favorites
+          </Button>
+          <Button
+            variant={masteredOnly ? "default" : "outline"}
+            size="sm"
+            className={cn("gap-1.5", masteredOnly && "bg-amber-500 hover:bg-amber-600 text-white")}
+            onClick={() => updateParams("mastered", masteredOnly ? "" : "true")}
+          >
+            <Trophy className="h-3.5 w-3.5" />
+            Mastered
           </Button>
           {ALL_CATEGORIES.map((cat) => (
             <Button
